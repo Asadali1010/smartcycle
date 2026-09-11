@@ -13,11 +13,17 @@ import { RequestDemoPage } from '@/pages/RequestDemoPage'
 import { PrivacyPage } from '@/pages/PrivacyPage'
 import { TermsPage } from '@/pages/TermsPage'
 import { NotFoundPage } from '@/pages/NotFoundPage'
+import { StyleGuidePage } from '@/design-system/dev/StyleGuidePage'
 
 export const router = createBrowserRouter([
   {
     element: <Layout />,
     children: [
+      // TEMPORARY (design-system, phase 1): dev-only route rendering every
+      // design-system primitive against both surfaces for contrast/focus QA.
+      // forms-and-pages MUST remove this route (and src/design-system/dev/)
+      // before the site ships.
+      { path: '/dev/style-guide', element: <StyleGuidePage /> },
       { path: '/', element: <HomePage /> },
       { path: '/platform', element: <PlatformPage /> },
       { path: '/use-cases', element: <UseCasesPage /> },
