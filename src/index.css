@@ -1,0 +1,38 @@
+@import "tailwindcss";
+
+/*
+ * Design tokens — SmartCycleAI redesign palette.
+ * Obsidian charcoal + warm ivory are the dominant surfaces; coral is reserved for
+ * emphasis/actions; champagne is a restrained metallic highlight. Do not reintroduce
+ * blue/cyan anywhere in this palette.
+ */
+@theme {
+  --color-obsidian: #141215;
+  --color-ivory: #f7f2ea;
+  --color-coral: #ff654f;
+  --color-champagne: #d8be97;
+
+  --font-display: "General Sans", "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-body: "Inter", ui-sans-serif, system-ui, sans-serif;
+}
+
+:root {
+  color-scheme: light dark;
+}
+
+body {
+  background-color: var(--color-obsidian);
+  color: var(--color-ivory);
+  font-family: var(--font-body);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
