@@ -28,6 +28,6 @@ export function moduleBootWindow(bootProgress: number, index: number): ModuleBoo
   const local = Math.min(1, Math.max(0, (clampedBoot - index * BOOT_STAGGER_PER_MODULE) / BOOT_WINDOW));
   return {
     traceT: Math.min(1, local / 0.6),
-    growT: Math.min(1, Math.max(0, (local - 0.4) / 0.6)),
+    growT: Math.min(1, Math.max(0, (local - 0.6) / 0.4)),
   };
 }

@@ -113,7 +113,7 @@ export function SculptureModel({ stage, explode = 0, bootProgress = 1, breathing
         ];
         return { index: i, base, position };
       }),
-      // eslint-disable-next-line react-hooks/exhaustive-deps -- recompute per stage/explode
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- recompute per stage/explode
     [clampedStage, clampedExplode],
   );
 
