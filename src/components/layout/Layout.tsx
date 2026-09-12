@@ -1,6 +1,7 @@
 import { Outlet } from "react-router-dom";
 import { Header } from "./Header";
 import { Footer } from "./Footer";
+import { ChatLauncher } from "@/components/chatbot/ChatLauncher";
 
 /**
  * Root shell: fixed Header, routed page content, Footer. Header is
@@ -16,6 +17,7 @@ export function Layout() {
         <Outlet />
       </main>
       <Footer />
+      <ChatLauncher />
     </div>
   );
 }

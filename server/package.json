@@ -1,0 +1,21 @@
+{
+  "name": "smartcycleai-chatbot-server-stub",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Isolated, unwired Express stub for a future live SmartCycle Assistant backend. Not consumed by the Vite client build — see README.md.",
+  "type": "commonjs",
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "dev": "tsc --watch",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "express": "^4.21.2"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.21",
+    "@types/node": "^22.10.5",
+    "typescript": "^5.7.3"
+  }
+}
