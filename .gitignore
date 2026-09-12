@@ -12,6 +12,12 @@ dist
 dist-ssr
 *.local
 
+# Real secrets/credentials — server/.env.example (placeholders only) is the
+# only committed env file. Never commit an actual .env.
+.env
+.env.*
+!.env.example
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
