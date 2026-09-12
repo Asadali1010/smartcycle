@@ -15,7 +15,7 @@ import { SculptureModel } from "./SculptureModel";
 import { useSceneLightingRig } from "./lighting";
 import { SceneEffects } from "./SceneEffects";
 import { getCameraPose } from "./cameraPath";
-import { useSceneStore } from "@/motion/sceneStore";
+import { useSceneStore, type CameraPoseState } from "@/motion/sceneStore";
 
 export interface ScrollStorySceneProps {
   stage: number;
@@ -28,14 +28,25 @@ const PARALLAX_DAMPING = 3.2;
  * this scene's own scroll-driven pose. */
 const HANDOFF_DURATION = 0.6;
 
+function smoothstep(t: number): number {
+  const c = Math.min(1, Math.max(0, t));
+  return c * c * (3 - 2 * c);
+}
+
 export function ScrollStoryScene({ stage }: ScrollStorySceneProps) {
   const prefersReducedMotion = Boolean(useReducedMotion());
   const { camera } = useThree();
   const ambientGroupRef = useRef<Group>(null);
   const parallaxGroupRef = useRef<Group>(null);
   const lightingRig = useSceneLightingRig(0.9);
-  const handoffPose = useRef(useSceneStore.getState().lastCameraPose);
-  const lastPoseRef = useRef(handoffPose.current);
+  // Captured lazily on the first actual useFrame tick (not at React mount,
+  // which happens immediately alongside Hero at page load) so this reads
+  // Hero's real end-of-boot pose from the store instead of racing its
+  // ~2.3s GSAP timeline. useCanvasFrameloop gates when frames start ticking
+  // to roughly when this section nears the viewport, by which point the
+  // user has typically already scrolled past Hero's boot sequence.
+  const handoffPose = useRef<CameraPoseState | null>(null);
+  const lastPoseRef = useRef(useSceneStore.getState().lastCameraPose);
   const mountTime = useRef<number | null>(null);
   const setActiveStage = useSceneStore((state) => state.setActiveStage);
   const setLastCameraPose = useSceneStore((state) => state.setLastCameraPose);
@@ -51,11 +62,14 @@ export function ScrollStoryScene({ stage }: ScrollStorySceneProps) {
   }, [setLastCameraPose]);
 
   useFrame((state, delta) => {
-    if (mountTime.current === null) mountTime.current = state.clock.elapsedTime;
+    if (mountTime.current === null) {
+      mountTime.current = state.clock.elapsedTime;
+      handoffPose.current = useSceneStore.getState().lastCameraPose;
+    }
     const elapsed = state.clock.elapsedTime - mountTime.current;
     const target = getCameraPose(stage);
-    const blend = prefersReducedMotion ? 1 : Math.min(1, elapsed / HANDOFF_DURATION);
-    const from = handoffPose.current;
+    const blend = prefersReducedMotion ? 1 : smoothstep(Math.min(1, elapsed / HANDOFF_DURATION));
+    const from = handoffPose.current ?? target;
 
     const position: [number, number, number] = [
       from.position[0] + (target.position[0] - from.position[0]) * blend,
