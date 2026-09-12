@@ -29,6 +29,17 @@ describe("moduleBootWindow", () => {
     expect(window.growT).toBe(0);
   });
 
+  it("never starts growing before its trace line has fully drawn", () => {
+    for (let boot = 0; boot <= 1; boot += 0.02) {
+      for (let index = 0; index < 5; index++) {
+        const window = moduleBootWindow(boot, index);
+        if (window.growT > 0) {
+          expect(window.traceT).toBe(1);
+        }
+      }
+    }
+  });
+
   it("clamps bootProgress outside [0, 1]", () => {
     expect(moduleBootWindow(-1, 0)).toEqual(moduleBootWindow(0, 0));
     expect(moduleBootWindow(2, 0)).toEqual(moduleBootWindow(1, 0));
