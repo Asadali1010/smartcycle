@@ -36,6 +36,16 @@ const PARALLAX_DAMPING = 3.2;
 const CAMERA_CLOSE = { x: 0, y: 0.05, z: 2.3 };
 const CAMERA_REST = { x: 0, y: 0.3, z: 10.5 };
 
+/** Boot timeline timing (seconds/position-offsets) — kept as named constants
+ * so the "trace-lines finish drawing, then modules assemble, then camera
+ * pulls back" relationship is enforced by naming rather than by
+ * comment-and-hope. */
+const BOOT_DURATION = 1.6;
+const STAGE_START_OFFSET = 0.4;
+const STAGE_DURATION = 1.6;
+const CAMERA_START_OFFSET = 0.5;
+const CAMERA_DURATION = 1.8;
+
 export function HeroScene({ explode = 0 }: HeroSceneProps) {
   const prefersReducedMotion = Boolean(useReducedMotion());
   const { camera } = useThree();
@@ -74,21 +84,22 @@ export function HeroScene({ explode = 0 }: HeroSceneProps) {
     timeline
       .to(
         bootProxy,
-        { value: 1, duration: 1.6, ease: SIGNATURE_EASE, onUpdate: () => setBootProgress(bootProxy.value) },
+        { value: 1, duration: BOOT_DURATION, ease: SIGNATURE_EASE, onUpdate: () => setBootProgress(bootProxy.value) },
         0,
       )
-      .to(stageProxy, { value: 1, duration: 1.6, ease: "power2.out", onUpdate: () => setStage(stageProxy.value) }, 0.4)
+      // Deliberately not SIGNATURE_EASE — an overshoot on the modules' assembly position would read as jitter/pop-past, not the deliberate flourish it is on camera framing.
+      .to(stageProxy, { value: 1, duration: STAGE_DURATION, ease: "power2.out", onUpdate: () => setStage(stageProxy.value) }, STAGE_START_OFFSET)
       .to(
         camera.position,
         {
           x: CAMERA_REST.x,
           y: CAMERA_REST.y,
           z: CAMERA_REST.z,
-          duration: 1.8,
+          duration: CAMERA_DURATION,
           ease: SIGNATURE_EASE,
           onUpdate: () => camera.lookAt(0, 0, 0),
         },
-        0.5,
+        CAMERA_START_OFFSET,
       );
 
     return () => {
