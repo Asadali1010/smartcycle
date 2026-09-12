@@ -1,4 +1,7 @@
 import { Badge, SectionHeading } from "@/design-system";
+import { ExecutionGapPair } from "@/components/scroll-story/ExecutionGapPair";
+import { PlatformFeatureRail } from "@/components/scroll-story/PlatformFeatureRail";
+import { IntegrationNetwork } from "@/components/scroll-story/IntegrationNetwork";
 import { PageSection } from "@/components/common/PageSection";
 import { StepList } from "@/components/common/StepList";
 import { StatStrip } from "@/components/common/StatStrip";
@@ -43,21 +46,16 @@ export function HomePage() {
         />
         <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
           {gap.pairs.map((pair) => (
-            <div key={pair.problemStat.value} className="flex flex-col gap-4 rounded-lg border border-current/15 p-6">
-              <div>
-                <p className="font-body text-xs uppercase tracking-widest text-current/50">{pair.problemLabel.value}</p>
-                <p className="font-display text-xl text-current/60 line-through decoration-current/30">{pair.problemStat.value}</p>
-                <p className="mt-1 font-body text-sm text-current/60">{pair.problemDescription.value}</p>
-              </div>
-              <div className="border-t border-current/10 pt-4">
-                <p className="font-body text-xs uppercase tracking-widest text-coral">{pair.solutionLabel.value}</p>
-                <p className="font-display text-xl text-coral">
-                  {pair.solutionStat.qualifier ? `${pair.solutionStat.qualifier} ` : ""}
-                  {pair.solutionStat.value}
-                </p>
-                <p className="mt-1 font-body text-sm text-current/70">{pair.solutionDescription.value}</p>
-              </div>
-            </div>
+            <ExecutionGapPair
+              key={pair.problemStat.value}
+              problemLabel={pair.problemLabel.value}
+              problemStat={pair.problemStat.value}
+              problemDescription={pair.problemDescription.value}
+              solutionLabel={pair.solutionLabel.value}
+              solutionStat={pair.solutionStat.value}
+              solutionQualifier={pair.solutionStat.qualifier}
+              solutionDescription={pair.solutionDescription.value}
+            />
           ))}
         </div>
         <p className="font-body text-sm text-current/50">
@@ -78,14 +76,9 @@ export function HomePage() {
                 <h3 className="font-display text-2xl">{product.name.value}</h3>
                 <p className="font-body text-sm text-coral">{product.tagline.value}</p>
               </div>
-              <ul className="flex flex-col gap-3">
-                {product.features.map((f) => (
-                  <li key={f.name.value} className="border-l-2 border-current/15 pl-4">
-                    <p className="font-medium">{f.name.value}</p>
-                    <p className="font-body text-sm text-current/70">{f.description.value}</p>
-                  </li>
-                ))}
-              </ul>
+              <PlatformFeatureRail
+                features={product.features.map((f) => ({ name: f.name.value, description: f.description.value }))}
+              />
             </div>
           ))}
         </div>
@@ -99,6 +92,7 @@ export function HomePage() {
           <h3 className="font-display text-xl text-coral">Homepage version — 4 steps</h3>
           <StepList
             steps={howItWorksHome.steps.map((s) => ({ key: s.name.value, name: s.name.value, description: s.description?.value ?? null }))}
+            traced
           />
         </div>
 
@@ -106,6 +100,7 @@ export function HomePage() {
           <h3 className="font-display text-xl text-champagne">/platform version — 5 steps</h3>
           <StepList
             steps={howItWorksPlatform.steps.map((s) => ({ key: s.name.value, name: s.name.value, description: s.description.value }))}
+            traced
           />
         </div>
 
@@ -119,20 +114,14 @@ export function HomePage() {
       {/* --- Integration Ecosystem --- */}
       <PageSection tone="obsidian">
         <SectionHeading eyebrow={integrations.eyebrow.value} heading={integrations.headingLines.value.join(" ")} description={integrations.intro.value} />
-        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {integrations.items.map((item) => (
-            <div key={item.name.value} className="flex flex-col gap-2 rounded-lg border border-current/15 p-6">
-              <p className="font-body text-xs uppercase tracking-widest text-champagne">{item.category.value}</p>
-              <h3 className="font-display text-xl">{item.name.value}</h3>
-              <p className="font-body text-sm text-current/70">{item.description.value}</p>
-              <div className="mt-2 flex flex-wrap gap-2">
-                {item.tags.map((tag) => (
-                  <Badge key={tag.value} label={tag.value} tone="subtle" />
-                ))}
-              </div>
-            </div>
-          ))}
-        </div>
+        <IntegrationNetwork
+          items={integrations.items.map((item) => ({
+            name: item.name.value,
+            category: item.category.value,
+            description: item.description.value,
+            tags: item.tags.map((tag) => tag.value),
+          }))}
+        />
       </PageSection>
 
       {/* --- 10 Solution Domains + Use Cases: real pinned horizontal showcase --- */}
