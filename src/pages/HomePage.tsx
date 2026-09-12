@@ -1,23 +1,24 @@
 import { Badge, SectionHeading } from "@/design-system";
 import { PageSection } from "@/components/common/PageSection";
-import { HeroSection } from "@/components/common/HeroSection";
 import { StepList } from "@/components/common/StepList";
 import { StatStrip } from "@/components/common/StatStrip";
-import { ComparisonRows } from "@/components/common/ComparisonRows";
 import { CtaBand } from "@/components/common/CtaBand";
 import { GapNote } from "@/components/common/GapNote";
+import { Hero } from "@/components/hero/Hero";
+import { ScrollStory } from "@/components/scroll-story/ScrollStory";
+import { UseCaseShowcase } from "@/components/showcase";
+import { DeliveryTimeline } from "@/components/timeline";
+import { RoiCalculatorIllustrative } from "@/components/roi";
 import { home, platform, solutionDomains, deliveryModel, roi } from "@/content";
 
-/**
- * Early pass (per CLAUDE.md phase 2 + this run's narrower scope): plain,
- * non-3D/non-scroll layout covering every homepage content section so the
- * site is fully content-complete and navigable. three-d-hero owns the real
- * immersive hero, scroll-choreography owns the scroll story, and
- * showcase-and-timeline owns the animated horizontal solution-domain
- * showcase and the interactive ROI calculator — none of that is built here.
- */
+// three.js/R3F/postprocessing are already isolated from every other route by
+// router.tsx's route-level code-splitting (only "/" pulls this chunk in), so
+// Hero is imported directly here rather than through a second, inner
+// Suspense/lazy boundary — nesting one caused an R3F Canvas + React 19
+// StrictMode remount race (a documented insertBefore DOM crash) with no
+// bundle-size benefit, since ScrollStory below needs the same three.js chunk
+// eagerly anyway.
 export function HomePage() {
-  const hero = home.homeHero;
   const gap = home.executionGap;
   const platformSection = home.platformSection;
   const howItWorksHome = home.howItWorksHome;
@@ -28,22 +29,14 @@ export function HomePage() {
 
   return (
     <>
-      {/* --- Hero (plain placeholder for the 3D hero) --- */}
-      <HeroSection
-        eyebrow={hero.eyebrow.value}
-        headingLines={hero.headingLines.value}
-        subheading={hero.subheading.value}
-        primaryCta={{ label: hero.ctaPrimary.value, to: "/request-demo" }}
-        secondaryCta={{ label: hero.ctaSecondary.value, to: "/platform" }}
-        badges={hero.badges.map((b) => b.value)}
-      >
-        <p className="font-body text-xs uppercase tracking-widest text-current/40">
-          Plain layout placeholder — the 3D sculpture hero and scroll story ship in a later pass.
-        </p>
-      </HeroSection>
+      {/* --- Hero: real 3D sculpture --- */}
+      <Hero />
+
+      {/* --- Scroll story: Build -> Govern -> Deploy continues into the platform narrative --- */}
+      <ScrollStory />
 
       {/* --- Execution Gap --- */}
-      <PageSection tone="ivory" containerClassName="gap-10">
+      <PageSection tone="ivory" intensity="vivid" containerClassName="gap-10">
         <SectionHeading eyebrow={gap.eyebrow.value} heading={gap.headingLines.value.join(" ")} description={gap.intro.value} />
         <StatStrip
           items={gap.statStrip.map((s) => ({ key: s.label.value, label: s.label.value, value: s.value.value, qualifier: s.value.qualifier }))}
@@ -142,8 +135,8 @@ export function HomePage() {
         </div>
       </PageSection>
 
-      {/* --- 10 Solution Domains (plain grid for now) --- */}
-      <PageSection tone="ivory" containerClassName="gap-8">
+      {/* --- 10 Solution Domains + Use Cases: real pinned horizontal showcase --- */}
+      <PageSection tone="ivory" intensity="vivid" containerClassName="gap-6">
         <SectionHeading eyebrow={domains.eyebrow.value} heading={domains.headingLines.value.join(" ")} description={domains.intro.value} />
         <div className="flex flex-wrap gap-2">
           {domains.filters.map((f) => (
@@ -151,78 +144,26 @@ export function HomePage() {
           ))}
         </div>
         <p className="font-body text-sm text-current/60">
-          Shown here as a plain grid; showcase-and-timeline builds the animated horizontal version. This is a
-          different taxonomy from /use-cases' 4-category breakdown.
+          This is a different taxonomy from /use-cases' 4-category breakdown — the showcase below includes both.
           <GapNote gapId={solutionDomains.solutionDomainsGapRef} label="Why two taxonomies" className="ml-2" />
         </p>
-        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {solutionDomains.solutionDomains.map((d) => (
-            <div key={d.name.value} className="flex flex-col gap-2 rounded-lg border border-current/15 p-6">
-              <h3 className="font-display text-lg">{d.name.value}</h3>
-              <p className="font-body text-sm text-current/70">{d.description.value}</p>
-              <div className="mt-2 flex flex-wrap gap-1.5">
-                {d.workflowSteps.map((step, i) => (
-                  <span key={step.value} className="font-body text-xs text-current/50">
-                    {step.value}
-                    {i < d.workflowSteps.length - 1 ? " → " : ""}
-                  </span>
-                ))}
-              </div>
-            </div>
-          ))}
-        </div>
       </PageSection>
+      <UseCaseShowcase />
 
-      {/* --- Delivery Model (plain list/timeline) --- */}
-      <PageSection tone="obsidian" containerClassName="gap-10">
+      {/* --- Delivery Model: scroll-driven 12-month timeline --- */}
+      <PageSection tone="obsidian" intensity="vivid" containerClassName="gap-10">
         <SectionHeading
           eyebrow={deliveryModel.deliveryModelSection.eyebrow.value}
           heading={deliveryModel.deliveryModelSection.headingLines.value.join(" ")}
           description={deliveryModel.deliveryModelSection.intro.value}
         />
-        <div className="flex flex-wrap gap-2">
-          {deliveryModel.deliveryModelSection.macroStages.map((stage) => (
-            <Badge key={stage.value} label={stage.value} tone="subtle" />
-          ))}
-        </div>
-        <div className="grid grid-cols-1 gap-6 lg:grid-cols-4">
-          {deliveryModel.deliveryPhases.map((phase, i) => (
-            <div key={phase.name.value} className="flex flex-col gap-3 border-l-2 border-champagne/40 pl-5">
-              <span className="font-display text-3xl text-coral">{String(i + 1).padStart(2, "0")}</span>
-              <div>
-                <h3 className="font-display text-lg">{phase.name.value}</h3>
-                <p className="font-body text-xs uppercase tracking-widest text-current/50">{phase.monthRange.value}</p>
-              </div>
-              <p className="font-body text-sm text-current/70">{phase.description.value}</p>
-              <ul className="flex flex-col gap-1 font-body text-xs text-current/60">
-                {phase.milestones.map((m) => (
-                  <li key={m.value}>— {m.value}</li>
-                ))}
-              </ul>
-              <div className="mt-1 flex flex-col gap-1 text-xs">
-                <span className="text-champagne">SmartCycleAI: {phase.lanes.smartCycleAI.value}</span>
-                <span className="text-current/60">Your Team: {phase.lanes.yourTeam.value}</span>
-              </div>
-            </div>
-          ))}
-        </div>
+        <DeliveryTimeline />
       </PageSection>
 
-      {/* --- ROI: static comparison table only --- */}
-      <PageSection tone="ivory" containerClassName="gap-8">
+      {/* --- ROI: interactive illustrative calculator --- */}
+      <PageSection tone="ivory" intensity="vivid" containerClassName="gap-8">
         <SectionHeading eyebrow={roi.roiSection.eyebrow.value} heading={roi.roiSection.headingLines.value.join(" ")} description={roi.roiSection.intro.value} />
-        <ComparisonRows
-          rows={roi.roiComparisonTable.map((row) => ({ key: row.label.value, label: row.label.value, before: row.before.value, after: row.after.value }))}
-          footnote={
-            <p className="font-body text-sm text-current/50">
-              This is the live site's static before/after comparison strip. The homepage's ROI Impact section is
-              actually an interactive calculator with slider inputs — that calculator (and its default 57% cost
-              reduction / $1.7M savings / 68% faster time-to-production outputs) is built separately by
-              showcase-and-timeline, not rendered here.
-              <GapNote gapId="roi-calculator-dynamic" label="Why no calculator here" className="ml-2" />
-            </p>
-          }
-        />
+        <RoiCalculatorIllustrative />
       </PageSection>
 
       <CtaBand

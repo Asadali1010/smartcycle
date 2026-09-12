@@ -7,7 +7,7 @@
  */
 import { PALETTE } from "./materials";
 
-export type LightRole = "key" | "fill" | "rim" | "ambient";
+export type LightRole = "key" | "fill" | "rim" | "ambient" | "accent";
 
 export interface LightConfig {
   role: LightRole;
@@ -20,8 +20,9 @@ export interface LightConfig {
 /**
  * Default rig: warm champagne key light from upper-front-right, cool-neutral
  * ivory fill from the left to soften shadows, a coral rim light from behind
- * to separate the sculpture from the obsidian background, plus a low ambient
- * so unlit facets never go fully black.
+ * to separate the sculpture from the obsidian background, a low violet accent
+ * from below-front to catch the governance rings without tinting the whole
+ * scene, plus a low ambient so unlit facets never go fully black.
  */
 export function createSceneLightingRig(intensityMultiplier = 1): LightConfig[] {
   return [
@@ -29,28 +30,35 @@ export function createSceneLightingRig(intensityMultiplier = 1): LightConfig[] {
       role: "key",
       type: "directional",
       color: PALETTE.champagne,
-      intensity: 1.4 * intensityMultiplier,
+      intensity: 2.4 * intensityMultiplier,
       position: [4, 5, 4],
     },
     {
       role: "fill",
       type: "point",
       color: PALETTE.ivory,
-      intensity: 0.5 * intensityMultiplier,
+      intensity: 1.1 * intensityMultiplier,
       position: [-5, 1, 2],
     },
     {
       role: "rim",
       type: "point",
       color: PALETTE.coral,
-      intensity: 0.6 * intensityMultiplier,
+      intensity: 1.1 * intensityMultiplier,
       position: [0, -2, -5],
+    },
+    {
+      role: "accent",
+      type: "point",
+      color: PALETTE.violetSoft,
+      intensity: 1 * intensityMultiplier,
+      position: [1.5, -1.5, 3],
     },
     {
       role: "ambient",
       type: "ambient",
       color: PALETTE.ivory,
-      intensity: 0.22 * intensityMultiplier,
+      intensity: 0.4 * intensityMultiplier,
     },
   ];
 }

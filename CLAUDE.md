@@ -13,9 +13,17 @@ Full plan: `/Users/apple/.claude/plans/build-a-complete-local-streamed-avalanche
 
 - **Content is sourced, never invented.** All copy/facts live in `src/content/*.ts`, typed as
   `SourcedFact<T>` with a `sourceUrl`. No component may hardcode a fact that belongs in content.
-- **Palette**: obsidian charcoal `#141215`, warm ivory `#F7F2EA`, vivid coral `#FF654F`,
-  champagne metallic `#D8BE97`. Charcoal/ivory dominate surfaces; coral = emphasis/actions;
-  champagne = restrained highlights. Never reintroduce the source site's blue/cyan.
+- **Palette (v2, colorful pass — supersedes the original restrained/editorial direction)**:
+  obsidian charcoal `#141215`, warm ivory `#F7F2EA` (the two neutrals), vivid coral `#FF654F`,
+  champagne metallic `#D8BE97`, and deep violet `#6D3FA6` (`#9B6FC9` soft tint) as the three
+  color anchors. Each anchor carries one meaning: coral = emphasis/actions/"live" deploy state,
+  champagne = metallic chassis trim, violet = governance/trust (sculpture governance rings,
+  gradient partner). Full color intensity (`bg-surface-vivid-dark`/`-light` in `src/index.css`)
+  is reserved for feature-highlight sections — hero, stats, showcase, timeline, ROI; quiet
+  sections (platform/how-it-works overview, integrations, contact/request-demo forms,
+  privacy/terms, footer) stay on plain `bg-obsidian`/`bg-ivory` with at most one low-opacity
+  accent. Never reintroduce the source site's blue/cyan. Gradient text
+  (`text-gradient-signature`) is a scarce, single-use device — not a default heading treatment.
 - **Original geometry/assets only.** Do not reproduce Trionn's logo, sculpture, or copy — only
   the *behavior* (assembly/disassembly, pinned horizontal scroll, masked type reveals, dark/light
   scene transitions, letter-roll hovers).

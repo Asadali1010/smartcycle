@@ -2,7 +2,7 @@ import type { ReactNode } from "react";
 import { Link } from "react-router-dom";
 import { Button, Badge, SectionHeading } from "@/design-system";
 import { PageSection } from "./PageSection";
-import type { SurfaceTone } from "./PageSection";
+import type { SurfaceIntensity, SurfaceTone } from "./PageSection";
 
 export interface HeroCta {
   label: string;
@@ -19,14 +19,15 @@ export interface HeroSectionProps {
   secondaryCta?: HeroCta;
   badges?: string[];
   tone?: SurfaceTone;
+  /** Defaults to "vivid" — every secondary page's top section is a full-intensity moment. */
+  intensity?: SurfaceIntensity;
   children?: ReactNode;
 }
 
 /**
- * Plain (non-3D, non-scroll-driven) hero/page-intro pattern shared by every
- * secondary page's top section. three-d-hero/scroll-choreography later own
- * the homepage's immersive hero — this is the "early pass" static version
- * used everywhere else, and for the homepage's hero content for now too.
+ * Plain (non-3D, non-scroll-driven) hero/page-intro pattern used by every
+ * secondary page's top section. The homepage uses the real 3D Hero +
+ * ScrollStory instead; this is the static pattern for every other route.
  */
 export function HeroSection({
   eyebrow,
@@ -37,10 +38,11 @@ export function HeroSection({
   secondaryCta,
   badges,
   tone = "obsidian",
+  intensity = "vivid",
   children,
 }: HeroSectionProps) {
   return (
-    <PageSection tone={tone} className="pt-40 md:pt-48">
+    <PageSection tone={tone} intensity={intensity} className="pt-40 md:pt-48">
       <SectionHeading eyebrow={eyebrow} heading={headingLines.join(" ")} level="h1" description={subheading} />
       {supporting ? <p className="max-w-2xl font-body text-lg text-current/70">{supporting}</p> : null}
       {primaryCta || secondaryCta ? (

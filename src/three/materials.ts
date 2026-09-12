@@ -14,6 +14,8 @@ export const PALETTE = {
   ivory: "#f7f2ea",
   coral: "#ff654f",
   champagne: "#d8be97",
+  violet: "#6d3fa6",
+  violetSoft: "#9b6fc9",
 } as const;
 
 /**
@@ -32,6 +34,14 @@ export function createGlassModulePreset(
     ior: 1.15,
     chromaticAberration: 0.015,
     anisotropy: 0.1,
+    // The scene's own background is deliberately transparent (Hero/ScrollStory
+    // canvases use alpha:true with no <color attach="background">, so the
+    // page's colorful gradient shows through around the sculpture) — but
+    // MeshTransmissionMaterial refracts whatever's behind it, and an actually-
+    // transparent backdrop reads as flat black glass. `background` gives it a
+    // private, obsidian-toned backdrop to refract against instead, independent
+    // of what the real scene/DOM behind the canvas looks like.
+    background: new THREE.Color(PALETTE.obsidian),
     // Perf: MeshTransmissionMaterial captures a full-scene render-to-texture
     // per instance every frame — with several modules on screen at once this
     // gets expensive fast (observed: 5 instances at defaults dropped frame
@@ -41,9 +51,9 @@ export function createGlassModulePreset(
     // — the modules are small on screen so the softer refraction is not
     // visually noticeable at this scale.
     backside: false,
-    resolution: 128,
-    samples: 2,
-    color: PALETTE.ivory,
+    resolution: 192,
+    samples: 4,
+    color: PALETTE.champagne,
     distortion: 0.08,
     distortionScale: 0.3,
     temporalDistortion: 0.03,
@@ -95,16 +105,20 @@ export function createObsidianCoreMaterial(overrides: Partial<THREE.MeshStandard
   });
 }
 
-/** Faint champagne governance-ring material (torus frames that appear mid-stage). */
+/**
+ * Violet governance-ring material (torus frames that fade in mid-stage).
+ * Violet is the palette's "governance/trust" anchor — champagne stays
+ * reserved for the module chassis edges so each color carries one meaning.
+ */
 export function createGovernanceRingMaterial(opacity = 0.5, overrides: Partial<THREE.MeshStandardMaterialParameters> = {}) {
   return new THREE.MeshStandardMaterial({
-    color: PALETTE.champagne,
-    metalness: 0.7,
-    roughness: 0.3,
+    color: PALETTE.violet,
+    metalness: 0.5,
+    roughness: 0.25,
     transparent: true,
     opacity,
-    emissive: new THREE.Color(PALETTE.champagne),
-    emissiveIntensity: 0.15,
+    emissive: new THREE.Color(PALETTE.violetSoft),
+    emissiveIntensity: 0.5,
     ...overrides,
   });
 }
