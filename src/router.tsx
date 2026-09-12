@@ -1,19 +1,33 @@
+import { lazy } from 'react'
 import { createBrowserRouter } from 'react-router-dom'
 import { Layout } from '@/components/layout/Layout'
-import { HomePage } from '@/pages/HomePage'
-import { PlatformPage } from '@/pages/PlatformPage'
-import { UseCasesPage } from '@/pages/UseCasesPage'
-import { WhySmartCycleAIPage } from '@/pages/WhySmartCycleAIPage'
-import { AboutPage } from '@/pages/AboutPage'
-import { ForCiosCtosPage } from '@/pages/ForCiosCtosPage'
-import { ForCfosPage } from '@/pages/ForCfosPage'
-import { ForClinicalLeadersPage } from '@/pages/ForClinicalLeadersPage'
-import { ContactPage } from '@/pages/ContactPage'
-import { RequestDemoPage } from '@/pages/RequestDemoPage'
-import { PrivacyPage } from '@/pages/PrivacyPage'
-import { TermsPage } from '@/pages/TermsPage'
-import { NotFoundPage } from '@/pages/NotFoundPage'
-import { StyleGuidePage } from '@/design-system/dev/StyleGuidePage'
+
+/**
+ * Every route is code-split. This matters most for `/`: it's the only page
+ * that pulls in three.js/@react-three/fiber/postprocessing (via Hero +
+ * ScrollStory), so without per-route splitting every other page would pay
+ * that ~1.2MB cost too, just to render a Contact form or Terms page.
+ */
+const HomePage = lazy(() => import('@/pages/HomePage').then((m) => ({ default: m.HomePage })))
+const PlatformPage = lazy(() => import('@/pages/PlatformPage').then((m) => ({ default: m.PlatformPage })))
+const UseCasesPage = lazy(() => import('@/pages/UseCasesPage').then((m) => ({ default: m.UseCasesPage })))
+const WhySmartCycleAIPage = lazy(() =>
+  import('@/pages/WhySmartCycleAIPage').then((m) => ({ default: m.WhySmartCycleAIPage })),
+)
+const AboutPage = lazy(() => import('@/pages/AboutPage').then((m) => ({ default: m.AboutPage })))
+const ForCiosCtosPage = lazy(() => import('@/pages/ForCiosCtosPage').then((m) => ({ default: m.ForCiosCtosPage })))
+const ForCfosPage = lazy(() => import('@/pages/ForCfosPage').then((m) => ({ default: m.ForCfosPage })))
+const ForClinicalLeadersPage = lazy(() =>
+  import('@/pages/ForClinicalLeadersPage').then((m) => ({ default: m.ForClinicalLeadersPage })),
+)
+const ContactPage = lazy(() => import('@/pages/ContactPage').then((m) => ({ default: m.ContactPage })))
+const RequestDemoPage = lazy(() => import('@/pages/RequestDemoPage').then((m) => ({ default: m.RequestDemoPage })))
+const PrivacyPage = lazy(() => import('@/pages/PrivacyPage').then((m) => ({ default: m.PrivacyPage })))
+const TermsPage = lazy(() => import('@/pages/TermsPage').then((m) => ({ default: m.TermsPage })))
+const NotFoundPage = lazy(() => import('@/pages/NotFoundPage').then((m) => ({ default: m.NotFoundPage })))
+const StyleGuidePage = lazy(() =>
+  import('@/design-system/dev/StyleGuidePage').then((m) => ({ default: m.StyleGuidePage })),
+)
 
 export const router = createBrowserRouter([
   {

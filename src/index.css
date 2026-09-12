@@ -22,16 +22,23 @@
 @import "tailwindcss";
 
 /*
- * Design tokens — SmartCycleAI redesign palette.
- * Obsidian charcoal + warm ivory are the dominant surfaces; coral is reserved for
- * emphasis/actions; champagne is a restrained metallic highlight. Do not reintroduce
- * blue/cyan anywhere in this palette.
+ * Design tokens — SmartCycleAI redesign palette (v2, colorful pass).
+ * Obsidian charcoal + warm ivory remain the two neutrals. Coral, champagne and
+ * violet are the three color anchors: coral = emphasis/actions/"live" deploy
+ * state, champagne = metallic chassis trim, violet = governance/trust — used
+ * for the sculpture's governance rings and as the second gradient partner
+ * alongside coral in full-intensity sections. Quiet sections (docs, legal,
+ * forms, footer) use obsidian/ivory with at most one low-opacity accent — see
+ * PageSection's `tone` variants. Do not reintroduce blue/cyan anywhere in
+ * this palette.
  */
 @theme {
   --color-obsidian: #141215;
   --color-ivory: #f7f2ea;
   --color-coral: #ff654f;
   --color-champagne: #d8be97;
+  --color-violet: #6d3fa6;
+  --color-violet-soft: #9b6fc9;
 
   --font-display: "Spectral", "Iowan Old Style", "Palatino Linotype", Georgia, ui-serif, serif;
   --font-body: "IBM Plex Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", ui-sans-serif, system-ui, sans-serif;
@@ -97,6 +104,35 @@
   to {
     transform: translateX(-50%);
   }
+}
+
+/*
+ * Full-intensity surface washes for feature-highlight sections (hero, stats,
+ * showcase, timeline, ROI). Layered radial glows in coral/violet/champagne
+ * over the obsidian or ivory base — quiet sections never use these and stay
+ * on plain bg-obsidian/bg-ivory instead. Defined as utilities (not inline
+ * gradients per-component) so every "vivid" section reads as one system.
+ */
+@utility bg-surface-vivid-dark {
+  background-color: var(--color-obsidian);
+  background-image:
+    radial-gradient(circle at 12% 8%, color-mix(in oklab, var(--color-violet) 55%, transparent) 0%, transparent 45%),
+    radial-gradient(circle at 88% 92%, color-mix(in oklab, var(--color-coral) 45%, transparent) 0%, transparent 50%),
+    radial-gradient(circle at 85% 5%, color-mix(in oklab, var(--color-champagne) 35%, transparent) 0%, transparent 40%);
+}
+
+@utility bg-surface-vivid-light {
+  background-color: var(--color-ivory);
+  background-image:
+    radial-gradient(circle at 10% 0%, color-mix(in oklab, var(--color-violet) 16%, transparent) 0%, transparent 45%),
+    radial-gradient(circle at 90% 100%, color-mix(in oklab, var(--color-coral) 14%, transparent) 0%, transparent 50%);
+}
+
+@utility text-gradient-signature {
+  background-image: linear-gradient(100deg, var(--color-coral) 0%, var(--color-violet-soft) 60%, var(--color-champagne) 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
 }
 
 :root {

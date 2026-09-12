@@ -21,8 +21,17 @@ export function UseCaseShowcase() {
   const isCompact = useShowcaseMode();
 
   return (
-    <section aria-label="Healthcare use case and solution domain showcase" className="flex flex-col gap-6">
-      <p className="max-w-2xl px-gutter font-body text-sm text-current/60">
+    <section aria-label="Healthcare use case and solution domain showcase" className="block">
+      {/*
+        Deliberately `block`, not `flex flex-col` — GSAP's pin-spacer sizing
+        for DesktopShowcase's pinned ScrollTrigger silently breaks when the
+        pinned element is a flex child (it inserted a spacer sized to only
+        one viewport height instead of the full scroll distance, letting the
+        next section's content ride up underneath the still-pinned showcase).
+        Confirmed by measuring the actual pin-spacer height with/without a
+        flex parent — verify this stays true before reintroducing flex here.
+      */}
+      <p className="mb-6 max-w-2xl px-gutter font-body text-sm text-current/60">
         SmartCycleAI's site describes what you can build through two separate, non-overlapping taxonomies — this
         showcase includes both rather than picking one.
         <GapNote gapId={useCasesContent.useCaseCategoriesGapRef} label="Why two taxonomies" className="ml-2" />

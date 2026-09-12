@@ -2,7 +2,7 @@ import type { ReactNode } from "react";
 import { Link } from "react-router-dom";
 import { Button, Badge } from "@/design-system";
 import { PageSection } from "./PageSection";
-import type { SurfaceTone } from "./PageSection";
+import type { SurfaceIntensity, SurfaceTone } from "./PageSection";
 import type { HeroCta } from "./HeroSection";
 
 export interface CtaBandProps {
@@ -13,13 +13,25 @@ export interface CtaBandProps {
   secondaryCta?: HeroCta;
   statChips?: string[];
   tone?: SurfaceTone;
+  /** Defaults to "vivid" — the final CTA is a conversion moment, not a quiet one. */
+  intensity?: SurfaceIntensity;
   children?: ReactNode;
 }
 
 /** Shared closing/final-CTA band used at the bottom of every content page. */
-export function CtaBand({ eyebrow, heading, supporting, primaryCta, secondaryCta, statChips, tone = "obsidian", children }: CtaBandProps) {
+export function CtaBand({
+  eyebrow,
+  heading,
+  supporting,
+  primaryCta,
+  secondaryCta,
+  statChips,
+  tone = "obsidian",
+  intensity = "vivid",
+  children,
+}: CtaBandProps) {
   return (
-    <PageSection tone={tone} containerClassName="items-center gap-8 text-center">
+    <PageSection tone={tone} intensity={intensity} containerClassName="items-center gap-8 text-center">
       {eyebrow ? (
         <p className="font-body text-sm font-medium uppercase tracking-[0.3em] text-champagne">{eyebrow}</p>
       ) : null}

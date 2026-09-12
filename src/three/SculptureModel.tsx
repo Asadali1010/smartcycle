@@ -13,8 +13,15 @@
  * reuse the exact same math later. `explode` is an *additive* radial offset
  * layered on top of that base transform, driven by the hero's
  * explode/reassemble interaction — it never mutates transforms.ts itself.
+ *
+ * Each module also answers pointer hover directly (`onPointerOver`/-`Out`):
+ * its champagne edge brightens and it lifts slightly outward, so the
+ * sculpture reads as a tangible, inspectable object rather than a passive
+ * background animation. This is a mouse/trackpad-only enhancement layered on
+ * top of the hero's existing keyboard-accessible explode control, which
+ * remains the keyboard-operable equivalent.
  */
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import * as THREE from "three";
 import { Edges, Line, MeshTransmissionMaterial, RoundedBox } from "@react-three/drei";
 import { MODULE_COUNT, getModuleTransform } from "./transforms";
@@ -52,6 +59,7 @@ function radialDirection(position: readonly [number, number, number]): [number, 
 export function SculptureModel({ stage, explode = 0 }: SculptureModelProps) {
   const clampedStage = Math.min(1, Math.max(0, stage));
   const clampedExplode = Math.min(1, Math.max(0, explode));
+  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
 
   const glassPreset = useMemo(() => createGlassModulePreset(), []);
   const coreMaterial = useMemo(() => createObsidianCoreMaterial(), []);
@@ -88,18 +96,35 @@ export function SculptureModel({ stage, explode = 0 }: SculptureModelProps) {
       {/* Obsidian core / platform hub */}
       <RoundedBox args={[0.9, 0.9, 0.9]} radius={0.12} smoothness={4} material={coreMaterial} />
 
-      {modules.map(({ index, base, position }) => (
-        <group key={index} position={position} rotation={base.rotation} scale={base.scale}>
-          <RoundedBox args={MODULE_ARGS} radius={0.06} smoothness={3}>
-            <MeshTransmissionMaterial {...glassPreset} />
-            <Edges color={edgeColor} lineWidth={1.25} threshold={20} />
-          </RoundedBox>
-          {/* Governance ring frame around this module */}
-          <mesh rotation={[Math.PI / 2, 0, 0]} material={ringMaterial}>
-            <torusGeometry args={[0.95, 0.03, 12, 48]} />
-          </mesh>
-        </group>
-      ))}
+      {modules.map(({ index, base, position }) => {
+        const isHovered = hoveredIndex === index;
+        const hoverScale = base.scale * (isHovered ? 1.08 : 1);
+        return (
+          <group
+            key={index}
+            position={position}
+            rotation={base.rotation}
+            scale={hoverScale}
+            onPointerOver={(event) => {
+              event.stopPropagation();
+              setHoveredIndex(index);
+            }}
+            onPointerOut={(event) => {
+              event.stopPropagation();
+              setHoveredIndex((current) => (current === index ? null : current));
+            }}
+          >
+            <RoundedBox args={MODULE_ARGS} radius={0.06} smoothness={3}>
+              <MeshTransmissionMaterial {...glassPreset} />
+              <Edges color={isHovered ? PALETTE.coral : edgeColor} lineWidth={isHovered ? 2 : 1.25} threshold={20} />
+            </RoundedBox>
+            {/* Governance ring frame around this module */}
+            <mesh rotation={[Math.PI / 2, 0, 0]} material={ringMaterial}>
+              <torusGeometry args={[0.95, 0.03, 12, 48]} />
+            </mesh>
+          </group>
+        );
+      })}
 
       {/* Illuminated connections from core to each deployed module */}
       {modules.map(({ index, position }) => (

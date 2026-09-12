@@ -16,6 +16,7 @@ import { useReducedMotion } from "motion/react";
 import gsap from "gsap";
 import { SculptureModel } from "./SculptureModel";
 import { useSceneLightingRig } from "./lighting";
+import { SceneEffects } from "./SceneEffects";
 
 export interface HeroSceneProps {
   /** Additive explode amount (0-1), driven externally by Hero.tsx's button. */
@@ -116,6 +117,8 @@ export function HeroScene({ explode = 0 }: HeroSceneProps) {
           <SculptureModel stage={stage} explode={explode} />
         </group>
       </group>
+
+      <SceneEffects />
     </>
   );
 }

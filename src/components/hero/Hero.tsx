@@ -15,6 +15,7 @@ import { home } from "@/content";
 import { HeroScene } from "@/three/HeroScene";
 import { CanvasFallback } from "@/three/CanvasFallback";
 import { useWebGLSupport } from "@/three/useWebGLSupport";
+import { useCanvasFrameloop } from "@/three/useCanvasFrameloop";
 
 const containerVariants = {
   hidden: {},
@@ -36,25 +37,13 @@ export function Hero() {
   const prefersReducedMotion = Boolean(useReducedMotion());
   const webglSupport = useWebGLSupport();
 
-  const containerRef = useRef<HTMLDivElement>(null);
-  const [frameloop, setFrameloop] = useState<"always" | "never">("always");
+  // Perf: fully stop the R3F render loop while the hero is scrolled far
+  // offscreen; resume it once it's back in (or near) view.
+  const { containerRef, frameloop } = useCanvasFrameloop();
 
   const [explode, setExplode] = useState(0);
   const [isExploding, setIsExploding] = useState(false);
   const explodeTimelineRef = useRef<gsap.core.Timeline | null>(null);
-
-  // Perf: fully stop the R3F render loop while the hero is scrolled far
-  // offscreen; resume it once it's back in (or near) view.
-  useEffect(() => {
-    const node = containerRef.current;
-    if (!node || typeof IntersectionObserver === "undefined") return;
-    const observer = new IntersectionObserver(
-      ([entry]) => setFrameloop(entry.isIntersecting ? "always" : "never"),
-      { rootMargin: "200px 0px" },
-    );
-    observer.observe(node);
-    return () => observer.disconnect();
-  }, []);
 
   useEffect(() => {
     return () => {
@@ -92,7 +81,7 @@ export function Hero() {
   }, [prefersReducedMotion]);
 
   return (
-    <section className="relative min-h-screen w-full overflow-hidden bg-obsidian text-ivory">
+    <section className="relative min-h-screen w-full overflow-hidden bg-surface-vivid-dark text-ivory">
       <div ref={containerRef} className="absolute inset-0">
         {webglSupport === "supported" ? (
           <Canvas
@@ -101,8 +90,10 @@ export function Hero() {
             gl={{ antialias: true, alpha: true }}
             camera={{ position: [0, 0.6, 8.2], fov: 45 }}
           >
-            <color attach="background" args={["#141215"]} />
-            <fog attach="fog" args={["#141215", 10, 22]} />
+            {/* No opaque scene background: alpha:true + the page's own
+                bg-surface-vivid-dark gradient show through around the
+                sculpture instead of a flat obsidian rectangle. */}
+            <fog attach="fog" args={["#141215", 11, 24]} />
             <HeroScene explode={explode} />
           </Canvas>
         ) : (
@@ -142,8 +133,21 @@ export function Hero() {
           <Button as={Link} to="/request-demo" variant="primary" size="lg">
             {hero.ctaPrimary.value}
           </Button>
-          <button type="button" onClick={handleExplode} aria-pressed={isExploding}>Explode View TEMP</button>
+          <Button
+            variant="secondary"
+            size="lg"
+            onClick={handleExplode}
+            aria-pressed={isExploding}
+            disabled={webglSupport !== "supported"}
+          >
+            See it come apart
+          </Button>
         </motion.div>
+        {webglSupport === "supported" ? (
+          <motion.p variants={itemVariants} className="font-body text-xs uppercase tracking-widest text-current/40">
+            Hover a module to inspect it
+          </motion.p>
+        ) : null}
       </motion.div>
     </section>
   );
