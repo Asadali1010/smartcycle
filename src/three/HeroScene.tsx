@@ -1,8 +1,10 @@
 /**
- * Contents mounted inside the hero's R3F <Canvas>: lighting rig, camera
- * settle animation, the SculptureModel itself, its opening choreography
- * (Build → Deploy assembly + connection illumination + camera settle over
- * ~2s), continuous ambient rotation, and pointer-responsive parallax.
+ * Contents mounted inside the hero's R3F <Canvas>: lighting rig, the boot
+ * sequence (camera opens on an extreme close-up of the core, holds
+ * briefly, then modules arrive along coral trace-lines while the camera
+ * pulls back to its resting framing), a slow breathing idle on the core
+ * (replacing the previous continuous auto-rotate, which read as generic
+ * rather than deliberate), and pointer-responsive parallax.
  *
  * Deliberately does NOT own the explode/reassemble button — that's a real
  * DOM <button> in Hero.tsx (focusable, keyboard-operable outside the
@@ -17,66 +19,76 @@ import gsap from "gsap";
 import { SculptureModel } from "./SculptureModel";
 import { useSceneLightingRig } from "./lighting";
 import { SceneEffects } from "./SceneEffects";
+import { useSceneStore } from "@/motion/sceneStore";
+import { SIGNATURE_EASE } from "@/motion/signature";
 
 export interface HeroSceneProps {
   /** Additive explode amount (0-1), driven externally by Hero.tsx's button. */
   explode?: number;
 }
 
-/** Ambient idle spin speed, radians/sec — slow enough to feel alive, not distracting. */
-const AMBIENT_ROTATION_SPEED = 0.045;
-/** Pointer parallax tilt cap, radians. */
-const PARALLAX_MAX = 0.1;
+/** Pointer parallax tilt cap, radians — tightened from the previous 0.1 so
+ * the sculpture reads as steady/engineered rather than loosely wobbling. */
+const PARALLAX_MAX = 0.06;
 /** How quickly the parallax group eases toward the pointer's target tilt. */
 const PARALLAX_DAMPING = 3.2;
 
-const CAMERA_START = { x: 0, y: 2.4, z: 15 };
+const CAMERA_CLOSE = { x: 0, y: 0.05, z: 2.3 };
 const CAMERA_REST = { x: 0, y: 0.3, z: 10.5 };
 
 export function HeroScene({ explode = 0 }: HeroSceneProps) {
   const prefersReducedMotion = Boolean(useReducedMotion());
   const { camera } = useThree();
-  const ambientGroupRef = useRef<Group>(null);
   const parallaxGroupRef = useRef<Group>(null);
   const [stage, setStage] = useState(prefersReducedMotion ? 1 : 0);
+  const [bootProgress, setBootProgress] = useState(prefersReducedMotion ? 1 : 0);
   const lightingRig = useSceneLightingRig();
+  const setActiveStage = useSceneStore((state) => state.setActiveStage);
+  const setLastCameraPose = useSceneStore((state) => state.setLastCameraPose);
 
-  // Opening choreography: modules assemble Build -> Deploy, camera settles.
+  // Boot sequence: camera opens close on the core, modules trace-line their
+  // way in staggered by index, camera pulls back to its resting framing.
   useEffect(() => {
-    camera.position.set(prefersReducedMotion ? CAMERA_REST.x : CAMERA_START.x, prefersReducedMotion ? CAMERA_REST.y : CAMERA_START.y, prefersReducedMotion ? CAMERA_REST.z : CAMERA_START.z);
-    camera.lookAt(0, 0, 0);
-
     if (prefersReducedMotion) {
-      // Reduced motion: skip the choreography, land directly on the same
-      // assembled/deployed composition and resting camera position.
+      camera.position.set(CAMERA_REST.x, CAMERA_REST.y, CAMERA_REST.z);
+      camera.lookAt(0, 0, 0);
       setStage(1);
+      setBootProgress(1);
+      setActiveStage(1);
+      setLastCameraPose({ position: [CAMERA_REST.x, CAMERA_REST.y, CAMERA_REST.z], lookAt: [0, 0, 0] });
       return;
     }
 
-    const timeline = gsap.timeline();
+    camera.position.set(CAMERA_CLOSE.x, CAMERA_CLOSE.y, CAMERA_CLOSE.z);
+    camera.lookAt(0, 0, 0);
+
+    const bootProxy = { value: 0 };
     const stageProxy = { value: 0 };
+
+    const timeline = gsap.timeline({
+      onComplete: () => {
+        setActiveStage(1);
+        setLastCameraPose({ position: [CAMERA_REST.x, CAMERA_REST.y, CAMERA_REST.z], lookAt: [0, 0, 0] });
+      },
+    });
     timeline
       .to(
-        stageProxy,
-        {
-          value: 1,
-          duration: 2.2,
-          ease: "power2.out",
-          onUpdate: () => setStage(stageProxy.value),
-        },
+        bootProxy,
+        { value: 1, duration: 1.6, ease: SIGNATURE_EASE, onUpdate: () => setBootProgress(bootProxy.value) },
         0,
       )
+      .to(stageProxy, { value: 1, duration: 1.6, ease: "power2.out", onUpdate: () => setStage(stageProxy.value) }, 0.4)
       .to(
         camera.position,
         {
           x: CAMERA_REST.x,
           y: CAMERA_REST.y,
           z: CAMERA_REST.z,
-          duration: 2.4,
-          ease: "power3.out",
+          duration: 1.8,
+          ease: SIGNATURE_EASE,
           onUpdate: () => camera.lookAt(0, 0, 0),
         },
-        0,
+        0.5,
       );
 
     return () => {
@@ -85,19 +97,16 @@ export function HeroScene({ explode = 0 }: HeroSceneProps) {
     // eslint-disable-next-line react-hooks/exhaustive-deps -- one-shot mount choreography
   }, [prefersReducedMotion]);
 
-  // Continuous ambient rotation (outer group) + pointer parallax (inner group).
+  // Pointer parallax only — the previous continuous auto-rotate is gone;
+  // SculptureModel's own `breathing` prop now carries the idle "alive" feel.
   useFrame((state, delta) => {
-    if (!prefersReducedMotion && ambientGroupRef.current) {
-      ambientGroupRef.current.rotation.y += AMBIENT_ROTATION_SPEED * delta;
-    }
     const parallaxGroup = parallaxGroupRef.current;
-    if (parallaxGroup) {
-      const targetX = prefersReducedMotion ? 0 : -state.pointer.y * PARALLAX_MAX;
-      const targetZ = prefersReducedMotion ? 0 : state.pointer.x * PARALLAX_MAX;
-      const damp = Math.min(1, delta * PARALLAX_DAMPING);
-      parallaxGroup.rotation.x += (targetX - parallaxGroup.rotation.x) * damp;
-      parallaxGroup.rotation.z += (targetZ - parallaxGroup.rotation.z) * damp;
-    }
+    if (!parallaxGroup) return;
+    const targetX = prefersReducedMotion ? 0 : -state.pointer.y * PARALLAX_MAX;
+    const targetZ = prefersReducedMotion ? 0 : state.pointer.x * PARALLAX_MAX;
+    const damp = Math.min(1, delta * PARALLAX_DAMPING);
+    parallaxGroup.rotation.x += (targetX - parallaxGroup.rotation.x) * damp;
+    parallaxGroup.rotation.z += (targetZ - parallaxGroup.rotation.z) * damp;
   });
 
   return (
@@ -112,10 +121,8 @@ export function HeroScene({ explode = 0 }: HeroSceneProps) {
         ),
       )}
 
-      <group ref={ambientGroupRef}>
-        <group ref={parallaxGroupRef}>
-          <SculptureModel stage={stage} explode={explode} />
-        </group>
+      <group ref={parallaxGroupRef}>
+        <SculptureModel stage={stage} explode={explode} bootProgress={bootProgress} breathing={!prefersReducedMotion} />
       </group>
 
       <SceneEffects />
