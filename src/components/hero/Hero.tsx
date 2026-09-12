@@ -8,7 +8,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { Canvas } from "@react-three/fiber";
-import { motion, useReducedMotion } from "motion/react";
+import { useReducedMotion } from "motion/react";
 import gsap from "gsap";
 import { Badge, Button, SectionHeading } from "@/design-system";
 import { home } from "@/content";
@@ -16,16 +16,6 @@ import { HeroScene } from "@/three/HeroScene";
 import { CanvasFallback } from "@/three/CanvasFallback";
 import { useWebGLSupport } from "@/three/useWebGLSupport";
 import { useCanvasFrameloop } from "@/three/useCanvasFrameloop";
-
-const containerVariants = {
-  hidden: {},
-  visible: { transition: { staggerChildren: 0.14, delayChildren: 0.15 } },
-};
-
-const itemVariants = {
-  hidden: { opacity: 0, y: 28 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.7, ease: [0.22, 1, 0.36, 1] as const } },
-};
 
 /** Total explode-out → hold → reassemble duration target ("a couple seconds"). */
 const EXPLODE_OUT = 0.9;
@@ -108,28 +98,21 @@ export function Hero() {
         <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-obsidian/75 via-obsidian/25 to-transparent" />
       </div>
 
-      <motion.div
-        className="relative z-10 mx-auto flex min-h-screen w-full max-w-6xl flex-col justify-center gap-8 px-gutter pb-24 pt-40"
-        variants={containerVariants}
-        initial={prefersReducedMotion ? "visible" : "hidden"}
-        animate="visible"
-      >
-        <motion.div variants={itemVariants}>
-          <SectionHeading
-            eyebrow={hero.eyebrow.value}
-            heading={hero.headingLines.value.join(" ")}
-            description={hero.subheading.value}
-            level="h1"
-          />
-        </motion.div>
+      <div className="relative z-10 mx-auto flex min-h-screen w-full max-w-6xl flex-col justify-center gap-8 px-gutter pb-24 pt-40">
+        <SectionHeading
+          eyebrow={hero.eyebrow.value}
+          heading={hero.headingLines.value.join(" ")}
+          description={hero.subheading.value}
+          level="h1"
+        />
 
-        <motion.div variants={itemVariants} className="flex flex-wrap gap-3">
+        <div className="flex flex-wrap gap-3">
           {hero.badges.map((b) => (
             <Badge key={b.value} label={b.value} tone="outline" />
           ))}
-        </motion.div>
+        </div>
 
-        <motion.div variants={itemVariants} className="flex flex-wrap items-center gap-4">
+        <div className="flex flex-wrap items-center gap-4">
           <Button as={Link} to="/request-demo" variant="primary" size="lg">
             {hero.ctaPrimary.value}
           </Button>
@@ -142,13 +125,11 @@ export function Hero() {
           >
             See it come apart
           </Button>
-        </motion.div>
+        </div>
         {webglSupport === "supported" ? (
-          <motion.p variants={itemVariants} className="font-body text-xs uppercase tracking-widest text-current/40">
-            Hover a module to inspect it
-          </motion.p>
+          <p className="font-body text-xs uppercase tracking-widest text-current/40">Hover a module to inspect it</p>
         ) : null}
-      </motion.div>
+      </div>
     </section>
   );
 }

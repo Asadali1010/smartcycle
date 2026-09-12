@@ -13,6 +13,26 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 gsap.registerPlugin(ScrollTrigger);
 
+// Module-level so route-change scroll reset (below) can reach the live
+// instance without threading it through props/context.
+let activeLenis: Lenis | null = null;
+
+/**
+ * Reset scroll to top, routed through Lenis when it's running. A raw
+ * `window.scrollTo(0, 0)` gets fought and overridden the next tick, because
+ * Lenis's rAF loop keeps animating toward its own last `targetScroll`
+ * (whatever the user had scrolled to on the previous page) regardless of
+ * what native scroll position we just set. Falls back to native scrollTo
+ * under prefers-reduced-motion, where no Lenis instance is created.
+ */
+export function resetScroll() {
+  if (activeLenis) {
+    activeLenis.scrollTo(0, { immediate: true });
+  } else if (typeof window !== "undefined") {
+    window.scrollTo(0, 0);
+  }
+}
+
 export function useLenis() {
   // Every pinned ScrollTrigger section (DesktopShowcase, DeliveryTimeline,
   // ScrollStoryPinned) measures its scroll distance from real DOM layout at
@@ -47,6 +67,7 @@ export function useLenis() {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
     const lenis = new Lenis({ duration: 1.1, smoothWheel: true });
+    activeLenis = lenis;
     lenis.on("scroll", ScrollTrigger.update);
 
     // gsap.ticker reports time in seconds; Lenis's raf expects milliseconds.
@@ -62,6 +83,7 @@ export function useLenis() {
     return () => {
       gsap.ticker.remove(raf);
       lenis.destroy();
+      if (activeLenis === lenis) activeLenis = null;
     };
   }, []);
 }

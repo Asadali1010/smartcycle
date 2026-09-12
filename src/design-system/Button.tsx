@@ -18,9 +18,38 @@ export type ButtonProps<T extends ElementType = "button"> = OwnProps<T> &
   Omit<ComponentPropsWithoutRef<T>, keyof OwnProps<T>>;
 
 const BASE =
-  "inline-flex items-center justify-center gap-2 font-display font-medium uppercase tracking-wide " +
-  "transition-colors duration-300 focus-visible:outline focus-visible:outline-2 " +
+  "group relative isolate overflow-hidden inline-flex items-center justify-center gap-2 rounded-full font-display " +
+  "font-medium uppercase tracking-wide transition-colors duration-300 focus-visible:outline focus-visible:outline-2 " +
   "focus-visible:outline-offset-4 focus-visible:outline-coral disabled:opacity-40 disabled:pointer-events-none";
+
+/**
+ * Decorative "water rising" hover fill: a tiled sine-wave SVG sits translated
+ * fully below the button at rest, then rises into view on hover/focus while
+ * drifting horizontally (`animate-water-drift`, index.css) so the wave surface
+ * itself keeps rippling rather than just sliding up as a static shape. Painted
+ * in `currentColor` at low opacity so it adapts to either variant/surface the
+ * same way the secondary variant's border already does. `aria-hidden` and
+ * `pointer-events-none` keep it out of the interaction/AX tree; the global
+ * `prefers-reduced-motion` rule in index.css collapses both the rise
+ * transition and the drift keyframe to ~0 for anyone who needs that.
+ */
+function WaterFill() {
+  return (
+    <span
+      aria-hidden="true"
+      className="pointer-events-none absolute inset-0 translate-y-full transition-transform duration-500 ease-out group-hover:translate-y-0 group-focus-visible:translate-y-0"
+    >
+      <svg
+        className="h-full w-[200%] animate-water-drift text-current opacity-20"
+        viewBox="0 0 200 40"
+        preserveAspectRatio="none"
+        fill="currentColor"
+      >
+        <path d="M0,8 C12.5,16 37.5,0 50,8 C62.5,16 87.5,0 100,8 C112.5,16 137.5,0 150,8 C162.5,16 187.5,0 200,8 L200,40 L0,40 Z" />
+      </svg>
+    </span>
+  );
+}
 
 const VARIANT_STYLES: Record<ButtonVariant, string> = {
   primary: "bg-coral text-obsidian hover:bg-champagne",
@@ -62,7 +91,8 @@ export function Button<T extends ElementType = "button">(props: ButtonProps<T>) 
 
   return (
     <Comp className={clsx(BASE, VARIANT_STYLES[variant], SIZE_STYLES[size], className)} {...defaultType} {...rest}>
-      {label !== null ? <LetterRoll>{label}</LetterRoll> : children}
+      <WaterFill />
+      <span className="relative">{label !== null ? <LetterRoll>{label}</LetterRoll> : children}</span>
     </Comp>
   );
 }
