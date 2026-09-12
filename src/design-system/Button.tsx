@@ -41,7 +41,21 @@ const SIZE_STYLES: Record<ButtonSize, string> = {
  */
 export function Button<T extends ElementType = "button">(props: ButtonProps<T>) {
   const { as, variant = "primary", size = "md", children, className, ...rest } = props;
-  const Comp = (as ?? "button") as ElementType;
+  /**
+   * Cast to `any` rather than `ElementType` here deliberately: once anything
+   * in the program imports `@react-three/fiber` (three-d-hero's sculpture),
+   * its global `declare module "react" { namespace JSX { interface
+   * IntrinsicElements extends ThreeElements {} } }` augmentation balloons
+   * `JSX.IntrinsicElements` with hundreds of three.js tag names. TS then
+   * can't resolve a single `children` type across that whole union for a
+   * dynamically-typed `<Comp>` tag and collapses it to `never` (TS2745),
+   * breaking every polymorphic `as`-prop usage of Button project-wide — even
+   * ones with nothing to do with 3D. The generic `ButtonProps<T>` signature
+   * above already gives callers full type safety for whatever `as` they
+   * pass; this internal render-time cast doesn't need (and can't safely
+   * have, given the above) a precise IntrinsicElements-checked type.
+   */
+  const Comp = (as ?? "button") as any;
   const label = typeof children === "string" ? children : null;
 
   const defaultType = Comp === "button" && !("type" in rest) ? { type: "button" as const } : {};
