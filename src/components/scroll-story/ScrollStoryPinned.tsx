@@ -14,6 +14,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import clsx from "clsx";
 import { Badge, MaskedReveal } from "@/design-system";
 import { home } from "@/content";
+import { SIGNATURE_EASE_ARRAY } from "@/motion/signature";
 import { ScrollStoryScene } from "@/three/ScrollStoryScene";
 import { useCanvasFrameloop } from "@/three/useCanvasFrameloop";
 import { getStoryPanels } from "./storyContent";
@@ -103,7 +104,7 @@ export function ScrollStoryPinned() {
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -12 }}
-              transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+              transition={{ duration: 0.35, ease: SIGNATURE_EASE_ARRAY }}
               className="flex flex-col items-end gap-3"
             >
               <p className={clsx("font-body text-xs uppercase tracking-widest", ACCENT_TEXT[activePanel.accent])}>
