@@ -9,22 +9,29 @@
  *    connected to the core by illuminated coral lines.
  *
  * Position/rotation/scale come from the shared, pure `getModuleTransform` —
- * this component never computes placement itself, so scroll-choreography can
- * reuse the exact same math later. `explode` is an *additive* radial offset
+ * this component never computes placement itself, so scroll-choreography
+ * reuses the exact same math. `explode` is an *additive* radial offset
  * layered on top of that base transform, driven by the hero's
- * explode/reassemble interaction — it never mutates transforms.ts itself.
+ * explode/reassemble interaction.
+ *
+ * Two optional props drive the hero's boot sequence only (ScrollStory never
+ * passes them, so it always renders fully arrived / non-breathing):
+ * `bootProgress` gates a one-shot trace-line + grow-in arrival per module
+ * (math in ./boot.ts), and `breathing` pulses the core's scale slightly
+ * instead of sitting perfectly still.
  *
  * Each module also answers pointer hover directly (`onPointerOver`/-`Out`):
  * its champagne edge brightens and it lifts slightly outward, so the
  * sculpture reads as a tangible, inspectable object rather than a passive
- * background animation. This is a mouse/trackpad-only enhancement layered on
- * top of the hero's existing keyboard-accessible explode control, which
- * remains the keyboard-operable equivalent.
+ * background animation.
  */
-import { useMemo, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import * as THREE from "three";
+import type { Mesh } from "three";
+import { useFrame } from "@react-three/fiber";
 import { Edges, Line, MeshTransmissionMaterial, RoundedBox } from "@react-three/drei";
 import { MODULE_COUNT, getModuleTransform } from "./transforms";
+import { moduleBootWindow } from "./boot";
 import {
   PALETTE,
   createCoralAccentMaterial,
@@ -42,12 +49,22 @@ export interface SculptureModelProps {
    * the hero's keyboard-accessible explode/reassemble interaction.
    */
   explode?: number;
+  /**
+   * 0 → nothing has arrived yet, 1 (default) → fully arrived / normal
+   * rendering. Drives the hero's one-shot boot sequence only.
+   */
+  bootProgress?: number;
+  /** When true, the obsidian core pulses with a slow, near-imperceptible
+   * breathing scale. Off by default. */
+  breathing?: boolean;
 }
 
 const MODULE_ARGS: [number, number, number] = [1, 1.3, 0.55];
 /** Per-module explode distance grows with index, per the brief. */
 const EXPLODE_BASE_DISTANCE = 2.2;
 const EXPLODE_PER_INDEX = 0.4;
+const BREATHING_SPEED = 0.6;
+const BREATHING_AMPLITUDE = 0.015;
 
 function radialDirection(position: readonly [number, number, number]): [number, number, number] {
   const [x, y, z] = position;
@@ -56,15 +73,24 @@ function radialDirection(position: readonly [number, number, number]): [number, 
   return [x / length, y / length, z / length];
 }
 
-export function SculptureModel({ stage, explode = 0 }: SculptureModelProps) {
+export function SculptureModel({ stage, explode = 0, bootProgress = 1, breathing = false }: SculptureModelProps) {
   const clampedStage = Math.min(1, Math.max(0, stage));
   const clampedExplode = Math.min(1, Math.max(0, explode));
+  const clampedBoot = Math.min(1, Math.max(0, bootProgress));
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+  const coreRef = useRef<Mesh>(null);
 
   const glassPreset = useMemo(() => createGlassModulePreset(), []);
   const coreMaterial = useMemo(() => createObsidianCoreMaterial(), []);
   const edgeColor = useMemo(() => new THREE.Color(PALETTE.champagne), []);
   const ringMaterial = useMemo(() => createGovernanceRingMaterial(0.55), []);
+
+  useFrame((state) => {
+    const core = coreRef.current;
+    if (!core || !breathing) return;
+    const pulse = 1 + Math.sin(state.clock.elapsedTime * BREATHING_SPEED) * BREATHING_AMPLITUDE;
+    core.scale.setScalar(pulse);
+  });
 
   // Governance rings fade in across the Build→Govern transition and persist.
   const ringOpacity = Math.min(1, Math.max(0, (clampedStage - 0.1) / 0.35)) * 0.55;
@@ -87,18 +113,19 @@ export function SculptureModel({ stage, explode = 0 }: SculptureModelProps) {
         ];
         return { index: i, base, position };
       }),
-    // eslint-disable-next-line react-hooks/exhaustive-deps -- recompute per stage/explode
+      // eslint-disable-next-line react-hooks/exhaustive-deps -- recompute per stage/explode
     [clampedStage, clampedExplode],
   );
 
   return (
     <group>
       {/* Obsidian core / platform hub */}
-      <RoundedBox args={[0.9, 0.9, 0.9]} radius={0.12} smoothness={4} material={coreMaterial} />
+      <RoundedBox ref={coreRef} args={[0.9, 0.9, 0.9]} radius={0.12} smoothness={4} material={coreMaterial} />
 
       {modules.map(({ index, base, position }) => {
         const isHovered = hoveredIndex === index;
-        const hoverScale = base.scale * (isHovered ? 1.08 : 1);
+        const { growT } = moduleBootWindow(clampedBoot, index);
+        const hoverScale = base.scale * (isHovered ? 1.08 : 1) * Math.max(0.001, growT);
         return (
           <group
             key={index}
@@ -147,6 +174,34 @@ export function SculptureModel({ stage, explode = 0 }: SculptureModelProps) {
           <sphereGeometry args={[1, 12, 12]} />
         </mesh>
       ))}
+
+      {/* Boot-only: coral trace-lines each module travels in along, drawn by
+          lerping the line's far endpoint from the core out to the module's
+          target position as that module's local boot window progresses. */}
+      {clampedBoot < 1
+        ? modules.map(({ index, position }) => {
+            const { traceT } = moduleBootWindow(clampedBoot, index);
+            if (traceT <= 0) return null;
+            const endpoint: [number, number, number] = [
+              position[0] * traceT,
+              position[1] * traceT,
+              position[2] * traceT,
+            ];
+            return (
+              <Line
+                key={`trace-${index}`}
+                points={[
+                  [0, 0, 0],
+                  endpoint,
+                ]}
+                color={PALETTE.coral}
+                lineWidth={1.5}
+                transparent
+                opacity={0.9}
+              />
+            );
+          })
+        : null}
     </group>
   );
 }
