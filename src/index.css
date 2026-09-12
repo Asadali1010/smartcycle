@@ -107,25 +107,44 @@
 }
 
 /*
+ * "Water rising" hover fill for design-system/Button.tsx: a tiled sine-wave
+ * SVG drifts horizontally in a seamless loop (path repeats every 50 of its
+ * 200-wide viewBox, so -50% is a perfect seam) to read as a rippling liquid
+ * surface rather than a static shape.
+ */
+@utility animate-water-drift {
+  animation: water-drift 2.4s linear infinite;
+}
+
+@keyframes water-drift {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+/*
  * Full-intensity surface washes for feature-highlight sections (hero, stats,
- * showcase, timeline, ROI). Layered radial glows in coral/violet/champagne
- * over the obsidian or ivory base — quiet sections never use these and stay
- * on plain bg-obsidian/bg-ivory instead. Defined as utilities (not inline
- * gradients per-component) so every "vivid" section reads as one system.
+ * showcase, timeline, ROI). Two clean, well-separated coral/violet glows on
+ * opposite corners of the obsidian base — quiet sections never use these and
+ * stay on plain bg-obsidian/bg-ivory instead. Defined as utilities (not
+ * inline gradients per-component) so every "vivid" section reads as one
+ * system. (v3: dropped champagne from this wash — three overlapping tinted
+ * glows at high opacity over near-black was reading as a muddy brown haze
+ * rather than a deliberate two-tone gradient; champagne stays reserved for
+ * the 3D module chassis trim and small accents instead.)
  */
 @utility bg-surface-vivid-dark {
   background-color: var(--color-obsidian);
   background-image:
-    radial-gradient(circle at 12% 8%, color-mix(in oklab, var(--color-violet) 55%, transparent) 0%, transparent 45%),
-    radial-gradient(circle at 88% 92%, color-mix(in oklab, var(--color-coral) 45%, transparent) 0%, transparent 50%),
-    radial-gradient(circle at 85% 5%, color-mix(in oklab, var(--color-champagne) 35%, transparent) 0%, transparent 40%);
+    radial-gradient(circle at 8% 0%, color-mix(in oklab, var(--color-violet) 70%, transparent) 0%, transparent 52%),
+    radial-gradient(circle at 100% 30%, color-mix(in oklab, var(--color-coral) 65%, transparent) 0%, transparent 55%);
 }
 
 @utility bg-surface-vivid-light {
   background-color: var(--color-ivory);
   background-image:
-    radial-gradient(circle at 10% 0%, color-mix(in oklab, var(--color-violet) 16%, transparent) 0%, transparent 45%),
-    radial-gradient(circle at 90% 100%, color-mix(in oklab, var(--color-coral) 14%, transparent) 0%, transparent 50%);
+    radial-gradient(circle at 8% 0%, color-mix(in oklab, var(--color-violet) 20%, transparent) 0%, transparent 48%),
+    radial-gradient(circle at 100% 100%, color-mix(in oklab, var(--color-coral) 18%, transparent) 0%, transparent 52%);
 }
 
 @utility text-gradient-signature {

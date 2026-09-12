@@ -17,8 +17,8 @@ export function Header() {
   const primaryLinks = nav.HEADER_NAV.filter((item) => item.path !== "/request-demo");
 
   return (
-    <header className="fixed inset-x-0 top-0 z-40 border-b border-ivory/10 bg-obsidian/85 backdrop-blur">
-      <div className="mx-auto flex h-20 w-full max-w-6xl items-center justify-between px-gutter">
+    <header className="fixed inset-x-0 top-0 z-40 px-4 pt-4 sm:px-6 lg:px-8">
+      <div className="mx-auto flex h-16 w-full max-w-6xl items-center justify-between rounded-lg border border-ivory/15 bg-obsidian/55 px-6 shadow-[0_8px_30px_rgba(0,0,0,0.35)] backdrop-blur-xl">
         <Link
           to="/"
           className="font-display text-xl tracking-tight text-ivory focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-coral"

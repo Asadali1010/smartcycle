@@ -1,9 +1,9 @@
-import { Suspense } from "react";
-import { Outlet } from "react-router-dom";
+import { Suspense, useEffect } from "react";
+import { Outlet, useLocation } from "react-router-dom";
 import { Header } from "./Header";
 import { Footer } from "./Footer";
 import { ChatLauncher } from "@/components/chatbot/ChatLauncher";
-import { useLenis } from "@/motion/useLenis";
+import { useLenis, resetScroll } from "@/motion/useLenis";
 
 /** Minimal route-transition fallback while a lazy page chunk fetches. */
 function RouteFallback() {
@@ -25,6 +25,17 @@ function RouteFallback() {
  */
 export function Layout() {
   useLenis();
+  const { pathname } = useLocation();
+
+  // react-router doesn't reset scroll on navigation, and Lenis owns the
+  // scroll position independently of native scrollTo (see resetScroll's
+  // docstring) — without this, clicking a nav link changes the URL but
+  // leaves the viewport wherever it was on the previous page, which reads
+  // as "navigation doesn't work" on any page long enough to have scrolled.
+  useEffect(() => {
+    resetScroll();
+  }, [pathname]);
+
   return (
     <div className="flex min-h-screen flex-col">
       <Header />
