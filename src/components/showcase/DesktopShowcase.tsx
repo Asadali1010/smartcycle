@@ -13,15 +13,26 @@ export interface DesktopShowcaseProps {
   slides: ShowcaseSlide[];
 }
 
+// How many neighboring slides on either side of the active one feel the
+// arc — smaller values make the orbit tighter/faster, larger values spread
+// it across more cards.
+const ORBIT_RANGE = 1.6;
+const ORBIT_LIFT = 64; // px risen at the peak of the arc
+const ORBIT_ROTATE = 9; // deg tilt applied on the way in/out
+const ORBIT_SCALE = 0.07; // extra scale at the peak of the arc
+
 /**
  * Pinned section that maps vertical scroll progress onto horizontal
- * translation through the combined use-case / solution-domain slide list.
+ * translation through the combined use-case / solution-domain slide list,
+ * with each slide additionally riding a circular arc (lift + tilt + scale)
+ * as it passes through the center of the viewport.
  * Registers and kills its own ScrollTrigger instance on mount/unmount
  * (self-contained, no dependency on src/components/scroll-story/**).
  */
 export function DesktopShowcase({ slides }: DesktopShowcaseProps) {
   const sectionRef = useRef<HTMLDivElement | null>(null);
   const trackRef = useRef<HTMLDivElement | null>(null);
+  const cardRefs = useRef<Array<HTMLDivElement | null>>([]);
   const [progress, setProgress] = useState(0);
   const [active, setActive] = useState<ShowcaseItem | null>(null);
   const idRef = useRef<string>(`showcase-scroll-${instanceCounter++}`);
@@ -35,6 +46,21 @@ export function DesktopShowcase({ slides }: DesktopShowcaseProps) {
     const section = sectionRef.current;
     const track = trackRef.current;
     if (!section || !track) return;
+
+    const lastIndex = Math.max(slides.length - 1, 1);
+
+    const applyOrbitMotion = (positionInSlides: number) => {
+      cardRefs.current.forEach((card, i) => {
+        if (!card) return;
+        const localT = gsap.utils.clamp(-1, 1, (positionInSlides - i) / ORBIT_RANGE);
+        const influence = Math.cos((localT * Math.PI) / 2);
+        gsap.set(card, {
+          y: -ORBIT_LIFT * influence,
+          rotate: localT * ORBIT_ROTATE,
+          scale: 1 + ORBIT_SCALE * influence,
+        });
+      });
+    };
 
     const ctx = gsap.context(() => {
       const getDistance = () => Math.max(track.scrollWidth - section.clientWidth, 0);
@@ -50,9 +76,13 @@ export function DesktopShowcase({ slides }: DesktopShowcaseProps) {
           pin: true,
           anticipatePin: 1,
           invalidateOnRefresh: true,
-          onUpdate: (self) => setProgress(self.progress),
+          onUpdate: (self) => {
+            setProgress(self.progress);
+            applyOrbitMotion(self.progress * lastIndex);
+          },
         },
       });
+      applyOrbitMotion(0);
     }, section);
 
     return () => ctx.revert();
@@ -129,7 +159,10 @@ export function DesktopShowcase({ slides }: DesktopShowcaseProps) {
         {slides.map((slide, i) => (
           <div
             key={slide.kind === "divider" ? `divider-${i}` : slide.item.id}
-            className="flex h-full w-[min(90vw,26rem)] shrink-0 items-center"
+            ref={(el) => {
+              cardRefs.current[i] = el;
+            }}
+            className="flex h-full w-[min(90vw,26rem)] shrink-0 items-center [transform-origin:center_bottom] will-change-transform"
           >
             {slide.kind === "divider" ? (
               <div className="flex flex-col gap-3">
