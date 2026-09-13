@@ -64,7 +64,14 @@ export function ExecutionGapPair({
         <p className="font-body text-xs uppercase tracking-widest text-current/50">{problemLabel}</p>
         <p className="relative inline-block font-display text-xl text-current/60">
           {problemStat}
-          <svg className="pointer-events-none absolute inset-0 h-full w-full overflow-visible" aria-hidden="true">
+          {/*
+            Bounded to one line-height (not h-full/inset-0) so the strike lands on the
+            first line even if problemStat wraps to two lines on narrow viewports — real
+            content includes long stats like "$2.4M Average Project Cost". text-xl has no
+            project-specific override (see src/index.css @theme), so it resolves to
+            Tailwind's default 1.75rem (28px) line-height, i.e. h-7.
+          */}
+          <svg className="pointer-events-none absolute inset-x-0 top-0 h-7 w-full overflow-visible" aria-hidden="true">
             <line x1="0" y1="50%" x2="100%" y2="50%" ref={strikeRef} stroke="currentColor" strokeWidth="2" className="text-coral" />
           </svg>
         </p>
