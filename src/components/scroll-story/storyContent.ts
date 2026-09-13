@@ -10,7 +10,7 @@ import { home } from "@/content";
 export interface StoryPanel {
   key: "build" | "govern" | "deploy";
   label: string;
-  accent: "coral" | "violet" | "champagne";
+  accent: "ember" | "iris" | "neutral";
   eyebrow: string;
   heading: string;
   body: string;
@@ -25,7 +25,7 @@ export function getStoryPanels(): StoryPanel[] {
     {
       key: "build",
       label: "Build",
-      accent: "coral",
+      accent: "ember",
       eyebrow: studio.tagline.value,
       heading: studio.name.value,
       body: studio.features[0]?.description.value ?? "",
@@ -34,7 +34,7 @@ export function getStoryPanels(): StoryPanel[] {
     {
       key: "govern",
       label: "Govern",
-      accent: "violet",
+      accent: "iris",
       eyebrow: eef.tagline.value,
       heading: eef.name.value,
       body: eef.features[0]?.description.value ?? "",
@@ -43,7 +43,7 @@ export function getStoryPanels(): StoryPanel[] {
     {
       key: "deploy",
       label: "Deploy",
-      accent: "champagne",
+      accent: "neutral",
       eyebrow: integrations.eyebrow.value,
       heading: integrations.headingLines.value.join(" "),
       body: integrations.intro.value,

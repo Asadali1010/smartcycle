@@ -73,21 +73,21 @@ export function NavOverlay({ open, onClose, triggerRef }: NavOverlayProps) {
           aria-modal="true"
           aria-label="Site navigation"
           ref={panelRef}
-          className="fixed inset-0 z-50 flex flex-col overflow-y-auto bg-obsidian text-ivory"
+          className="fixed inset-0 z-50 flex flex-col overflow-y-auto bg-obsidian-canvas text-snow"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.3 }}
         >
           <div className="mx-auto flex w-full max-w-6xl items-center justify-between px-gutter py-8">
-            <Link to="/" className="font-display text-xl">
+            <Link to="/" className="font-inter text-xl font-semibold">
               SmartCycleAI
             </Link>
             <button
               ref={closeButtonRef}
               type="button"
               onClick={onClose}
-              className="font-body text-sm uppercase tracking-widest text-ivory/70 transition-colors hover:text-ivory focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-coral"
+              className="font-inter text-body font-medium uppercase tracking-widest text-snow/70 transition-colors hover:text-snow focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-electric-iris"
             >
               Close
             </button>
@@ -103,7 +103,7 @@ export function NavOverlay({ open, onClose, triggerRef }: NavOverlayProps) {
               >
                 <Link
                   to={item.path}
-                  className="block py-2 font-display text-display-sm text-ivory/80 transition-colors hover:text-coral focus-visible:text-coral focus-visible:outline-none"
+                  className="block py-2 font-esbuild text-display-sm text-snow/80 transition-colors hover:text-ember-pulse focus-visible:text-ember-pulse focus-visible:outline-none"
                 >
                   {item.label}
                 </Link>
@@ -111,10 +111,10 @@ export function NavOverlay({ open, onClose, triggerRef }: NavOverlayProps) {
             ))}
           </nav>
 
-          <div className="mx-auto flex w-full max-w-6xl flex-wrap items-center justify-between gap-4 px-gutter py-8 text-sm text-ivory/50">
+          <div className="mx-auto flex w-full max-w-6xl flex-wrap items-center justify-between gap-4 px-gutter py-8 text-body text-snow/50">
             <p>&copy; {new Date().getFullYear()} SmartCycleAI</p>
             {nav.FOOTER_SOCIAL_LINKS.map((social) => (
-              <a key={social.url} href={social.url} target="_blank" rel="noreferrer" className="hover:text-ivory">
+              <a key={social.url} href={social.url} target="_blank" rel="noreferrer" className="hover:text-snow">
                 {social.label}
               </a>
             ))}

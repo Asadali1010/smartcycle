@@ -32,10 +32,10 @@ export function FeatureGrid({ items, columns = 2, className }: FeatureGridProps)
       {items.map((item) => (
         <div key={item.key} className="flex flex-col gap-2 rounded-lg border border-current/15 p-6">
           {item.tag ? (
-            <p className="font-body text-xs font-medium uppercase tracking-[0.2em] text-coral">{item.tag}</p>
+            <p className="font-inter text-xs font-medium uppercase tracking-[0.2em] text-ember-pulse">{item.tag}</p>
           ) : null}
-          <h3 className="font-display text-xl">{item.name}</h3>
-          <p className="font-body text-sm leading-relaxed text-current/70">{item.description}</p>
+          <h3 className="font-inter text-xl font-semibold">{item.name}</h3>
+          <p className="font-inter text-sm leading-relaxed text-current/70">{item.description}</p>
           {item.footnote}
         </div>
       ))}

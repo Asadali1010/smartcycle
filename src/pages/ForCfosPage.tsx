@@ -24,7 +24,7 @@ export function ForCfosPage() {
         secondaryCta={{ label: h.ctaSecondary.value, to: "/platform" }}
       />
 
-      <PageSection tone="ivory">
+      <PageSection tone="light">
         <SectionHeading eyebrow={impact.eyebrow.value} heading="Financial Impact You Can Measure" description={impact.intro.value} />
         <FeatureGrid
           columns={2}
@@ -32,7 +32,7 @@ export function ForCfosPage() {
         />
       </PageSection>
 
-      <PageSection tone="obsidian">
+      <PageSection tone="dark">
         <SectionHeading eyebrow={pains.eyebrow.value} heading="The Financial Pressures You Navigate" description={pains.intro.value} />
         <FeatureGrid
           columns={2}
@@ -50,7 +50,7 @@ export function ForCfosPage() {
         </p>
       </PageSection>
 
-      <PageSection tone="ivory" containerClassName="items-center text-center gap-6">
+      <PageSection tone="light" containerClassName="items-center text-center gap-6">
         <SectionHeading heading={financialCase.heading.value} align="center" />
         <div className="flex flex-wrap justify-center gap-3">
           {financialCase.items.map((item) => (
@@ -60,7 +60,7 @@ export function ForCfosPage() {
       </PageSection>
 
       <CtaBand
-        tone="obsidian"
+        tone="dark"
         heading={cta.heading.value}
         supporting={cta.supporting.value}
         primaryCta={{ label: cta.ctaPrimary.value, to: "/request-demo" }}

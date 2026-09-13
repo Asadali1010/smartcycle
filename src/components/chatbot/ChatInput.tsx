@@ -23,7 +23,7 @@ export function ChatInput() {
   }
 
   return (
-    <form onSubmit={submit} className="flex items-end gap-2 border-t border-ivory/10 bg-obsidian p-3">
+    <form onSubmit={submit} className="flex items-end gap-2 border-t border-slate-edge bg-charcoal-card p-3">
       <label htmlFor="chat-input" className="sr-only">
         Message SmartCycle Assistant
       </label>
@@ -41,12 +41,12 @@ export function ChatInput() {
             submit(event);
           }
         }}
-        className="min-h-11 flex-1 resize-none rounded-md border border-ivory/20 bg-transparent px-3 py-2.5 font-body text-sm text-ivory placeholder:text-ivory/40 focus:outline-none focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-coral disabled:opacity-50"
+        className="min-h-11 flex-1 resize-none rounded-md border border-slate-edge bg-transparent px-3 py-2.5 font-inter text-sm text-snow placeholder:text-smoke focus:outline-none focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-electric-iris disabled:opacity-50"
       />
       <button
         type="submit"
         disabled={isLoading || value.trim().length === 0}
-        className="inline-flex h-11 items-center justify-center rounded-md bg-coral px-4 font-display text-sm font-medium uppercase tracking-wide text-obsidian transition-colors hover:bg-champagne disabled:pointer-events-none disabled:opacity-40 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-coral"
+        className="inline-flex h-11 items-center justify-center rounded-full bg-electric-iris px-4 font-inter text-sm font-medium text-snow transition-colors hover:bg-electric-iris/90 disabled:pointer-events-none disabled:opacity-40 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-electric-iris"
       >
         Send
       </button>

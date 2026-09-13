@@ -1,82 +1,116 @@
 /*
- * Font decision (design-system, phase 1):
- * Deliberately avoided the current AI-default pairing (Inter/Fraunces/Roboto/
- * Geist/Space Grotesk/Plus Jakarta Sans show up on so many generated UIs that
- * they read as a template rather than a choice) in favor of a less-saturated
- * pair that still fits an editorial/architectural healthcare-tech redesign:
- * - Display: "Spectral" — a literary/editorial serif built for exactly the
- *   oversized-headline, high-contrast-stroke treatment this brief calls for
- *   (large display sizes, per trionn.com's editorial scale). A serif display
- *   over a sans body also gives the "editorial" direction real textural
- *   contrast, which an all-sans pairing wouldn't.
- * - Body: "IBM Plex Sans" — a humanist grotesque with genuine enterprise/
- *   technical heritage (designed in-house at IBM), which suits a
- *   healthcare-tech product's compliance/legal copy, trust-badge labels, and
- *   the ROI calculator's numerals, without defaulting to the same neutral
- *   sans every other AI-built site reaches for.
+ * Font decision (design-system, v3 Huly-system pivot):
+ * Supersedes the v2 Spectral/IBM Plex Sans editorial pairing. design.md
+ * (the Huly design-system reference) specifies Inter for all functional UI
+ * text and names "Esbuild" as its display face for oversized headlines;
+ * Esbuild itself isn't a distributable web font, so per design.md's own
+ * substitute guidance we load Sora into the `--font-esbuild` token instead.
  * Both are self-requested via the project's own CSS (no runtime API key, no
  * build-time fetch); `display=swap` avoids invisible-text flashes, and system
  * fallbacks below keep layout sane before/if the request fails.
  */
-@import url("https://fonts.googleapis.com/css2?family=Spectral:wght@300;400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Sora:wght@400;500;600&display=swap");
 @import "tailwindcss";
 
 /*
- * Design tokens — SmartCycleAI redesign palette (v2, colorful pass).
- * Obsidian charcoal + warm ivory remain the two neutrals. Coral, champagne and
- * violet are the three color anchors: coral = emphasis/actions/"live" deploy
- * state, champagne = metallic chassis trim, violet = governance/trust — used
- * for the sculpture's governance rings and as the second gradient partner
- * alongside coral in full-intensity sections. Quiet sections (docs, legal,
- * forms, footer) use obsidian/ivory with at most one low-opacity accent — see
- * PageSection's `tone` variants. Do not reintroduce blue/cyan anywhere in
- * this palette.
+ * Design tokens — SmartCycleAI redesign palette (v3, Huly design system).
+ * Supersedes the v2 "colorful pass" palette (obsidian/ivory/coral/champagne/
+ * violet) — see CLAUDE.md's "Palette (v3, Huly system)" bullet for the full
+ * rationale and provenance (design.md, huly.io reference). Obsidian-canvas +
+ * void are the dominant dark surfaces; snow/white/linen are the light-mode
+ * surfaces; Electric Iris and Ember Pulse are the *entire* chromatic
+ * vocabulary — no third accent color. Iron-veil/slate-edge/smoke/ash/frost
+ * are neutral UI grays for borders, dividers and secondary/tertiary text.
  */
 @theme {
-  --color-obsidian: #141215;
-  --color-ivory: #f7f2ea;
-  --color-coral: #ff654f;
-  --color-champagne: #d8be97;
-  --color-violet: #6d3fa6;
-  --color-violet-soft: #9b6fc9;
-
-  --font-display: "Spectral", "Iowan Old Style", "Palatino Linotype", Georgia, ui-serif, serif;
-  --font-body: "IBM Plex Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", ui-sans-serif, system-ui, sans-serif;
+  --color-obsidian-canvas: #303236; /* page bg, dominant dark surface */
+  --color-void: #090a0c; /* deepest surface: hero gradient base, modal backdrops */
+  --color-charcoal-card: #111111; /* elevated card/panel surface */
+  --color-slate-edge: #4a4b50; /* hairline borders/dividers on dark */
+  --color-iron-veil: #6b6c6d; /* muted tag/list-fill backgrounds, disabled washes */
+  --color-smoke: #95979e; /* icon strokes, secondary text */
+  --color-ash: #a9a9aa; /* tertiary text, subtle borders */
+  --color-frost: #d1d1d1; /* light-mode borders/inputs */
+  --color-linen: #e5e5e7; /* light-mode surface tint */
+  --color-snow: #ffffff; /* hairline borders on light surfaces — never the primary CTA color */
+  --color-electric-iris: #5683da; /* primary action, active nav indicator, hero aurora cool stop */
+  --color-ember-pulse: #ff8964; /* secondary accent, hero aurora warm stop, notification dot */
+  --color-molasses: #5a250a; /* deep ember tone for dark-context borders/tag fills */
 
   /*
-   * Large-editorial type scale. Tailwind's own text-xs..text-9xl (max 8rem)
-   * covers body/UI copy; these "display" steps go beyond it for the oversized,
-   * trionn.com-style headline treatments this redesign calls for. Sizes are
-   * fluid (clamp) so a single class scales cleanly from small phones to
-   * ultra-wide desktop without a stack of responsive breakpoint variants.
+   * Surface aliases — the semantic Surfaces table from design.md, so
+   * components can reach for "the elevated card surface" etc. without
+   * re-deriving it from the raw color tokens above.
    */
-  --text-display-sm: clamp(1.75rem, 1.35rem + 1.8vw, 2.75rem);
-  --text-display-sm--line-height: 1.1;
-  --text-display-sm--letter-spacing: -0.01em;
+  --surface-obsidian-canvas: #303236;
+  --surface-void: #090a0c;
+  --surface-charcoal-card: #111111;
+  --surface-light-canvas: #ffffff;
+  --surface-linen: #f6f6f6;
 
-  --text-display-md: clamp(2.25rem, 1.5rem + 3.2vw, 4.25rem);
-  --text-display-md--line-height: 1.02;
-  --text-display-md--letter-spacing: -0.015em;
+  --font-inter: "Inter", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-esbuild: "Sora", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
 
-  --text-display-lg: clamp(2.75rem, 1.4rem + 5.5vw, 6.5rem);
-  --text-display-lg--line-height: 0.96;
-  --text-display-lg--letter-spacing: -0.02em;
+  /*
+   * Huly's named type scale. Huly's own values are literal desktop px
+   * (28/32/80/84 etc, no mobile step); the three larger steps below keep
+   * that literal px as the clamp() *ceiling* while adding a fluid floor
+   * (~55-65% of the ceiling, the same ratio the old fluid scale used) so
+   * mobile widths don't overflow. Line-height/letter-spacing are fixed
+   * per design.md — those don't need to scale with viewport width.
+   */
+  --text-caption: 11px;
+  --leading-caption: 1.38;
+  --tracking-caption: -0.1px;
 
-  --text-display-xl: clamp(3.25rem, 1.3rem + 7.5vw, 8.5rem);
-  --text-display-xl--line-height: 0.94;
-  --text-display-xl--letter-spacing: -0.02em;
+  --text-body: 14px;
+  --leading-body: 1.5;
+  --tracking-body: -0.14px;
 
-  --text-display-2xl: clamp(3.75rem, 1rem + 10.5vw, 11rem);
-  --text-display-2xl--line-height: 0.9;
-  --text-display-2xl--letter-spacing: -0.025em;
+  --text-body-lg: 16px;
+  --leading-body-lg: 1.5;
+  --tracking-body-lg: -0.16px;
+
+  --text-subheading: 18px;
+  --leading-subheading: 1.5;
+  --tracking-subheading: -0.36px;
+
+  --text-heading-sm: 22px;
+  --leading-heading-sm: 1.25;
+
+  --text-heading: clamp(1.25rem, 1.1rem + 0.5vw, 24px);
+  --leading-heading: 1.25;
+  --tracking-heading: -0.48px;
+
+  --text-display-sm: clamp(1.5rem, 1.1rem + 1.5vw, 32px);
+  --leading-display-sm: 1;
+  --tracking-display-sm: -1.6px;
+
+  --text-display: clamp(2.75rem, 1.5rem + 5vw, 80px);
+  --leading-display: 0.9;
+  --tracking-display: -4px;
 
   /*
    * Generous spacing scale. Tailwind v4 derives the numeric p-/gap-/m- scale
    * from the bare --spacing multiplier below (kept at the standard 0.25rem so
-   * ordinary component spacing stays predictable) — these named additions are
-   * semantic, large section-rhythm steps for an editorial, whitespace-heavy
-   * layout (hero/section padding, big vertical gaps between blocks), used as
-   * e.g. `py-section-lg` or `gap-section-md`.
+   * ordinary component spacing stays predictable). The --spacing-section-*
+   * steps are this project's own pre-existing semantic section-rhythm scale
+   * (still referenced by other phases, kept as-is).
+   *
+   * NOTE: a literal-pixel "Huly named spacing scale" (--spacing-4: 4px,
+   * --spacing-16: 16px, etc.) previously lived here, added for components
+   * ported directly from design.md's spacing table. Tailwind v4 resolves
+   * p-N/h-N/gap-N/etc. utilities directly against a --spacing-N theme key
+   * when one exists, so those overrides silently replaced the *entire*
+   * built-in 0.25rem-multiplier scale for every N they defined (4, 8, 12,
+   * 16, 20, 24...) — the same numbers used pervasively for ordinary spacing
+   * (`pt-4`, `h-16`, `p-8`...) elsewhere in the app, shrinking all of it to
+   * ~1/4 size (e.g. the header's `pt-4 h-16` pill collapsed from 80px to
+   * 20px and rendered almost entirely clipped above the viewport). The
+   * literal-px utilities they were meant to enable (`p-16`, `gap-24`) were
+   * never actually used anywhere in the codebase, so removed as dead weight
+   * — use an arbitrary value (`p-[16px]`) if a literal-pixel step is ever
+   * needed again.
    */
   --spacing: 0.25rem;
   --spacing-gutter: 1.5rem;
@@ -86,6 +120,17 @@
   --spacing-section-md: 8rem;
   --spacing-section-lg: 11rem;
   --spacing-section-xl: 14rem;
+
+  /* Radius — remaps Tailwind's rounded/rounded-xl/rounded-3xl/rounded-full. */
+  --radius-md: 4px;
+  --radius-xl: 12px;
+  --radius-3xl: 30px;
+  --radius-full: 9999px;
+
+  --shadow-md: rgba(0, 0, 0, 0.35) 0px 4px 16px 0px;
+  --shadow-subtle: rgba(255, 255, 255, 0.4) 0px 0px 0px 6px;
+  --shadow-sm: rgba(0, 0, 0, 0.15) 0px 4px 6px 0px;
+  --shadow-xl: rgba(0, 0, 0, 0.5) 0px 6px 25px 0px;
 }
 
 /*
@@ -123,32 +168,53 @@
 }
 
 /*
- * Full-intensity surface washes for feature-highlight sections (hero, stats,
- * showcase, timeline, ROI). Two clean, well-separated coral/violet glows on
- * opposite corners of the obsidian base — quiet sections never use these and
- * stay on plain bg-obsidian/bg-ivory instead. Defined as utilities (not
- * inline gradients per-component) so every "vivid" section reads as one
- * system. (v3: dropped champagne from this wash — three overlapping tinted
- * glows at high opacity over near-black was reading as a muddy brown haze
- * rather than a deliberate two-tone gradient; champagne stays reserved for
- * the 3D module chassis trim and small accents instead.)
+ * v3 (Huly system): the old bg-surface-vivid-dark/-light full-bleed
+ * coral+violet wash is gone — design.md is explicit that an aurora/sunburst
+ * effect should "appear once per page, never a full-surface background."
+ * Two replacements:
+ *
+ * bg-aurora-hero — the ONE true aurora, hero-only. A narrow (~20% page
+ * width) vertical beam transitioning iris -> ember -> white, centered
+ * horizontally, plus a warm radial sunburst glow pooling at its base. The
+ * narrow band is produced by sizing the color-transition gradient layer to
+ * a fraction of the element's width rather than letting it span full-bleed.
  */
-@utility bg-surface-vivid-dark {
-  background-color: var(--color-obsidian);
+@utility bg-aurora-hero {
+  background-color: var(--color-void);
+  background-repeat: no-repeat, no-repeat;
+  background-position: center bottom, center top;
+  background-size: 100% 100%, 20% 100%;
   background-image:
-    radial-gradient(circle at 8% 0%, color-mix(in oklab, var(--color-violet) 70%, transparent) 0%, transparent 52%),
-    radial-gradient(circle at 100% 30%, color-mix(in oklab, var(--color-coral) 65%, transparent) 0%, transparent 55%);
+    radial-gradient(
+      ellipse 60% 40% at 50% 100%,
+      color-mix(in oklab, var(--color-ember-pulse) 55%, transparent) 0%,
+      transparent 70%
+    ),
+    linear-gradient(
+      180deg,
+      color-mix(in oklab, var(--color-electric-iris) 60%, transparent) 0%,
+      var(--color-ember-pulse) 55%,
+      var(--color-snow) 100%
+    );
 }
 
-@utility bg-surface-vivid-light {
-  background-color: var(--color-ivory);
-  background-image:
-    radial-gradient(circle at 8% 0%, color-mix(in oklab, var(--color-violet) 20%, transparent) 0%, transparent 48%),
-    radial-gradient(circle at 100% 100%, color-mix(in oklab, var(--color-coral) 18%, transparent) 0%, transparent 52%);
+/*
+ * bg-radial-sunburst — reusable low-opacity corner glow for feature cards /
+ * "vivid" quiet sections. A single scarce accent layered over whatever base
+ * surface color the caller already set (e.g. `bg-obsidian-canvas
+ * bg-radial-sunburst`) — never a wash on its own. Position is tunable per
+ * instance via the `--sunburst-x`/`--sunburst-y` custom properties.
+ */
+@utility bg-radial-sunburst {
+  background-image: radial-gradient(
+    circle at var(--sunburst-x, 100%) var(--sunburst-y, 0%),
+    color-mix(in oklab, var(--color-ember-pulse) 40%, transparent) 0%,
+    transparent 60%
+  );
 }
 
 @utility text-gradient-signature {
-  background-image: linear-gradient(100deg, var(--color-coral) 0%, var(--color-violet-soft) 60%, var(--color-champagne) 100%);
+  background-image: linear-gradient(100deg, var(--color-electric-iris) 0%, var(--color-ember-pulse) 100%);
   background-clip: text;
   -webkit-background-clip: text;
   color: transparent;
@@ -159,9 +225,9 @@
 }
 
 body {
-  background-color: var(--color-obsidian);
-  color: var(--color-ivory);
-  font-family: var(--font-body);
+  background-color: var(--color-obsidian-canvas);
+  color: var(--color-snow);
+  font-family: var(--font-inter);
 }
 
 @media (prefers-reduced-motion: reduce) {

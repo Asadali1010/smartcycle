@@ -71,7 +71,7 @@ export function Hero() {
   }, [prefersReducedMotion]);
 
   return (
-    <section className="relative min-h-screen w-full overflow-hidden bg-surface-vivid-dark text-ivory">
+    <section className="relative min-h-screen w-full overflow-hidden bg-aurora-hero text-snow">
       <div ref={containerRef} className="absolute inset-0">
         {webglSupport === "supported" ? (
           <Canvas
@@ -81,9 +81,10 @@ export function Hero() {
             camera={{ position: [0, 0.6, 8.2], fov: 45 }}
           >
             {/* No opaque scene background: alpha:true + the page's own
-                bg-surface-vivid-dark gradient show through around the
-                sculpture instead of a flat obsidian rectangle. */}
-            <fog attach="fog" args={["#141215", 11, 24]} />
+                bg-aurora-hero beam show through around the sculpture instead
+                of a flat rectangle. Fog color matches --color-void, the
+                beam's own base tone, so the scene edges blend into it. */}
+            <fog attach="fog" args={["#090a0c", 11, 24]} />
             <HeroScene explode={explode} />
           </Canvas>
         ) : (
@@ -91,44 +92,49 @@ export function Hero() {
         )}
         {/* Legibility scrim so headline/CTA stay readable over the sculpture:
             a vertical fade (stronger toward the bottom text block) layered
-            with a horizontal fade (stronger over the left column, where the
-            headline/CTA column sits) so the sculpture reads clearly on the
-            right/upper region without ever competing with the copy. */}
-        <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-obsidian via-obsidian/35 to-obsidian/10" />
-        <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-obsidian/75 via-obsidian/25 to-transparent" />
+            with a horizontal fade over the text column only — both tighten
+            their stops well before the sculpture's own screen position (it
+            sits center-right) so the scrim frames the copy instead of
+            washing over the signature 3D piece it exists to set off. Toned
+            to void (the aurora beam's own base) rather than obsidian-canvas
+            so the scrim blends into the beam instead of flattening it. */}
+        <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-void from-0% via-void/20 via-45% to-transparent to-80%" />
+        <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-void/85 from-0% via-void/15 via-36% to-transparent to-55%" />
       </div>
 
-      <div className="relative z-10 mx-auto flex min-h-screen w-full max-w-6xl flex-col justify-center gap-8 px-gutter pb-24 pt-40">
-        <SectionHeading
-          eyebrow={hero.eyebrow.value}
-          heading={hero.headingLines.value.join(" ")}
-          description={hero.subheading.value}
-          level="h1"
-        />
+      <div className="relative z-10 mx-auto flex min-h-screen w-full max-w-6xl flex-col justify-center px-gutter pb-24 pt-40">
+        <div className="flex max-w-xl flex-col gap-8">
+          <SectionHeading
+            eyebrow={hero.eyebrow.value}
+            heading={hero.headingLines.value.join(" ")}
+            description={hero.subheading.value}
+            level="h1"
+          />
 
-        <div className="flex flex-wrap gap-3">
-          {hero.badges.map((b) => (
-            <Badge key={b.value} label={b.value} tone="outline" />
-          ))}
-        </div>
+          <div className="flex flex-wrap gap-2.5">
+            {hero.badges.map((b) => (
+              <Badge key={b.value} label={b.value} tone="subtle" />
+            ))}
+          </div>
 
-        <div className="flex flex-wrap items-center gap-4">
-          <Button as={Link} to="/request-demo" variant="primary" size="lg">
-            {hero.ctaPrimary.value}
-          </Button>
-          <Button
-            variant="secondary"
-            size="lg"
-            onClick={handleExplode}
-            aria-pressed={isExploding}
-            disabled={webglSupport !== "supported"}
-          >
-            See it come apart
-          </Button>
+          <div className="flex flex-wrap items-center gap-4">
+            <Button as={Link} to="/request-demo" variant="primary" size="lg">
+              {hero.ctaPrimary.value}
+            </Button>
+            <Button
+              variant="secondary"
+              size="lg"
+              onClick={handleExplode}
+              aria-pressed={isExploding}
+              disabled={webglSupport !== "supported"}
+            >
+              See it come apart
+            </Button>
+          </div>
+          {webglSupport === "supported" ? (
+            <p className="font-inter text-xs uppercase tracking-widest text-current/40">Hover a module to inspect it</p>
+          ) : null}
         </div>
-        {webglSupport === "supported" ? (
-          <p className="font-body text-xs uppercase tracking-widest text-current/40">Hover a module to inspect it</p>
-        ) : null}
       </div>
     </section>
   );

@@ -9,7 +9,7 @@ import { contact } from "@/content";
 export function ContactPage() {
   return (
     <>
-      <PageSection tone="obsidian" className="pt-40 md:pt-48">
+      <PageSection tone="dark" className="pt-40 md:pt-48">
         <SectionHeading eyebrow={contact.contactLocation.display.value} heading={contact.contactHero.heading.value} level="h1" />
         <div className="flex flex-wrap gap-3">
           {contact.contactTrustBadges.map((badge) => (
@@ -18,7 +18,7 @@ export function ContactPage() {
         </div>
         <p className="font-body text-sm text-current/60">
           Email us directly at{" "}
-          <a href={`mailto:${contact.contactEmail.value}`} className="text-coral underline underline-offset-4">
+          <a href={`mailto:${contact.contactEmail.value}`} className="text-ember-pulse underline underline-offset-4">
             {contact.contactEmail.value}
           </a>
           .{" "}
@@ -26,7 +26,7 @@ export function ContactPage() {
         </p>
       </PageSection>
 
-      <PageSection tone="ivory">
+      <PageSection tone="light">
         <SectionHeading eyebrow="What Happens Next" heading="A No-Pressure Process" level="h2" />
         <StepList
           steps={contact.contactProcess.map((step, i) => ({
@@ -37,7 +37,7 @@ export function ContactPage() {
         />
       </PageSection>
 
-      <PageSection tone="obsidian" containerClassName="max-w-3xl gap-8">
+      <PageSection tone="dark" containerClassName="max-w-3xl gap-8">
         <SectionHeading heading="Request a Demo" level="h2" />
         <FormDisclosure />
         <ContactForm />

@@ -5,12 +5,12 @@
  */
 export function PageStub({ title, path }: { title: string; path: string }) {
   return (
-    <main className="min-h-screen bg-obsidian text-ivory flex flex-col items-center justify-center gap-2 px-6 text-center">
-      <p className="font-display text-sm uppercase tracking-[0.3em] text-champagne">
+    <main className="min-h-screen bg-obsidian-canvas text-snow flex flex-col items-center justify-center gap-2 px-6 text-center">
+      <p className="font-inter text-sm uppercase tracking-[0.3em] text-ash">
         route scaffold
       </p>
-      <h1 className="text-3xl font-display">{title}</h1>
-      <p className="text-ivory/60">{path}</p>
+      <h1 className="text-3xl font-esbuild">{title}</h1>
+      <p className="text-snow/60">{path}</p>
     </main>
   )
 }

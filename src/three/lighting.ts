@@ -18,47 +18,58 @@ export interface LightConfig {
 }
 
 /**
- * Default rig: warm champagne key light from upper-front-right, cool-neutral
- * ivory fill from the left to soften shadows, a coral rim light from behind
- * to separate the sculpture from the obsidian background, a low violet accent
- * from below-front to catch the governance rings without tinting the whole
- * scene, plus a low ambient so unlit facets never go fully black.
+ * Default rig: a neutral white key light from upper-front-right (so the
+ * neutral chassis materials read true-to-color rather than tinted — the v3
+ * palette reserves champagne's old "warm accent" role for nothing, since Huly
+ * only allows two accents total), a neutral white fill from the left to
+ * soften shadows, an Ember Pulse rim light from behind to separate the
+ * sculpture from the background, a low Electric Iris accent from
+ * below-front to catch the governance rings without tinting the whole scene,
+ * plus a low neutral white ambient so unlit facets never go fully black.
+ *
+ * Intensities are pushed well above "physically plausible" for a glass
+ * (MeshTransmissionMaterial) subject sitting against a near-black void
+ * background (#090a0c): with no environment map feeding it reflections, a
+ * low-roughness transmissive material reads as a nearly invisible dark smudge
+ * unless direct lights are strong enough to throw real specular highlights
+ * and the ember/iris accents are bright enough to survive both the DOM
+ * legibility scrim layered over the canvas and SceneEffects' bloom threshold.
  */
 export function createSceneLightingRig(intensityMultiplier = 1): LightConfig[] {
   return [
     {
       role: "key",
       type: "directional",
-      color: PALETTE.champagne,
-      intensity: 2.4 * intensityMultiplier,
+      color: "#ffffff",
+      intensity: 3.6 * intensityMultiplier,
       position: [4, 5, 4],
     },
     {
       role: "fill",
       type: "point",
-      color: PALETTE.ivory,
-      intensity: 1.1 * intensityMultiplier,
+      color: "#ffffff",
+      intensity: 1.6 * intensityMultiplier,
       position: [-5, 1, 2],
     },
     {
       role: "rim",
       type: "point",
-      color: PALETTE.coral,
-      intensity: 1.1 * intensityMultiplier,
+      color: PALETTE.emberPulse,
+      intensity: 2.8 * intensityMultiplier,
       position: [0, -2, -5],
     },
     {
       role: "accent",
       type: "point",
-      color: PALETTE.violetSoft,
-      intensity: 1 * intensityMultiplier,
+      color: PALETTE.electricIris,
+      intensity: 2 * intensityMultiplier,
       position: [1.5, -1.5, 3],
     },
     {
       role: "ambient",
       type: "ambient",
-      color: PALETTE.ivory,
-      intensity: 0.4 * intensityMultiplier,
+      color: "#ffffff",
+      intensity: 0.55 * intensityMultiplier,
     },
   ];
 }

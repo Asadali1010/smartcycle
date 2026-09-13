@@ -8,18 +8,22 @@ import clsx from "clsx";
 gsap.registerPlugin(ScrollTrigger);
 
 /**
- * Shared surface tones for page sections. Obsidian/ivory dominate per the
- * palette constraints in CLAUDE.md; individual pages decide which sections
- * read dark vs light so no page reads as monotone.
+ * Shared surface tones for page sections (v3, Huly system). `dark` is the
+ * obsidian-canvas/snow surface, `light` is the white/linen surface;
+ * individual pages decide which sections read dark vs light so no page reads
+ * as monotone.
  */
-export type SurfaceTone = "obsidian" | "ivory";
+export type SurfaceTone = "dark" | "light";
 
 /**
  * Color intensity, independent of tone. "quiet" (default) is the flat
- * obsidian/ivory surface used for docs/forms/overview content. "vivid" swaps
- * in the coral/violet/champagne radial-gradient surface (src/index.css)
- * reserved for feature-highlight sections — hero, stats, showcase, timeline,
- * ROI, final CTAs — per the redesign's section-intensity split.
+ * dark/light surface used for docs/forms/overview content. "vivid" adds a
+ * single low-opacity `bg-radial-sunburst` corner glow (src/index.css) on top
+ * of that same quiet surface — reserved for feature-highlight sections —
+ * hero, stats, showcase, timeline, ROI, final CTAs — per the redesign's
+ * section-intensity split. Per design.md, an aurora/sunburst effect should
+ * never become a full-bleed wash; only the hero gets the true full aurora
+ * beam (`bg-aurora-hero`), applied directly by that component, not here.
  */
 export type SurfaceIntensity = "quiet" | "vivid";
 
@@ -33,8 +37,14 @@ export interface PageSectionProps {
 }
 
 const SURFACE_STYLES: Record<SurfaceTone, Record<SurfaceIntensity, string>> = {
-  obsidian: { quiet: "bg-obsidian text-ivory", vivid: "bg-surface-vivid-dark text-ivory" },
-  ivory: { quiet: "bg-ivory text-obsidian", vivid: "bg-surface-vivid-light text-obsidian" },
+  dark: {
+    quiet: "bg-obsidian-canvas text-snow",
+    vivid: "bg-obsidian-canvas text-snow bg-radial-sunburst",
+  },
+  light: {
+    quiet: "bg-white text-void",
+    vivid: "bg-linen text-void bg-radial-sunburst",
+  },
 };
 
 /**
@@ -57,7 +67,7 @@ const SURFACE_STYLES: Record<SurfaceTone, Record<SurfaceIntensity, string>> = {
  * reveal.
  */
 export function PageSection({
-  tone = "obsidian",
+  tone = "dark",
   intensity = "quiet",
   id,
   className,

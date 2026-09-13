@@ -13,17 +13,24 @@ Full plan: `/Users/apple/.claude/plans/build-a-complete-local-streamed-avalanche
 
 - **Content is sourced, never invented.** All copy/facts live in `src/content/*.ts`, typed as
   `SourcedFact<T>` with a `sourceUrl`. No component may hardcode a fact that belongs in content.
-- **Palette (v2, colorful pass — supersedes the original restrained/editorial direction)**:
-  obsidian charcoal `#141215`, warm ivory `#F7F2EA` (the two neutrals), vivid coral `#FF654F`,
-  champagne metallic `#D8BE97`, and deep violet `#6D3FA6` (`#9B6FC9` soft tint) as the three
-  color anchors. Each anchor carries one meaning: coral = emphasis/actions/"live" deploy state,
-  champagne = metallic chassis trim, violet = governance/trust (sculpture governance rings,
-  gradient partner). Full color intensity (`bg-surface-vivid-dark`/`-light` in `src/index.css`)
-  is reserved for feature-highlight sections — hero, stats, showcase, timeline, ROI; quiet
-  sections (platform/how-it-works overview, integrations, contact/request-demo forms,
-  privacy/terms, footer) stay on plain `bg-obsidian`/`bg-ivory` with at most one low-opacity
-  accent. Never reintroduce the source site's blue/cyan. Gradient text
-  (`text-gradient-signature`) is a scarce, single-use device — not a default heading treatment.
+- **Palette (v3, Huly design system — supersedes v2's coral/champagne/violet pass per
+  `/Users/apple/.claude/plans/foamy-spinning-giraffe.md`; do not revert to v2)**: obsidian-canvas
+  `#303236` and void `#090a0c` are the dominant dark surfaces (charcoal-card `#111111` for
+  elevated panels); snow `#FFFFFF` / linen `#E5E5E7` / frost `#D1D1D1` are the light-mode
+  surfaces/borders; slate-edge `#4A4B50` / iron-veil `#6B6C6D` / smoke `#95979E` / ash `#A9A9AA`
+  are neutral grays for borders, dividers and secondary/tertiary text. Electric Iris `#5683DA`
+  (primary action, active nav indicator, hero aurora cool stop) and Ember Pulse `#FF8964`
+  (secondary accent, hero aurora warm stop, notification dot) — with molasses `#5A250A` as a
+  deep ember tone for dark-context borders/tag fills — are the two color anchors; never introduce
+  a third accent beyond Electric Iris/Ember Pulse — that pair is the entire chromatic vocabulary.
+  Fonts: Inter for all functional UI text, and Sora as the "Esbuild" display-font substitute
+  (Esbuild itself isn't a distributable font; Sora is design.md's own named substitute) for large
+  editorial headings only — never below 28px. Radius: `9999px` for controls/tags/buttons, `12px`
+  for cards, `4px` for inputs, `30px` for large panels. An aurora/sunburst accent effect appears
+  once per page at most (hero only gets the full `bg-aurora-hero` vertical beam) and never as a
+  full-surface wash; other feature-highlight sections use the single low-opacity
+  `bg-radial-sunburst` corner glow instead. Gradient text (`text-gradient-signature`) is a
+  scarce, single-use device — not a default heading treatment.
 - **Original geometry/assets only.** Do not reproduce Trionn's logo, sculpture, or copy — only
   the *behavior* (assembly/disassembly, pinned horizontal scroll, masked type reveals, dark/light
   scene transitions, letter-roll hovers).

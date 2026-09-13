@@ -18,20 +18,22 @@ export function CanvasFallback({ className }: CanvasFallbackProps) {
     >
       <svg viewBox="0 0 480 480" className="h-full w-full" xmlns="http://www.w3.org/2000/svg">
         <defs>
+          {/* Electric Iris — the v3 palette's sole cool anchor, carrying the
+              governance/structure role champagne/violet used to split. */}
           <radialGradient id="fallback-glow" cx="50%" cy="50%" r="60%">
-            <stop offset="0%" stopColor="#d8be97" stopOpacity="0.25" />
-            <stop offset="100%" stopColor="#d8be97" stopOpacity="0" />
+            <stop offset="0%" stopColor="#5683da" stopOpacity="0.25" />
+            <stop offset="100%" stopColor="#5683da" stopOpacity="0" />
           </radialGradient>
         </defs>
 
         <circle cx="240" cy="240" r="220" fill="url(#fallback-glow)" />
 
-        {/* Governance ring */}
-        <circle cx="240" cy="240" r="150" fill="none" stroke="#d8be97" strokeOpacity="0.35" strokeWidth="1.5" />
-        <circle cx="240" cy="240" r="150" fill="none" stroke="#d8be97" strokeOpacity="0.15" strokeWidth="10" />
+        {/* Governance ring (Electric Iris — matches the 3D scene's governance-ring material) */}
+        <circle cx="240" cy="240" r="150" fill="none" stroke="#5683da" strokeOpacity="0.35" strokeWidth="1.5" />
+        <circle cx="240" cy="240" r="150" fill="none" stroke="#5683da" strokeOpacity="0.15" strokeWidth="10" />
 
-        {/* Obsidian core */}
-        <rect x="210" y="210" width="60" height="60" rx="10" fill="#1c1a1d" stroke="#d8be97" strokeWidth="1.5" />
+        {/* Obsidian-canvas core, outlined in Electric Iris for definition against the dark backdrop */}
+        <rect x="210" y="210" width="60" height="60" rx="10" fill="#111111" stroke="#5683da" strokeWidth="1.5" />
 
         {/* Deployed satellite modules connected to the core */}
         {[0, 72, 144, 216, 288].map((deg, i) => {
@@ -41,16 +43,17 @@ export function CanvasFallback({ className }: CanvasFallbackProps) {
           const cy = 240 + Math.sin(rad) * r;
           return (
             <g key={i}>
-              <line x1="240" y1="240" x2={cx} y2={cy} stroke="#ff654f" strokeOpacity="0.4" strokeWidth="1" />
+              {/* Ember Pulse — matches the 3D scene's connection/accent material */}
+              <line x1="240" y1="240" x2={cx} y2={cy} stroke="#ff8964" strokeOpacity="0.4" strokeWidth="1" />
               <rect
                 x={cx - 16}
                 y={cy - 16}
                 width="32"
                 height="32"
                 rx="6"
-                fill="#f7f2ea"
+                fill="#ffffff"
                 fillOpacity="0.08"
-                stroke="#d8be97"
+                stroke="#5683da"
                 strokeWidth="1.25"
               />
             </g>

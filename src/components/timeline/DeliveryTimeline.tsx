@@ -83,7 +83,7 @@ export function DeliveryTimeline() {
         {section.macroStages.map((stage) => (
           <span
             key={stage.value}
-            className="rounded-full border border-current/20 px-4 py-1.5 font-body text-xs uppercase tracking-widest text-current/60"
+            className="rounded-full border border-slate-edge px-4 py-1.5 font-inter text-xs uppercase tracking-widest text-current/60"
           >
             {stage.value}
           </span>
@@ -91,7 +91,7 @@ export function DeliveryTimeline() {
       </div>
 
       <div className="flex flex-col gap-2">
-        <div className="flex items-center justify-between font-body text-xs uppercase tracking-widest text-current/50">
+        <div className="flex items-center justify-between font-inter text-xs uppercase tracking-widest text-current/50">
           <span>{section.axisLabels.capabilityLow.value}</span>
           <span>{section.axisLabels.capabilityHigh.value}</span>
         </div>
@@ -99,12 +99,12 @@ export function DeliveryTimeline() {
           <div
             ref={fillRef}
             className={clsx(
-              "h-full w-full origin-left bg-gradient-to-r from-coral to-champagne",
+              "h-full w-full origin-left bg-gradient-to-r from-electric-iris to-ember-pulse",
               prefersReducedMotion && "scale-x-100",
             )}
           />
         </div>
-        <div className="flex items-center justify-between font-body text-xs uppercase tracking-widest text-current/50">
+        <div className="flex items-center justify-between font-inter text-xs uppercase tracking-widest text-current/50">
           <span>{section.axisLabels.increasingCapability.value}</span>
           <span>{section.axisLabels.decreasingDependency.value}</span>
         </div>
@@ -117,23 +117,23 @@ export function DeliveryTimeline() {
             ref={(el) => {
               cardRefs.current[i] = el;
             }}
-            className="flex flex-col gap-4 rounded-xl border border-current/15 p-6"
+            className="flex flex-col gap-4 rounded-xl border border-slate-edge bg-charcoal-card p-6 text-snow"
           >
             <div className="flex items-center gap-3">
-              <span className="font-display text-3xl text-coral">{String(i + 1).padStart(2, "0")}</span>
+              <span className="font-esbuild text-3xl text-ember-pulse">{String(i + 1).padStart(2, "0")}</span>
               <div>
-                <h3 className="font-display text-lg">{phase.name.value}</h3>
-                <p className="font-body text-xs uppercase tracking-widest text-current/50">{phase.monthRange.value}</p>
+                <h3 className="font-inter text-subheading font-medium">{phase.name.value}</h3>
+                <p className="font-inter text-xs uppercase tracking-widest text-current/50">{phase.monthRange.value}</p>
               </div>
             </div>
-            <p className="font-body text-sm text-current/70">{phase.description.value}</p>
-            <ul className="flex flex-col gap-1.5 font-body text-xs text-current/60">
+            <p className="font-inter text-sm text-current/70">{phase.description.value}</p>
+            <ul className="flex flex-col gap-1.5 font-inter text-xs text-current/60">
               {phase.milestones.map((m) => (
                 <li key={m.value}>— {m.value}</li>
               ))}
             </ul>
-            <div className="mt-auto flex flex-col gap-1 border-t border-current/10 pt-3 font-body text-xs">
-              <span className="text-champagne">SmartCycleAI: {phase.lanes.smartCycleAI.value}</span>
+            <div className="mt-auto flex flex-col gap-1 border-t border-slate-edge pt-3 font-inter text-xs">
+              <span className="text-electric-iris">SmartCycleAI: {phase.lanes.smartCycleAI.value}</span>
               <span className="text-current/60">Your Team: {phase.lanes.yourTeam.value}</span>
             </div>
           </li>

@@ -3,10 +3,10 @@
  * Deploy application lifecycle as a small set of architectural "module"
  * meshes orbiting an obsidian core:
  *  - Build (stage ~0): modules sit apart, unassembled, loosely scattered.
- *  - Govern (stage ~0.5): modules pull into an aligned ring; faint champagne
+ *  - Govern (stage ~0.5): modules pull into an aligned ring; faint iris
  *    governance rings fade in around each module.
  *  - Deploy (stage ~1): modules push outward into satellite positions,
- *    connected to the core by illuminated coral lines.
+ *    connected to the core by illuminated ember lines.
  *
  * Position/rotation/scale come from the shared, pure `getModuleTransform` —
  * this component never computes placement itself, so scroll-choreography
@@ -21,7 +21,7 @@
  * instead of sitting perfectly still.
  *
  * Each module also answers pointer hover directly (`onPointerOver`/-`Out`):
- * its champagne edge brightens and it lifts slightly outward, so the
+ * its chassis edge brightens and it lifts slightly outward, so the
  * sculpture reads as a tangible, inspectable object rather than a passive
  * background animation.
  */
@@ -34,7 +34,7 @@ import { MODULE_COUNT, getModuleTransform } from "./transforms";
 import { moduleBootWindow } from "./boot";
 import {
   PALETTE,
-  createCoralAccentMaterial,
+  createEmberAccentMaterial,
   createGlassModulePreset,
   createGovernanceRingMaterial,
   createObsidianCoreMaterial,
@@ -82,7 +82,10 @@ export function SculptureModel({ stage, explode = 0, bootProgress = 1, breathing
 
   const glassPreset = useMemo(() => createGlassModulePreset(), []);
   const coreMaterial = useMemo(() => createObsidianCoreMaterial(), []);
-  const edgeColor = useMemo(() => new THREE.Color(PALETTE.champagne), []);
+  // `smoke` rather than the darker `slateEdge`: at rest (unhovered) this is
+  // the only thing giving each glass module a readable silhouette against
+  // the void background, so it needs real contrast, not just a subtle trim.
+  const edgeColor = useMemo(() => new THREE.Color(PALETTE.smoke), []);
   const ringMaterial = useMemo(() => createGovernanceRingMaterial(0.55), []);
 
   useFrame((state) => {
@@ -96,8 +99,8 @@ export function SculptureModel({ stage, explode = 0, bootProgress = 1, breathing
   const ringOpacity = Math.min(1, Math.max(0, (clampedStage - 0.1) / 0.35)) * 0.55;
   // Satellite connections illuminate mainly across the Govern→Deploy transition.
   const connectionGlow = Math.min(1, Math.max(0, (clampedStage - 0.4) / 0.6));
-  const coralMaterial = useMemo(() => createCoralAccentMaterial(0.2), []);
-  coralMaterial.emissiveIntensity = 0.15 + connectionGlow * 1.1;
+  const emberMaterial = useMemo(() => createEmberAccentMaterial(0.2), []);
+  emberMaterial.emissiveIntensity = 0.15 + connectionGlow * 1.1;
   ringMaterial.opacity = ringOpacity;
 
   const modules = useMemo(
@@ -143,7 +146,7 @@ export function SculptureModel({ stage, explode = 0, bootProgress = 1, breathing
           >
             <RoundedBox args={MODULE_ARGS} radius={0.06} smoothness={3}>
               <MeshTransmissionMaterial {...glassPreset} />
-              <Edges color={isHovered ? PALETTE.coral : edgeColor} lineWidth={isHovered ? 2 : 1.25} threshold={20} />
+              <Edges color={isHovered ? PALETTE.emberPulse : edgeColor} lineWidth={isHovered ? 2 : 1.25} threshold={20} />
             </RoundedBox>
             {/* Governance ring frame around this module */}
             <mesh rotation={[Math.PI / 2, 0, 0]} material={ringMaterial}>
@@ -161,7 +164,7 @@ export function SculptureModel({ stage, explode = 0, bootProgress = 1, breathing
             [0, 0, 0],
             position,
           ]}
-          color={PALETTE.coral}
+          color={PALETTE.emberPulse}
           lineWidth={1}
           transparent
           opacity={connectionGlow * 0.75}
@@ -170,12 +173,12 @@ export function SculptureModel({ stage, explode = 0, bootProgress = 1, breathing
 
       {/* satellite node markers at deploy connection endpoints, glow-driven */}
       {modules.map(({ index, position }) => (
-        <mesh key={index} position={position} material={coralMaterial} scale={0.12 + connectionGlow * 0.06}>
+        <mesh key={index} position={position} material={emberMaterial} scale={0.12 + connectionGlow * 0.06}>
           <sphereGeometry args={[1, 12, 12]} />
         </mesh>
       ))}
 
-      {/* Boot-only: coral trace-lines each module travels in along, drawn by
+      {/* Boot-only: ember trace-lines each module travels in along, drawn by
           lerping the line's far endpoint from the core out to the module's
           target position as that module's local boot window progresses. */}
       {clampedBoot < 1
@@ -194,7 +197,7 @@ export function SculptureModel({ stage, explode = 0, bootProgress = 1, breathing
                   [0, 0, 0],
                   endpoint,
                 ]}
-                color={PALETTE.coral}
+                color={PALETTE.emberPulse}
                 lineWidth={1.5}
                 transparent
                 opacity={0.9}

@@ -8,8 +8,8 @@ import { Marquee } from "../Marquee";
 
 /**
  * DEV-ONLY route: renders every design-system primitive against both surface
- * colors (obsidian + ivory) so contrast and keyboard-focus states can be
- * eyeballed in one place.
+ * colors (dark obsidian-canvas + light white) so contrast and keyboard-focus
+ * states can be eyeballed in one place.
  *
  * `forms-and-pages` OWNS routing/pages from here on — this route must be
  * removed (both this file and its entry in src/router.tsx) before the site
@@ -18,25 +18,25 @@ import { Marquee } from "../Marquee";
 export function StyleGuidePage() {
   return (
     <main>
-      <Surface tone="obsidian" />
-      <Surface tone="ivory" />
+      <Surface tone="dark" />
+      <Surface tone="light" />
     </main>
   );
 }
 
-function Surface({ tone }: { tone: "obsidian" | "ivory" }) {
-  const isDark = tone === "obsidian";
+function Surface({ tone }: { tone: "dark" | "light" }) {
+  const isDark = tone === "dark";
   const [replayKey, setReplayKey] = useState(0);
 
   return (
     <section
       className={
         isDark
-          ? "flex flex-col gap-16 bg-obsidian px-gutter py-section-sm text-ivory"
-          : "flex flex-col gap-16 bg-ivory px-gutter py-section-sm text-obsidian"
+          ? "flex flex-col gap-16 bg-obsidian-canvas px-gutter py-section-sm text-snow"
+          : "flex flex-col gap-16 bg-white px-gutter py-section-sm text-void"
       }
     >
-      <p className="font-body text-xs uppercase tracking-[0.3em] text-champagne">
+      <p className="font-inter text-xs uppercase tracking-[0.3em] text-ash">
         surface: {tone}
       </p>
 
@@ -48,25 +48,28 @@ function Surface({ tone }: { tone: "obsidian" | "ivory" }) {
       />
 
       <div className="flex flex-col gap-4">
-        <h2 className="font-display text-display-sm">Type scale</h2>
-        <p className="text-display-2xl font-display leading-none">Display 2XL</p>
-        <p className="text-display-xl font-display leading-none">Display XL</p>
-        <p className="text-display-lg font-display leading-none">Display LG</p>
-        <p className="text-display-md font-display leading-none">Display MD</p>
-        <p className="text-display-sm font-display leading-none">Display SM</p>
-        <p className="font-body text-base">
+        <h2 className="font-esbuild text-display-sm">Type scale</h2>
+        <p className="text-display font-esbuild leading-none">Display</p>
+        <p className="text-display-sm font-esbuild leading-none">Display SM</p>
+        <p className="text-heading font-esbuild leading-none">Heading</p>
+        <p className="text-heading-sm font-inter font-medium">Heading SM</p>
+        <p className="text-subheading font-inter">Subheading</p>
+        <p className="text-body-lg font-inter">Body LG</p>
+        <p className="font-inter text-body">
           Body copy in the body font, for comparison — the quick brown fox jumps over the lazy dog. 1234567890.
         </p>
+        <p className="font-inter text-caption uppercase tracking-widest text-ash">Caption</p>
       </div>
 
       <div className="flex flex-col gap-4">
-        <h2 className="font-display text-display-sm">Buttons</h2>
-        <p className="font-body text-sm text-current/60">
-          Tab to each button to check the coral focus ring; hover or focus to see the letter-roll.
+        <h2 className="font-esbuild text-display-sm">Buttons</h2>
+        <p className="font-inter text-sm text-current/60">
+          Tab to each button to check the electric-iris focus ring; hover or focus to see the letter-roll.
         </p>
         <div className="flex flex-wrap items-center gap-4">
           <Button variant="primary">Request a demo</Button>
           <Button variant="secondary">Learn more</Button>
+          <Button variant="white">See in action</Button>
           <Button variant="primary" size="lg">
             Large primary
           </Button>
@@ -80,8 +83,8 @@ function Surface({ tone }: { tone: "obsidian" | "ivory" }) {
       </div>
 
       <div className="flex flex-col gap-4">
-        <h2 className="font-display text-display-sm">Badges</h2>
-        <p className="font-body text-sm text-current/60">
+        <h2 className="font-esbuild text-display-sm">Badges</h2>
+        <p className="font-inter text-sm text-current/60">
           Badge renders whatever label text it's given — exact certification wording varies by source page.
         </p>
         <div className="flex flex-wrap items-center gap-3">
@@ -91,16 +94,17 @@ function Surface({ tone }: { tone: "obsidian" | "ivory" }) {
           <Badge label="SOC 2 Type II" tone="solid" />
           <Badge label="SOC 2 Aligned" tone="outline" />
           <Badge label="ANSI 27001 Alignment" tone="subtle" />
+          <Badge label="Live" tone="subtle" className="bg-electric-iris/12 text-electric-iris" />
         </div>
       </div>
 
       <div className="flex flex-col gap-4">
-        <h2 className="font-display text-display-sm">Letter roll</h2>
-        <p className="font-body text-sm text-current/60">Hover or focus the text below.</p>
+        <h2 className="font-esbuild text-display-sm">Letter roll</h2>
+        <p className="font-inter text-sm text-current/60">Hover or focus the text below.</p>
         <a
           href="#"
           onClick={(e) => e.preventDefault()}
-          className="inline-block font-display text-2xl focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-coral"
+          className="inline-block font-esbuild text-2xl focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-electric-iris"
         >
           <LetterRoll>Platform overview</LetterRoll>
         </a>
@@ -108,21 +112,21 @@ function Surface({ tone }: { tone: "obsidian" | "ivory" }) {
 
       <div className="flex flex-col gap-4">
         <div className="flex flex-wrap items-center justify-between gap-4">
-          <h2 className="font-display text-display-sm">Masked reveal</h2>
+          <h2 className="font-esbuild text-display-sm">Masked reveal</h2>
           <button
             type="button"
             onClick={() => setReplayKey((k) => k + 1)}
-            className="font-body text-sm underline decoration-champagne underline-offset-4 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-coral"
+            className="font-inter text-sm underline decoration-ember-pulse underline-offset-4 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-electric-iris"
           >
             Replay (word mode is scroll-triggered below; this forces it)
           </button>
         </div>
-        <p key={replayKey} className="font-display text-3xl">
+        <p key={replayKey} className="font-esbuild text-3xl">
           <MaskedReveal mode="word" active>
             Masked reveal replayed on demand, forced true via the active prop.
           </MaskedReveal>
         </p>
-        <p className="font-display text-3xl">
+        <p className="font-esbuild text-3xl">
           <MaskedReveal mode="word">
             Scroll this into view to trigger the default IntersectionObserver reveal.
           </MaskedReveal>
@@ -130,14 +134,14 @@ function Surface({ tone }: { tone: "obsidian" | "ivory" }) {
       </div>
 
       <div className="flex flex-col gap-4">
-        <h2 className="font-display text-display-sm">Marquee</h2>
+        <h2 className="font-esbuild text-display-sm">Marquee</h2>
         <Marquee speed="normal">
-          <span className="font-display text-display-md uppercase">Build</span>
-          <span className="font-display text-display-md text-coral">·</span>
-          <span className="font-display text-display-md uppercase">Govern</span>
-          <span className="font-display text-display-md text-coral">·</span>
-          <span className="font-display text-display-md uppercase">Deploy</span>
-          <span className="font-display text-display-md text-coral">·</span>
+          <span className="font-esbuild text-display-sm uppercase">Build</span>
+          <span className="font-esbuild text-display-sm text-ember-pulse">·</span>
+          <span className="font-esbuild text-display-sm uppercase">Govern</span>
+          <span className="font-esbuild text-display-sm text-ember-pulse">·</span>
+          <span className="font-esbuild text-display-sm uppercase">Deploy</span>
+          <span className="font-esbuild text-display-sm text-ember-pulse">·</span>
         </Marquee>
       </div>
     </section>

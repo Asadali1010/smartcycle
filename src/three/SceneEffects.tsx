@@ -13,11 +13,11 @@ export function SceneEffects() {
   return (
     <EffectComposer multisampling={0} enableNormalPass={false}>
       <Bloom
-        intensity={0.55}
-        luminanceThreshold={0.35}
-        luminanceSmoothing={0.2}
+        intensity={0.75}
+        luminanceThreshold={0.22}
+        luminanceSmoothing={0.25}
         mipmapBlur
-        radius={0.5}
+        radius={0.6}
       />
     </EffectComposer>
   );

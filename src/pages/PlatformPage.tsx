@@ -27,7 +27,7 @@ export function PlatformPage() {
         supporting={hero.supporting.value}
       />
 
-      <PageSection tone="ivory">
+      <PageSection tone="light">
         <SectionHeading
           eyebrow={howItWorks.eyebrow.value}
           heading="How It Works"
@@ -36,7 +36,7 @@ export function PlatformPage() {
         <StepList
           steps={howItWorks.steps.map((s) => ({ key: s.name.value, name: s.name.value, description: s.description.value }))}
           footnote={
-            <p className="font-body text-sm text-current/60">
+            <p className="font-inter text-sm text-current/60">
               This is /platform's own 5-step process.
               <GapNote gapId="how-it-works-4-vs-5-step" label="Different from the homepage's 4-step process" className="ml-2" />
             </p>
@@ -44,7 +44,7 @@ export function PlatformPage() {
         />
       </PageSection>
 
-      <PageSection tone="obsidian">
+      <PageSection tone="dark">
         <SectionHeading eyebrow={benefits.eyebrow.value} heading="What You Get" description={benefits.intro.value} />
         <FeatureGrid
           columns={2}
@@ -52,7 +52,7 @@ export function PlatformPage() {
         />
       </PageSection>
 
-      <PageSection tone="ivory">
+      <PageSection tone="light">
         <SectionHeading eyebrow={capabilities.eyebrow.value} heading={capabilities.headline.value} description={capabilities.intro.value} />
         <div className="flex flex-wrap gap-3">
           {capabilities.items.map((item) => (
@@ -61,7 +61,7 @@ export function PlatformPage() {
         </div>
       </PageSection>
 
-      <PageSection tone="obsidian">
+      <PageSection tone="dark">
         <SectionHeading eyebrow={outcomes.eyebrow.value} heading="Business Outcomes" />
         <FeatureGrid
           columns={2}
@@ -69,24 +69,24 @@ export function PlatformPage() {
         />
       </PageSection>
 
-      <PageSection tone="ivory" containerClassName="items-center text-center gap-4">
+      <PageSection tone="light" containerClassName="items-center text-center gap-4">
         <SectionHeading heading={ownership.headingLines.value.join(" ")} description={ownership.body.value} align="center" />
-        <p className="max-w-xl font-body text-current/70">{ownership.supporting.value}</p>
+        <p className="max-w-xl font-inter text-current/70">{ownership.supporting.value}</p>
       </PageSection>
 
-      <PageSection tone="obsidian">
+      <PageSection tone="dark">
         <SectionHeading eyebrow={enterprise.eyebrow.value} heading="Enterprise-Ready Capabilities" description={enterprise.intro.value} />
         <FeatureGrid
           columns={3}
           items={enterprise.items.map((e) => ({ key: e.name.value, name: e.name.value, description: e.description.value }))}
         />
         <div className="flex flex-col gap-2 border-t border-current/15 pt-6">
-          <p className="font-display text-xl">{enterprise.ctaHeading.value}</p>
-          <p className="font-body text-current/70">{enterprise.ctaSupporting.value}</p>
+          <p className="font-inter text-xl font-semibold">{enterprise.ctaHeading.value}</p>
+          <p className="font-inter text-current/70">{enterprise.ctaSupporting.value}</p>
         </div>
       </PageSection>
 
-      <PageSection tone="ivory" containerClassName="gap-8">
+      <PageSection tone="light" containerClassName="gap-8">
         <SectionHeading eyebrow={security.eyebrow.value} heading="Security & Compliance" description={security.intro.value} />
         <div className="flex flex-wrap gap-3">
           {security.badges.map((badge) => (
@@ -100,8 +100,8 @@ export function PlatformPage() {
           columns={3}
           items={security.details.map((d) => ({ key: d.name.value, name: d.name.value, description: d.description.value }))}
         />
-        <p className="font-body text-lg text-current/70">{security.closing.value}</p>
-        <p className="font-body text-xs text-current/50">
+        <p className="font-inter text-lg text-current/70">{security.closing.value}</p>
+        <p className="font-inter text-xs text-current/50">
           Certification language on this page ("HIPAA", "ISO 27001", "SOC 2 Type II") is unhedged, unlike softer
           "Aware"/"Ready"/"Aligned" wording used on other pages.
           <GapNote gapId="certification-language-varies-by-page" label="Why this varies by page" className="ml-2" />
@@ -109,7 +109,7 @@ export function PlatformPage() {
       </PageSection>
 
       <CtaBand
-        tone="obsidian"
+        tone="dark"
         heading={cta.heading.value}
         supporting={cta.supporting.value}
         primaryCta={{ label: cta.ctaPrimary.value, to: "/request-demo" }}

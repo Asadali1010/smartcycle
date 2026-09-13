@@ -25,25 +25,25 @@ export function RoiImpactStatic() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-10% 0px" }}
             transition={{ duration: 0.5, delay: prefersReducedMotion ? 0 : i * 0.05 }}
-            className="flex flex-col gap-3 rounded-xl border border-current/15 p-6"
+            className="flex flex-col gap-3 rounded-xl border border-slate-edge bg-charcoal-card p-6 text-snow"
           >
-            <p className="font-body text-xs font-medium uppercase tracking-[0.2em] text-current/50">
+            <p className="font-inter text-xs font-medium uppercase tracking-[0.2em] text-current/50">
               {row.label.value}
             </p>
             <div className="flex flex-wrap items-baseline gap-3">
-              <span className="font-display text-lg text-current/40 line-through decoration-current/30">
+              <span className="font-inter text-lg text-current/40 line-through decoration-current/30">
                 {row.before.value}
               </span>
               <span aria-hidden="true" className="text-current/30">
                 →
               </span>
-              <span className="font-display text-2xl text-coral">{row.after.value}</span>
+              <span className="font-esbuild text-display-sm text-electric-iris">{row.after.value}</span>
             </div>
           </motion.div>
         ))}
       </div>
       {attribution ? (
-        <p className="font-body text-xs text-current/40">
+        <p className="font-inter text-xs text-current/40">
           Source: {attribution.sourceUrl} · verified {attribution.lastVerified}
         </p>
       ) : null}

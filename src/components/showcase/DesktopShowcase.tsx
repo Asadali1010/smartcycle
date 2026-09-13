@@ -109,7 +109,10 @@ export function DesktopShowcase({ slides }: DesktopShowcaseProps) {
   );
 
   return (
-    <div ref={sectionRef} className="relative h-screen w-full overflow-hidden bg-obsidian text-ivory">
+    <div
+      ref={sectionRef}
+      className="relative h-screen w-full overflow-hidden bg-obsidian-canvas bg-radial-sunburst text-snow"
+    >
       <div className="absolute inset-x-0 top-0 z-10 flex flex-col gap-4 px-gutter pt-8">
         <div className="flex flex-wrap items-center justify-between gap-4">
           <div className="flex items-center gap-3">
@@ -118,8 +121,8 @@ export function DesktopShowcase({ slides }: DesktopShowcaseProps) {
               onClick={() => goTo(0)}
               aria-current={currentIndex < domainsStartIndex ? "true" : undefined}
               className={clsx(
-                "font-body text-xs font-medium uppercase tracking-[0.2em] transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-coral",
-                currentIndex < domainsStartIndex ? "text-coral" : "text-current/50 hover:text-current",
+                "font-inter text-xs font-medium uppercase tracking-[0.2em] transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-electric-iris",
+                currentIndex < domainsStartIndex ? "text-ember-pulse" : "text-current/50 hover:text-current",
               )}
             >
               Use Cases
@@ -132,24 +135,24 @@ export function DesktopShowcase({ slides }: DesktopShowcaseProps) {
               onClick={() => goTo(domainsStartIndex)}
               aria-current={currentIndex >= domainsStartIndex ? "true" : undefined}
               className={clsx(
-                "font-body text-xs font-medium uppercase tracking-[0.2em] transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-coral",
-                currentIndex >= domainsStartIndex ? "text-champagne" : "text-current/50 hover:text-current",
+                "font-inter text-xs font-medium uppercase tracking-[0.2em] transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-electric-iris",
+                currentIndex >= domainsStartIndex ? "text-electric-iris" : "text-current/50 hover:text-current",
               )}
             >
               Solution Domains
             </button>
           </div>
-          <p className="font-body text-xs uppercase tracking-widest text-current/50" aria-live="polite">
+          <p className="font-inter text-xs uppercase tracking-widest text-current/50" aria-live="polite">
             {currentIndex + 1} / {slides.length}
           </p>
         </div>
         <div className="flex h-1 w-full overflow-hidden rounded-full bg-current/10">
           <div
-            className="h-full bg-coral"
+            className="h-full bg-ember-pulse"
             style={{ width: `${useCaseFill * (useCaseSlideCount / slides.length) * 100}%` }}
           />
           <div
-            className="h-full bg-champagne"
+            className="h-full bg-electric-iris"
             style={{ width: `${domainFill * (domainSlideCount / slides.length) * 100}%` }}
           />
         </div>
@@ -168,28 +171,28 @@ export function DesktopShowcase({ slides }: DesktopShowcaseProps) {
               <div className="flex flex-col gap-3">
                 <p
                   className={clsx(
-                    "font-body text-xs font-medium uppercase tracking-[0.3em]",
-                    slide.taxonomy === "use-cases" ? "text-coral" : "text-champagne",
+                    "font-inter text-xs font-medium uppercase tracking-[0.3em]",
+                    slide.taxonomy === "use-cases" ? "text-ember-pulse" : "text-electric-iris",
                   )}
                 >
                   Taxonomy
                 </p>
-                <h3 className="font-display text-display-sm">{slide.dividerTitle}</h3>
-                <p className="font-body text-sm text-current/60">{slide.dividerBody}</p>
+                <h3 className="font-esbuild text-display-sm">{slide.dividerTitle}</h3>
+                <p className="font-inter text-sm text-current/60">{slide.dividerBody}</p>
               </div>
             ) : (
               <button
                 type="button"
                 onClick={() => setActive(slide.item)}
-                className="flex h-[70%] w-full flex-col gap-3 rounded-xl border border-current/15 p-6 text-left transition-colors hover:border-coral/50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-coral"
+                className="flex h-[70%] w-full flex-col gap-3 rounded-xl border border-slate-edge bg-charcoal-card p-6 text-left transition-colors hover:border-ember-pulse/50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-electric-iris"
               >
-                <p className="font-body text-xs uppercase tracking-widest text-current/50">{slide.item.eyebrow}</p>
-                <h3 className="font-display text-xl">{slide.item.title}</h3>
-                <p className="line-clamp-4 font-body text-sm text-current/70">{slide.item.description}</p>
+                <p className="font-inter text-xs uppercase tracking-widest text-current/50">{slide.item.eyebrow}</p>
+                <h3 className="font-inter text-xl font-medium">{slide.item.title}</h3>
+                <p className="line-clamp-4 font-inter text-sm text-current/70">{slide.item.description}</p>
                 {slide.item.meta?.length ? (
-                  <p className="mt-auto font-body text-xs text-current/50">{slide.item.meta.join(" → ")}</p>
+                  <p className="mt-auto font-inter text-xs text-current/50">{slide.item.meta.join(" → ")}</p>
                 ) : null}
-                <span className="font-body text-xs font-medium uppercase tracking-widest text-coral">
+                <span className="font-inter text-xs font-medium uppercase tracking-widest text-ember-pulse">
                   View details →
                 </span>
               </button>
@@ -204,7 +207,7 @@ export function DesktopShowcase({ slides }: DesktopShowcaseProps) {
           onClick={() => goTo(currentIndex - 1)}
           disabled={currentIndex === 0}
           aria-label="Previous"
-          className="rounded-full border border-current/30 p-3 disabled:opacity-30 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-coral"
+          className="rounded-full border border-current/30 p-3 disabled:opacity-30 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-electric-iris"
         >
           ←
         </button>
@@ -213,7 +216,7 @@ export function DesktopShowcase({ slides }: DesktopShowcaseProps) {
           onClick={() => goTo(currentIndex + 1)}
           disabled={currentIndex === slides.length - 1}
           aria-label="Next"
-          className="rounded-full border border-current/30 p-3 disabled:opacity-30 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-coral"
+          className="rounded-full border border-current/30 p-3 disabled:opacity-30 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-electric-iris"
         >
           →
         </button>

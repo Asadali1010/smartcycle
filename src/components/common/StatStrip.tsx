@@ -20,13 +20,15 @@ export function StatStrip({ items, className }: StatStripProps) {
       {items.map((item) => (
         <div key={item.key} className="flex flex-col gap-1">
           {item.label ? (
-            <p className="font-body text-xs uppercase tracking-[0.2em] text-current/60">{item.label}</p>
+            <p className="font-inter text-xs uppercase tracking-[0.2em] text-current/60">{item.label}</p>
           ) : null}
-          <p className="font-display text-display-sm">
-            {item.qualifier ? <span className="mr-2 text-base text-coral align-middle">{item.qualifier}</span> : null}
+          <p className="font-esbuild text-display-sm">
+            {item.qualifier ? (
+              <span className="mr-2 text-base text-ember-pulse align-middle">{item.qualifier}</span>
+            ) : null}
             {item.value}
           </p>
-          {item.caption ? <p className="font-body text-sm text-current/60">{item.caption}</p> : null}
+          {item.caption ? <p className="font-inter text-sm text-current/60">{item.caption}</p> : null}
         </div>
       ))}
     </div>

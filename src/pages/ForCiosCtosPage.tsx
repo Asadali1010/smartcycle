@@ -23,7 +23,7 @@ export function ForCiosCtosPage() {
         secondaryCta={{ label: h.ctaSecondary.value, to: "/platform" }}
       />
 
-      <PageSection tone="ivory">
+      <PageSection tone="light">
         <SectionHeading eyebrow={delivers.eyebrow.value} heading="What SmartCycleAI Delivers" description={delivers.intro.value} />
         <FeatureGrid
           columns={2}
@@ -31,7 +31,7 @@ export function ForCiosCtosPage() {
         />
       </PageSection>
 
-      <PageSection tone="obsidian">
+      <PageSection tone="dark">
         <SectionHeading eyebrow={pains.eyebrow.value} heading="The Challenges You Face" description={pains.intro.value} />
         <FeatureGrid
           columns={2}
@@ -44,7 +44,7 @@ export function ForCiosCtosPage() {
         />
       </PageSection>
 
-      <PageSection tone="ivory" containerClassName="items-center text-center gap-6">
+      <PageSection tone="light" containerClassName="items-center text-center gap-6">
         <SectionHeading heading={certs.heading.value} align="center" />
         <div className="flex flex-wrap justify-center gap-3">
           {certs.items.map((item) => (
@@ -54,7 +54,7 @@ export function ForCiosCtosPage() {
       </PageSection>
 
       <CtaBand
-        tone="obsidian"
+        tone="dark"
         heading={cta.heading.value}
         supporting={cta.supporting.value}
         primaryCta={{ label: cta.ctaPrimary.value, to: "/request-demo" }}

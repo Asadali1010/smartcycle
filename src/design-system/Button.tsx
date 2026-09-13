@@ -2,7 +2,7 @@ import type { ComponentPropsWithoutRef, ElementType, ReactNode } from "react";
 import clsx from "clsx";
 import { LetterRoll } from "./LetterRoll";
 
-export type ButtonVariant = "primary" | "secondary";
+export type ButtonVariant = "primary" | "secondary" | "white";
 export type ButtonSize = "md" | "lg";
 
 type OwnProps<T extends ElementType> = {
@@ -18,9 +18,9 @@ export type ButtonProps<T extends ElementType = "button"> = OwnProps<T> &
   Omit<ComponentPropsWithoutRef<T>, keyof OwnProps<T>>;
 
 const BASE =
-  "group relative isolate overflow-hidden inline-flex items-center justify-center gap-2 rounded-full font-display " +
-  "font-medium uppercase tracking-wide transition-colors duration-300 focus-visible:outline focus-visible:outline-2 " +
-  "focus-visible:outline-offset-4 focus-visible:outline-coral disabled:opacity-40 disabled:pointer-events-none";
+  "group relative isolate overflow-hidden inline-flex items-center justify-center gap-2 rounded-full font-inter " +
+  "font-medium tracking-[-0.01em] transition-colors duration-300 focus-visible:outline focus-visible:outline-2 " +
+  "focus-visible:outline-offset-4 focus-visible:outline-electric-iris disabled:opacity-40 disabled:pointer-events-none";
 
 /**
  * Decorative "water rising" hover fill: a tiled sine-wave SVG sits translated
@@ -52,10 +52,14 @@ function WaterFill() {
 }
 
 const VARIANT_STYLES: Record<ButtonVariant, string> = {
-  primary: "bg-coral text-obsidian hover:bg-champagne",
+  primary: "bg-electric-iris text-snow hover:bg-electric-iris/90",
   // border/text use `currentColor` so this variant automatically adapts to
-  // whichever surface (obsidian or ivory) it's placed on without a prop.
+  // whichever surface (dark or light) it's placed on without a prop.
   secondary: "border-2 border-current text-current bg-transparent hover:bg-current/10",
+  // Hero-only solid white pill: the one place white is a foreground fill
+  // rather than a neutral surface/border color (design.md's "White Pill
+  // Button" spec) — dark text keeps contrast on the hero's void/aurora bg.
+  white: "bg-snow text-void hover:bg-linen",
 };
 
 const SIZE_STYLES: Record<ButtonSize, string> = {
@@ -64,9 +68,10 @@ const SIZE_STYLES: Record<ButtonSize, string> = {
 };
 
 /**
- * Primary (coral fill) / secondary (outline) button. Both variants roll their
- * label text on hover/focus via LetterRoll and expose a visible keyboard
- * focus ring (coral outline, offset so it reads on both obsidian and ivory).
+ * Primary (electric-iris fill) / secondary (outline) / white (hero-only
+ * solid pill) button. All variants roll their label text on hover/focus via
+ * LetterRoll and expose a visible keyboard focus ring (electric-iris
+ * outline, offset so it reads on both dark and light surfaces).
  */
 export function Button<T extends ElementType = "button">(props: ButtonProps<T>) {
   const { as, variant = "primary", size = "md", children, className, ...rest } = props;

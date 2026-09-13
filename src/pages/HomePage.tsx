@@ -39,7 +39,7 @@ export function HomePage() {
       <ScrollStory />
 
       {/* --- Execution Gap --- */}
-      <PageSection tone="ivory" intensity="vivid" containerClassName="gap-10">
+      <PageSection tone="light" intensity="vivid" containerClassName="gap-10">
         <SectionHeading eyebrow={gap.eyebrow.value} heading={gap.headingLines.value.join(" ")} description={gap.intro.value} />
         <StatStrip
           items={gap.statStrip.map((s) => ({ key: s.label.value, label: s.label.value, value: s.value.value, qualifier: s.value.qualifier }))}
@@ -66,15 +66,15 @@ export function HomePage() {
       </PageSection>
 
       {/* --- Platform overview: Studio + EEF --- */}
-      <PageSection tone="obsidian" containerClassName="gap-10">
+      <PageSection tone="dark" containerClassName="gap-10">
         <SectionHeading eyebrow={platformSection.eyebrow.value} heading={platformSection.headingLines.value.join(" ")} description={platformSection.intro.value} />
-        <p className="font-body text-sm uppercase tracking-widest text-champagne">{platformSection.flowLabel.value}</p>
+        <p className="font-body text-sm uppercase tracking-widest text-electric-iris">{platformSection.flowLabel.value}</p>
         <div className="grid grid-cols-1 gap-10 lg:grid-cols-2">
           {[platformSection.studio, platformSection.eef].map((product) => (
             <div key={product.name.value} className="flex flex-col gap-4">
               <div>
                 <h3 className="font-display text-2xl">{product.name.value}</h3>
-                <p className="font-body text-sm text-coral">{product.tagline.value}</p>
+                <p className="font-body text-sm text-ember-pulse">{product.tagline.value}</p>
               </div>
               <PlatformFeatureRail
                 features={product.features.map((f) => ({ name: f.name.value, description: f.description.value }))}
@@ -85,11 +85,11 @@ export function HomePage() {
       </PageSection>
 
       {/* --- How It Works: both processes, clearly labeled --- */}
-      <PageSection tone="ivory" containerClassName="gap-14">
+      <PageSection tone="light" containerClassName="gap-14">
         <SectionHeading eyebrow={howItWorksHome.eyebrow.value} heading="How It Works" description={howItWorksHome.intro.value} />
 
         <div className="flex flex-col gap-6">
-          <h3 className="font-display text-xl text-coral">Homepage version — 4 steps</h3>
+          <h3 className="font-display text-xl text-ember-pulse">Homepage version — 4 steps</h3>
           <StepList
             steps={howItWorksHome.steps.map((s) => ({ key: s.name.value, name: s.name.value, description: s.description?.value ?? null }))}
             traced
@@ -97,7 +97,7 @@ export function HomePage() {
         </div>
 
         <div className="flex flex-col gap-6 border-t border-current/15 pt-14">
-          <h3 className="font-display text-xl text-champagne">/platform version — 5 steps</h3>
+          <h3 className="font-display text-xl text-electric-iris">/platform version — 5 steps</h3>
           <StepList
             steps={howItWorksPlatform.steps.map((s) => ({ key: s.name.value, name: s.name.value, description: s.description.value }))}
             traced
@@ -112,7 +112,7 @@ export function HomePage() {
       </PageSection>
 
       {/* --- Integration Ecosystem --- */}
-      <PageSection tone="obsidian">
+      <PageSection tone="dark">
         <SectionHeading eyebrow={integrations.eyebrow.value} heading={integrations.headingLines.value.join(" ")} description={integrations.intro.value} />
         <IntegrationNetwork
           items={integrations.items.map((item) => ({
@@ -125,7 +125,7 @@ export function HomePage() {
       </PageSection>
 
       {/* --- 10 Solution Domains + Use Cases: real pinned horizontal showcase --- */}
-      <PageSection tone="ivory" intensity="vivid" containerClassName="gap-6">
+      <PageSection tone="light" intensity="vivid" containerClassName="gap-6">
         <SectionHeading eyebrow={domains.eyebrow.value} heading={domains.headingLines.value.join(" ")} description={domains.intro.value} />
         <div className="flex flex-wrap gap-2">
           {domains.filters.map((f) => (
@@ -140,7 +140,7 @@ export function HomePage() {
       <UseCaseShowcase />
 
       {/* --- Delivery Model: scroll-driven 12-month timeline --- */}
-      <PageSection tone="obsidian" intensity="vivid" containerClassName="gap-10">
+      <PageSection tone="dark" intensity="vivid" containerClassName="gap-10">
         <SectionHeading
           eyebrow={deliveryModel.deliveryModelSection.eyebrow.value}
           heading={deliveryModel.deliveryModelSection.headingLines.value.join(" ")}
@@ -150,13 +150,13 @@ export function HomePage() {
       </PageSection>
 
       {/* --- ROI: interactive illustrative calculator --- */}
-      <PageSection tone="ivory" intensity="vivid" containerClassName="gap-8">
+      <PageSection tone="light" intensity="vivid" containerClassName="gap-8">
         <SectionHeading eyebrow={roi.roiSection.eyebrow.value} heading={roi.roiSection.headingLines.value.join(" ")} description={roi.roiSection.intro.value} />
         <RoiCalculatorIllustrative />
       </PageSection>
 
       <CtaBand
-        tone="obsidian"
+        tone="dark"
         heading={finalCta.headingLines.value.join(" ")}
         supporting={finalCta.subheading.value}
         primaryCta={{ label: finalCta.ctaPrimary.value, to: "/request-demo" }}

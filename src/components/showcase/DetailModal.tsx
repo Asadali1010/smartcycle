@@ -35,17 +35,17 @@ export function DetailModal({ item, onClose }: DetailModalProps) {
       ref={ref}
       onClose={onClose}
       onCancel={onClose}
-      className="w-[calc(100%-2rem)] max-w-lg rounded-xl border border-current/15 bg-obsidian p-0 text-ivory backdrop:bg-obsidian/70"
+      className="w-[calc(100%-2rem)] max-w-lg rounded-xl border border-slate-edge bg-charcoal-card p-0 text-snow shadow-xl backdrop:bg-void/70"
     >
       {item ? (
         <div className="flex flex-col gap-4 p-8">
-          <p className="font-body text-xs font-medium uppercase tracking-[0.2em] text-champagne">
+          <p className="font-inter text-xs font-medium uppercase tracking-[0.2em] text-ash">
             {item.taxonomy === "use-cases" ? "Use Case" : "Solution Domain"} — {item.eyebrow}
           </p>
-          <h3 className="font-display text-2xl">{item.title}</h3>
-          <p className="font-body text-base leading-relaxed text-current/80">{item.description}</p>
+          <h3 className="font-inter text-heading font-medium">{item.title}</h3>
+          <p className="font-inter text-base leading-relaxed text-current/80">{item.description}</p>
           {item.meta?.length ? (
-            <div className="flex flex-wrap items-center gap-1.5 font-body text-xs text-current/60">
+            <div className="flex flex-wrap items-center gap-1.5 font-inter text-xs text-current/60">
               {item.meta.map((step, i) => (
                 <span key={step}>
                   {step}
@@ -54,13 +54,13 @@ export function DetailModal({ item, onClose }: DetailModalProps) {
               ))}
             </div>
           ) : null}
-          <p className="font-body text-xs text-current/40">
+          <p className="font-inter text-xs text-current/40">
             Source: {item.sourceUrl} · verified {item.lastVerified}
           </p>
           <button
             type="button"
             onClick={onClose}
-            className="self-end font-body text-sm font-medium uppercase tracking-widest text-coral focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-coral"
+            className="self-end font-inter text-sm font-medium uppercase tracking-widest text-ember-pulse focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-electric-iris"
           >
             Close
           </button>

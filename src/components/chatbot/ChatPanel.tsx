@@ -46,16 +46,16 @@ export function ChatPanel() {
           animate={{ opacity: 1, y: 0, scale: 1 }}
           exit={prefersReducedMotion ? { opacity: 0 } : { opacity: 0, y: 16, scale: 0.97 }}
           transition={{ duration: prefersReducedMotion ? 0.15 : 0.32, ease: [0.22, 1, 0.36, 1] }}
-          className="fixed bottom-24 right-4 z-50 flex w-[calc(100vw-2rem)] max-w-sm flex-col overflow-hidden rounded-xl border border-ivory/15 bg-obsidian shadow-2xl shadow-obsidian/60 sm:right-6 sm:bottom-28"
+          className="fixed bottom-24 right-4 z-50 flex w-[calc(100vw-2rem)] max-w-sm flex-col overflow-hidden rounded-xl border border-slate-edge bg-charcoal-card sm:right-6 sm:bottom-28"
           style={{ maxHeight: isMinimized ? undefined : "min(32rem, calc(100vh - 9rem))" }}
         >
           {/* Header */}
-          <div className="flex items-center justify-between gap-2 border-b border-ivory/10 bg-ivory/5 px-4 py-3">
+          <div className="flex items-center justify-between gap-2 border-b border-slate-edge bg-snow/5 px-4 py-3">
             <div className="flex items-center gap-2 overflow-hidden">
-              <span className="h-2 w-2 shrink-0 rounded-full bg-champagne" aria-hidden="true" />
+              <span className="h-2 w-2 shrink-0 rounded-full bg-electric-iris" aria-hidden="true" />
               <div className="flex flex-col overflow-hidden">
-                <span className="truncate font-display text-sm text-ivory">SmartCycle Assistant</span>
-                <span className="font-body text-[0.65rem] font-medium uppercase tracking-widest text-champagne">
+                <span className="truncate font-inter text-sm font-medium text-snow">SmartCycle Assistant</span>
+                <span className="font-inter text-[0.65rem] font-medium uppercase tracking-widest text-ash">
                   Local demo mode
                 </span>
               </div>
@@ -66,7 +66,7 @@ export function ChatPanel() {
                 onClick={startNewConversation}
                 title="New conversation"
                 aria-label="Start a new conversation"
-                className="rounded-md p-1.5 text-ivory/60 transition-colors hover:bg-ivory/10 hover:text-ivory focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-coral"
+                className="rounded-md p-1.5 text-smoke transition-colors hover:bg-snow/10 hover:text-snow focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-electric-iris"
               >
                 <PlusIcon />
               </button>
@@ -75,7 +75,7 @@ export function ChatPanel() {
                 onClick={toggleMinimized}
                 title={isMinimized ? "Restore" : "Minimize"}
                 aria-label={isMinimized ? "Restore chat window" : "Minimize chat window"}
-                className="rounded-md p-1.5 text-ivory/60 transition-colors hover:bg-ivory/10 hover:text-ivory focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-coral"
+                className="rounded-md p-1.5 text-smoke transition-colors hover:bg-snow/10 hover:text-snow focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-electric-iris"
               >
                 {isMinimized ? <ExpandIcon /> : <MinimizeIcon />}
               </button>
@@ -84,7 +84,7 @@ export function ChatPanel() {
                 onClick={closePanel}
                 title="Close"
                 aria-label="Close chat window"
-                className="rounded-md p-1.5 text-ivory/60 transition-colors hover:bg-ivory/10 hover:text-ivory focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-coral"
+                className="rounded-md p-1.5 text-smoke transition-colors hover:bg-snow/10 hover:text-snow focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-electric-iris"
               >
                 <CloseIcon />
               </button>
@@ -95,7 +95,7 @@ export function ChatPanel() {
             <>
               {/* Persistent disclosure — always visible while the panel is open,
                   per CLAUDE.md: the widget must never be mistaken for live AI. */}
-              <p className="border-b border-ivory/10 bg-ivory/[0.03] px-4 py-2 font-body text-[0.7rem] leading-snug text-ivory/60">
+              <p className="border-b border-slate-edge bg-snow/[0.03] px-4 py-2 font-inter text-[0.7rem] leading-snug text-ash">
                 {CHATBOT_DEMO_DISCLOSURE}
               </p>
 

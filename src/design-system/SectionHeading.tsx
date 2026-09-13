@@ -23,9 +23,9 @@ export interface SectionHeadingProps {
 }
 
 const HEADING_SIZE: Record<SectionHeadingLevel, string> = {
-  h1: "text-display-xl",
-  h2: "text-display-lg",
-  h3: "text-display-md",
+  h1: "text-display",
+  h2: "text-display-sm",
+  h3: "text-heading",
 };
 
 /**
@@ -48,14 +48,23 @@ export function SectionHeading({
   return (
     <div className={clsx("flex flex-col gap-4", align === "center" && "items-center text-center", className)}>
       {eyebrow ? (
-        <p className="font-body text-sm font-medium uppercase tracking-[0.3em] text-champagne">{eyebrow}</p>
+        <p className="font-inter text-sm font-medium uppercase tracking-[0.3em] text-ash">{eyebrow}</p>
       ) : null}
-      <Heading className={clsx("font-display font-medium", HEADING_SIZE[level], headingClassName)}>
+      <Heading
+        className={clsx(
+          // h3 renders at 24px, and design.md bans the Esbuild/Sora display
+          // face below 28px — so h3 gets Inter/medium instead of the shared
+          // font-esbuild class the two larger display levels use.
+          level === "h3" ? "font-inter font-medium" : "font-esbuild font-medium",
+          HEADING_SIZE[level],
+          headingClassName,
+        )}
+      >
         <MaskedReveal mode="word" active={reveal ? undefined : true}>
           {heading}
         </MaskedReveal>
       </Heading>
-      {description ? <div className="max-w-2xl font-body text-lg text-current/70">{description}</div> : null}
+      {description ? <div className="max-w-2xl font-inter text-lg text-current/70">{description}</div> : null}
     </div>
   );
 }

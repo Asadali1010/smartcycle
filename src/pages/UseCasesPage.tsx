@@ -16,7 +16,7 @@ export function UseCasesPage() {
     <>
       <HeroSection headingLines={hero.headingLines.value} subheading={hero.subheading.value} />
 
-      <PageSection tone="ivory">
+      <PageSection tone="light">
         <SectionHeading eyebrow={flexibility.eyebrow.value} heading="Flexibility Over Features" description={flexibility.intro.value} />
         <FeatureGrid
           columns={3}
@@ -24,7 +24,7 @@ export function UseCasesPage() {
         />
       </PageSection>
 
-      <PageSection tone="obsidian" containerClassName="gap-14">
+      <PageSection tone="dark" containerClassName="gap-14">
         <div className="flex flex-col gap-4">
           <SectionHeading eyebrow={intro.eyebrow.value} heading={intro.headingLines.value.join(" ")} description={intro.intro.value} />
           <p className="font-body text-sm text-current/60">
@@ -37,7 +37,7 @@ export function UseCasesPage() {
         {useCases.useCaseCategories.map((category) => (
           <div key={category.name.value} className="flex flex-col gap-6">
             <div>
-              <h3 className="font-display text-2xl text-coral">{category.name.value}</h3>
+              <h3 className="font-display text-2xl text-ember-pulse">{category.name.value}</h3>
               <p className="mt-1 max-w-2xl font-body text-current/70">{category.intro.value}</p>
             </div>
             <FeatureGrid
@@ -49,7 +49,7 @@ export function UseCasesPage() {
       </PageSection>
 
       <CtaBand
-        tone="ivory"
+        tone="light"
         heading={cta.headingLines.value.join(" ")}
         supporting={cta.supporting.value}
         primaryCta={{ label: cta.ctaPrimary.value, to: "/request-demo" }}

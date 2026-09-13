@@ -32,7 +32,7 @@ export function WhySmartCycleAIPage() {
         secondaryCta={{ label: hero.ctaSecondary.value, to: "/platform" }}
       />
 
-      <PageSection tone="ivory">
+      <PageSection tone="light">
         <SectionHeading eyebrow={diagram.eyebrow.value} heading="The Missing Layer" description={diagram.intro.value} />
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-3">
           {[diagram.columns.strategy, diagram.columns.smartCycleAI, diagram.columns.results].map((col) => (
@@ -48,7 +48,7 @@ export function WhySmartCycleAIPage() {
         </p>
       </PageSection>
 
-      <PageSection tone="obsidian">
+      <PageSection tone="dark">
         <SectionHeading heading="Why Initiatives Stall" />
         <FeatureGrid
           columns={3}
@@ -56,7 +56,7 @@ export function WhySmartCycleAIPage() {
         />
       </PageSection>
 
-      <PageSection tone="ivory">
+      <PageSection tone="light">
         <SectionHeading
           eyebrow={differentiators.eyebrow.value}
           heading={differentiators.headingLines.value.join(" ")}
@@ -72,7 +72,7 @@ export function WhySmartCycleAIPage() {
         </p>
       </PageSection>
 
-      <PageSection tone="obsidian" containerClassName="gap-10">
+      <PageSection tone="dark" containerClassName="gap-10">
         <div className="flex flex-col gap-4">
           <SectionHeading eyebrow={heritage.eyebrow.value} heading={heritage.heading.value} />
           <p className="max-w-3xl font-body text-lg leading-relaxed text-current/70">{heritage.intro.value}</p>
@@ -91,7 +91,7 @@ export function WhySmartCycleAIPage() {
         </div>
       </PageSection>
 
-      <PageSection tone="ivory" containerClassName="gap-8">
+      <PageSection tone="light" containerClassName="gap-8">
         <SectionHeading eyebrow={infra.eyebrow.value} heading="Not a Collection of Tools" description={infra.intro.value} />
         <div className="flex flex-wrap gap-3">
           {infra.platformCapabilityLabels.map((label) => (
@@ -107,7 +107,7 @@ export function WhySmartCycleAIPage() {
         </p>
       </PageSection>
 
-      <PageSection tone="obsidian" containerClassName="gap-8">
+      <PageSection tone="dark" containerClassName="gap-8">
         <SectionHeading eyebrow={governance.eyebrow.value} heading={governance.headingLines.value.join(" ")} description={governance.intro.value} />
         <FeatureGrid
           columns={3}
@@ -122,11 +122,11 @@ export function WhySmartCycleAIPage() {
         <p className="font-display text-xl">{governance.closingLines.value.join(" ")}</p>
       </PageSection>
 
-      <PageSection tone="ivory" containerClassName="gap-10">
+      <PageSection tone="light" containerClassName="gap-10">
         <SectionHeading heading={speedSafety.headingLines.value.join(" ")} description={speedSafety.intro.value} />
         <div className="grid grid-cols-1 gap-10 sm:grid-cols-2">
           <div className="flex flex-col gap-4">
-            <h3 className="font-display text-2xl text-coral">{speedSafety.startupSpeed.name.value}</h3>
+            <h3 className="font-display text-2xl text-ember-pulse">{speedSafety.startupSpeed.name.value}</h3>
             <ul className="flex flex-col gap-4">
               {speedSafety.startupSpeed.items.map((item) => (
                 <li key={item.name.value}>
@@ -137,7 +137,7 @@ export function WhySmartCycleAIPage() {
             </ul>
           </div>
           <div className="flex flex-col gap-4">
-            <h3 className="font-display text-2xl text-champagne">{speedSafety.enterpriseSafety.name.value}</h3>
+            <h3 className="font-display text-2xl text-electric-iris">{speedSafety.enterpriseSafety.name.value}</h3>
             <ul className="flex flex-col gap-4">
               {speedSafety.enterpriseSafety.items.map((item) => (
                 <li key={item.name.value}>
@@ -148,7 +148,7 @@ export function WhySmartCycleAIPage() {
             </ul>
           </div>
         </div>
-        <blockquote className="border-l-2 border-coral pl-6">
+        <blockquote className="border-l-2 border-ember-pulse pl-6">
           <p className="font-display text-2xl italic">&ldquo;{speedSafety.quote.value}&rdquo;</p>
           <p className="mt-2 font-body text-xs uppercase tracking-widest text-current/50">
             Illustrative site copy — not a named customer testimonial
@@ -161,7 +161,7 @@ export function WhySmartCycleAIPage() {
         </blockquote>
       </PageSection>
 
-      <PageSection tone="obsidian">
+      <PageSection tone="dark">
         <SectionHeading eyebrow={workforce.eyebrow.value} heading={workforce.headingLines.value.join(" ")} description={workforce.intro.value} />
         <p className="font-body text-current/70">{workforce.supporting.value}</p>
         <FeatureGrid
@@ -169,7 +169,7 @@ export function WhySmartCycleAIPage() {
           items={workforce.items.map((w) => ({ key: w.name.value, name: w.name.value, description: w.description.value }))}
         />
         <div className="flex flex-col gap-2">
-          <p className="font-body text-xs uppercase tracking-widest text-champagne">{workforce.comparisonHeading.value}</p>
+          <p className="font-body text-xs uppercase tracking-widest text-ember-pulse">{workforce.comparisonHeading.value}</p>
           <div className="flex flex-wrap gap-3">
             {workforce.comparisonPoints.map((p) => (
               <Badge key={p.value} label={p.value} tone="outline" />
@@ -181,9 +181,9 @@ export function WhySmartCycleAIPage() {
         </p>
       </PageSection>
 
-      <PageSection tone="ivory" containerClassName="gap-10">
+      <PageSection tone="light" containerClassName="gap-10">
         <SectionHeading eyebrow={ip.eyebrow.value} heading={ip.headingLines.value.join(" ")} description={ip.intro.value} />
-        <p className="font-display text-display-sm text-coral">{ip.ownershipStat.value}</p>
+        <p className="font-display text-display-sm text-ember-pulse">{ip.ownershipStat.value}</p>
         <FeatureGrid
           columns={2}
           items={ip.points.map((p) => ({ key: p.name.value, name: p.name.value, description: p.description.value }))}
@@ -197,8 +197,8 @@ export function WhySmartCycleAIPage() {
               ))}
             </ul>
           </div>
-          <div className="flex flex-col gap-3 rounded-lg border border-coral/40 bg-coral/5 p-6">
-            <h3 className="font-display text-xl text-coral">{ip.smartCycleAIModel.heading.value}</h3>
+          <div className="flex flex-col gap-3 rounded-lg border border-ember-pulse/40 bg-ember-pulse/5 p-6">
+            <h3 className="font-display text-xl text-ember-pulse">{ip.smartCycleAIModel.heading.value}</h3>
             <ul className="flex flex-col gap-2 font-body text-sm">
               {ip.smartCycleAIModel.points.map((p) => (
                 <li key={p.value}>— {p.value}</li>
@@ -208,7 +208,7 @@ export function WhySmartCycleAIPage() {
         </div>
       </PageSection>
 
-      <PageSection tone="obsidian">
+      <PageSection tone="dark">
         <SectionHeading eyebrow={impact.eyebrow.value} heading={impact.headingLines.value.join(" ")} description={impact.intro.value} />
         <FeatureGrid
           columns={3}
@@ -224,7 +224,7 @@ export function WhySmartCycleAIPage() {
       </PageSection>
 
       <CtaBand
-        tone="ivory"
+        tone="light"
         eyebrow={cta.eyebrow.value}
         heading={cta.headingLines.value.join(" ")}
         supporting={cta.supporting.value}

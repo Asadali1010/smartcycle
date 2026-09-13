@@ -23,7 +23,7 @@ export function AboutPage() {
         supporting={hero.supporting.value}
       />
 
-      <PageSection tone="ivory">
+      <PageSection tone="light">
         <SectionHeading heading={founding.heading.value} />
         <div className="flex flex-col gap-4 font-body text-lg leading-relaxed text-current/70">
           <p>{founding.paragraph1.value}</p>
@@ -38,14 +38,14 @@ export function AboutPage() {
         />
       </PageSection>
 
-      <PageSection tone="obsidian" containerClassName="items-center text-center gap-10">
+      <PageSection tone="dark" containerClassName="items-center text-center gap-10">
         <SectionHeading heading={mission.heading.value} description={mission.statement.value} align="center" />
         <div className="grid grid-cols-1 gap-8 sm:grid-cols-3">
           {mission.stats.map((stat) => (
             <div key={stat.headline.value} className="flex flex-col gap-1">
               <p className="font-display text-display-sm">
                 {stat.headline.value}
-                {stat.subline ? <span className="ml-2 text-champagne">{stat.subline.value}</span> : null}
+                {stat.subline ? <span className="ml-2 text-ember-pulse">{stat.subline.value}</span> : null}
               </p>
               <p className="font-body text-sm text-current/60">{stat.caption.value}</p>
             </div>
@@ -53,7 +53,7 @@ export function AboutPage() {
         </div>
       </PageSection>
 
-      <PageSection tone="ivory">
+      <PageSection tone="light">
         <SectionHeading heading={values.heading.value} description={values.intro.value} />
         <FeatureGrid
           columns={2}
@@ -61,10 +61,10 @@ export function AboutPage() {
         />
       </PageSection>
 
-      <PageSection tone="obsidian" containerClassName="gap-6">
+      <PageSection tone="dark" containerClassName="gap-6">
         <SectionHeading heading={native.heading.value} description={native.body.value} />
         <div className="flex flex-col gap-3">
-          <p className="font-body text-xs uppercase tracking-widest text-champagne">{native.expertiseHeading.value}</p>
+          <p className="font-body text-xs uppercase tracking-widest text-ember-pulse">{native.expertiseHeading.value}</p>
           <div className="flex flex-wrap gap-3">
             {native.expertiseTags.map((tag) => (
               <Badge key={tag.value} label={tag.value} tone="outline" />
@@ -73,13 +73,13 @@ export function AboutPage() {
         </div>
       </PageSection>
 
-      <PageSection tone="ivory" containerClassName="max-w-3xl gap-6">
+      <PageSection tone="light" containerClassName="max-w-3xl gap-6">
         <SectionHeading heading={leadership.heading.value} description={leadership.intro.value} />
         {leadership.people.map((person) => (
           <div key={person.name.value} className="flex flex-col gap-3 rounded-lg border border-current/15 p-8">
             <div>
               <h3 className="font-display text-2xl">{person.name.value}</h3>
-              <p className="font-body text-sm uppercase tracking-widest text-coral">{person.title.value}</p>
+              <p className="font-body text-sm uppercase tracking-widest text-ember-pulse">{person.title.value}</p>
             </div>
             <div className="flex flex-col gap-3 font-body text-base leading-relaxed text-current/70">
               <p>{person.bioParagraph1.value}</p>
@@ -91,7 +91,7 @@ export function AboutPage() {
       </PageSection>
 
       <CtaBand
-        tone="obsidian"
+        tone="dark"
         heading={cta.heading.value}
         supporting={cta.supporting.value}
         primaryCta={{ label: cta.ctaPrimary.value, to: "/request-demo" }}

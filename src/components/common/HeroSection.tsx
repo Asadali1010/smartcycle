@@ -37,14 +37,14 @@ export function HeroSection({
   primaryCta,
   secondaryCta,
   badges,
-  tone = "obsidian",
+  tone = "dark",
   intensity = "vivid",
   children,
 }: HeroSectionProps) {
   return (
     <PageSection tone={tone} intensity={intensity} className="pt-40 md:pt-48">
       <SectionHeading eyebrow={eyebrow} heading={headingLines.join(" ")} level="h1" description={subheading} />
-      {supporting ? <p className="max-w-2xl font-body text-lg text-current/70">{supporting}</p> : null}
+      {supporting ? <p className="max-w-2xl font-inter text-lg text-current/70">{supporting}</p> : null}
       {primaryCta || secondaryCta ? (
         <div className="flex flex-wrap items-center gap-4">
           {primaryCta ? (

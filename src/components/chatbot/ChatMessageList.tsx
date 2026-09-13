@@ -19,7 +19,7 @@ function MessageActions({ message }: { message: ChatMessage }) {
       {message.link ? (
         <Link
           to={message.link.to}
-          className="inline-flex items-center rounded-full border border-champagne/50 px-3 py-1 font-body text-xs text-ivory/90 transition-colors hover:border-champagne hover:text-ivory focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-coral"
+          className="inline-flex items-center rounded-full border border-slate-edge px-3 py-1 font-inter text-xs text-ash transition-colors hover:border-iron-veil hover:text-snow focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-electric-iris"
         >
           View {message.link.label}
         </Link>
@@ -27,7 +27,7 @@ function MessageActions({ message }: { message: ChatMessage }) {
       {showSeparateDemoCta ? (
         <Link
           to={DEMO_ROUTE}
-          className="inline-flex items-center rounded-full bg-coral px-3 py-1 font-body text-xs font-medium text-obsidian transition-colors hover:bg-champagne focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-coral"
+          className="inline-flex items-center rounded-full bg-electric-iris px-3 py-1 font-inter text-xs font-medium text-snow transition-colors hover:bg-electric-iris/90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-electric-iris"
         >
           Request a Demo
         </Link>
@@ -42,12 +42,12 @@ function MessageBubble({ message }: { message: ChatMessage }) {
     <div className={clsx("flex", isUser ? "justify-end" : "justify-start")}>
       <div
         className={clsx(
-          "max-w-[85%] rounded-lg px-3.5 py-2.5 font-body text-sm leading-relaxed",
+          "max-w-[85%] rounded-xl px-3.5 py-2.5 font-inter text-sm leading-relaxed",
           isUser
-            ? "bg-coral text-obsidian"
+            ? "bg-electric-iris text-snow"
             : message.isRefusal
-              ? "border border-champagne/40 bg-champagne/10 text-ivory"
-              : "border border-ivory/10 bg-ivory/5 text-ivory",
+              ? "border border-ember-pulse/40 bg-ember-pulse/10 text-snow"
+              : "border border-slate-edge bg-iron-veil/10 text-snow",
         )}
       >
         <p className="whitespace-pre-wrap">{message.text}</p>
@@ -60,11 +60,11 @@ function MessageBubble({ message }: { message: ChatMessage }) {
 function TypingIndicator() {
   return (
     <div className="flex justify-start" aria-live="polite" aria-label="SmartCycle Assistant is composing a reply">
-      <div className="flex items-center gap-1 rounded-lg border border-ivory/10 bg-ivory/5 px-3.5 py-3">
+      <div className="flex items-center gap-1 rounded-xl border border-slate-edge bg-iron-veil/10 px-3.5 py-3">
         {[0, 1, 2].map((i) => (
           <span
             key={i}
-            className="h-1.5 w-1.5 animate-pulse rounded-full bg-ivory/50"
+            className="h-1.5 w-1.5 animate-pulse rounded-full bg-electric-iris"
             style={{ animationDelay: `${i * 0.15}s` }}
           />
         ))}
@@ -77,12 +77,12 @@ function ErrorBubble({ error }: { error: string }) {
   const retry = useChatSession((state) => state.retry);
   return (
     <div className="flex justify-start" role="alert">
-      <div className="flex max-w-[85%] flex-col gap-2 rounded-lg border border-coral/50 bg-coral/10 px-3.5 py-2.5 font-body text-sm text-ivory">
+      <div className="flex max-w-[85%] flex-col gap-2 rounded-xl border border-ember-pulse/50 bg-ember-pulse/10 px-3.5 py-2.5 font-inter text-sm text-snow">
         <p>{error}</p>
         <button
           type="button"
           onClick={retry}
-          className="self-start rounded-full border border-coral/60 px-3 py-1 font-body text-xs uppercase tracking-widest text-coral transition-colors hover:bg-coral/10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-coral"
+          className="self-start rounded-full border border-ember-pulse/60 px-3 py-1 font-inter text-xs font-medium text-ember-pulse transition-colors hover:bg-ember-pulse/10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-electric-iris"
         >
           Retry
         </button>
@@ -109,7 +109,7 @@ export function ChatMessageList() {
   return (
     <div className="flex min-h-0 flex-1 flex-col gap-3 overflow-y-auto px-4 py-4" role="log" aria-live="polite">
       {messages.length === 0 ? (
-        <p className="font-body text-sm text-ivory/50">Start a conversation below, or try one of the prompts.</p>
+        <p className="font-inter text-sm text-ash">Start a conversation below, or try one of the prompts.</p>
       ) : (
         messages.map((message) => <MessageBubble key={message.id} message={message} />)
       )}

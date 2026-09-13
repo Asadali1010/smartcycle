@@ -23,14 +23,14 @@ import type { StoryPanel } from "./storyContent";
 gsap.registerPlugin(ScrollTrigger);
 
 const ACCENT_TEXT: Record<StoryPanel["accent"], string> = {
-  coral: "text-coral",
-  violet: "text-violet",
-  champagne: "text-champagne",
+  ember: "text-ember-pulse",
+  iris: "text-electric-iris",
+  neutral: "text-ash",
 };
 const ACCENT_BG: Record<StoryPanel["accent"], string> = {
-  coral: "bg-coral",
-  violet: "bg-violet",
-  champagne: "bg-champagne",
+  ember: "bg-ember-pulse",
+  iris: "bg-electric-iris",
+  neutral: "bg-ash",
 };
 
 export function ScrollStoryPinned() {
@@ -61,13 +61,13 @@ export function ScrollStoryPinned() {
   const activePanel = panels[zoneIndex];
 
   return (
-    <div ref={sectionRef} className="relative h-screen w-full overflow-hidden bg-surface-vivid-dark text-ivory">
+    <div ref={sectionRef} className="relative h-screen w-full overflow-hidden bg-obsidian-canvas text-snow">
       <div ref={containerRef} className="absolute inset-0">
         <Canvas frameloop={frameloop} dpr={[1, 2]} gl={{ antialias: true, alpha: true }} camera={{ fov: 45 }}>
           <ScrollStoryScene stage={stage} />
         </Canvas>
-        <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-obsidian via-obsidian/30 to-transparent" />
-        <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-transparent via-obsidian/15 to-obsidian/70" />
+        <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-obsidian-canvas via-obsidian-canvas/30 to-transparent" />
+        <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-transparent via-obsidian-canvas/15 to-obsidian-canvas/70" />
       </div>
 
       <div className="relative z-10 mx-auto flex h-full w-full max-w-6xl flex-col justify-between px-gutter py-16">
@@ -77,7 +77,7 @@ export function ScrollStoryPinned() {
               {i > 0 ? <span className="text-current/25">→</span> : null}
               <span
                 className={clsx(
-                  "font-body text-xs font-medium uppercase tracking-[0.2em] transition-colors",
+                  "font-inter text-caption font-medium uppercase tracking-[0.2em] transition-colors",
                   i === zoneIndex ? ACCENT_TEXT[panel.accent] : "text-current/40",
                 )}
               >
@@ -107,15 +107,15 @@ export function ScrollStoryPinned() {
               transition={{ duration: 0.35, ease: SIGNATURE_EASE_ARRAY }}
               className="flex flex-col items-end gap-3"
             >
-              <p className={clsx("font-body text-xs uppercase tracking-widest", ACCENT_TEXT[activePanel.accent])}>
+              <p className={clsx("font-inter text-caption font-medium uppercase tracking-widest", ACCENT_TEXT[activePanel.accent])}>
                 {activePanel.eyebrow}
               </p>
-              <h3 className="font-display text-display-sm">
+              <h3 className="font-esbuild text-display-sm">
                 <MaskedReveal active mode="word">
                   {activePanel.heading}
                 </MaskedReveal>
               </h3>
-              <p className="max-w-sm font-body text-sm text-current/70">{activePanel.body}</p>
+              <p className="max-w-sm font-inter text-body text-current/70">{activePanel.body}</p>
               <div className="flex flex-wrap justify-end gap-2">
                 {activePanel.chips.map((chip) => (
                   <Badge key={chip} label={chip} tone="subtle" />
@@ -124,7 +124,7 @@ export function ScrollStoryPinned() {
             </motion.div>
           </AnimatePresence>
 
-          <p className="font-body text-xs uppercase tracking-widest text-current/35">
+          <p className="font-inter text-caption font-medium uppercase tracking-widest text-current/35">
             {home.platformSection.flowLabel.value}
           </p>
         </div>

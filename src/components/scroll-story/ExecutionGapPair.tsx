@@ -1,7 +1,7 @@
 /**
  * One problem/solution pair from the homepage's "Execution Gap" section,
  * rendered so the correction reads as happening live: the problem stat gets
- * struck through by a coral line that draws itself in (SVG
+ * struck through by an ember line that draws itself in (SVG
  * stroke-dashoffset), then the solution block wipes in beneath it
  * (clip-path). Matches the section's own problem→solution framing instead
  * of a generic fade-in.
@@ -61,8 +61,8 @@ export function ExecutionGapPair({
   return (
     <div ref={rootRef} className="flex flex-col gap-4 rounded-lg border border-current/15 p-6">
       <div>
-        <p className="font-body text-xs uppercase tracking-widest text-current/50">{problemLabel}</p>
-        <p className="relative inline-block font-display text-xl text-current/60">
+        <p className="font-inter text-caption font-medium uppercase tracking-widest text-current/50">{problemLabel}</p>
+        <p className="relative inline-block font-inter text-xl font-semibold text-current/60">
           {problemStat}
           {/*
             Bounded to one line-height (not h-full/inset-0) so the strike lands on the
@@ -72,18 +72,18 @@ export function ExecutionGapPair({
             Tailwind's default 1.75rem (28px) line-height, i.e. h-7.
           */}
           <svg className="pointer-events-none absolute inset-x-0 top-0 h-7 w-full overflow-visible" aria-hidden="true">
-            <line x1="0" y1="50%" x2="100%" y2="50%" ref={strikeRef} stroke="currentColor" strokeWidth="2" className="text-coral" />
+            <line x1="0" y1="50%" x2="100%" y2="50%" ref={strikeRef} stroke="currentColor" strokeWidth="2" className="text-ember-pulse" />
           </svg>
         </p>
-        <p className="mt-1 font-body text-sm text-current/60">{problemDescription}</p>
+        <p className="mt-1 font-inter text-body text-current/60">{problemDescription}</p>
       </div>
       <div ref={solutionRef} className="border-t border-current/10 pt-4">
-        <p className="font-body text-xs uppercase tracking-widest text-coral">{solutionLabel}</p>
-        <p className="font-display text-xl text-coral">
+        <p className="font-inter text-caption font-medium uppercase tracking-widest text-ember-pulse">{solutionLabel}</p>
+        <p className="font-inter text-xl font-semibold text-ember-pulse">
           {solutionQualifier ? `${solutionQualifier} ` : ""}
           {solutionStat}
         </p>
-        <p className="mt-1 font-body text-sm text-current/70">{solutionDescription}</p>
+        <p className="mt-1 font-inter text-body text-current/70">{solutionDescription}</p>
       </div>
     </div>
   );

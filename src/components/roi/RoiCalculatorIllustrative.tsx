@@ -26,8 +26,8 @@ interface SliderFieldProps {
 function SliderField({ label, value, min, max, step, format, onChange }: SliderFieldProps) {
   return (
     <label className="flex flex-col gap-2">
-      <span className="font-body text-xs uppercase tracking-widest text-current/50">{label}</span>
-      <span className="font-display text-xl text-coral">{format(value)}</span>
+      <span className="font-inter text-xs uppercase tracking-widest text-current/50">{label}</span>
+      <span className="font-inter text-xl font-medium text-electric-iris">{format(value)}</span>
       <input
         type="range"
         min={min}
@@ -35,7 +35,7 @@ function SliderField({ label, value, min, max, step, format, onChange }: SliderF
         step={step}
         value={value}
         onChange={(e) => onChange(Number(e.target.value))}
-        className="accent-coral"
+        className="accent-electric-iris"
       />
     </label>
   );
@@ -43,10 +43,10 @@ function SliderField({ label, value, min, max, step, format, onChange }: SliderF
 
 function OutputStat({ label, value, qualifier }: { label: string; value: string; qualifier?: string }) {
   return (
-    <div className="flex flex-col gap-1 rounded-lg border border-current/10 p-4">
-      <p className="font-body text-xs uppercase tracking-widest text-current/50">{label}</p>
-      <p className="font-display text-2xl text-current">{value}</p>
-      {qualifier ? <p className="font-body text-xs text-champagne">{qualifier}</p> : null}
+    <div className="flex flex-col gap-1 rounded-xl border border-slate-edge p-4">
+      <p className="font-inter text-xs uppercase tracking-widest text-current/50">{label}</p>
+      <p className="font-inter text-2xl font-medium text-current">{value}</p>
+      {qualifier ? <p className="font-inter text-xs text-smoke">{qualifier}</p> : null}
     </div>
   );
 }
@@ -94,13 +94,13 @@ export function RoiCalculatorIllustrative() {
     activeProjects === inputs[2].default.value;
 
   return (
-    <div className="flex flex-col gap-8 rounded-2xl border border-current/15 p-8">
+    <div className="flex flex-col gap-8 rounded-xl border border-slate-edge bg-charcoal-card p-8 text-snow">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <Badge label="Illustrative — not a verified SmartCycleAI figure" tone="solid" />
         <GapNote gapId="roi-calculator-dynamic" label="Why this is illustrative" />
       </div>
 
-      <p className="max-w-2xl font-body text-sm text-current/60">
+      <p className="max-w-2xl font-inter text-sm text-current/60">
         Illustrative model: this hand-built formula assumes cost reduction scales with your organization size,
         annual build spend, and active project count, tuned so its default slider position reproduces the real
         site's confirmed default outputs. Moving the sliders shows this component's own interpolation, not
@@ -160,7 +160,7 @@ export function RoiCalculatorIllustrative() {
         />
       </div>
 
-      <p className="font-body text-xs text-current/40">
+      <p className="font-inter text-xs text-current/40">
         Default position ({inputs[0].default.value.toLocaleString()} employees / {currencyCompact.format(
           inputs[1].default.value,
         )}{" "}

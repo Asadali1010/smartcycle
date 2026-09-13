@@ -13,7 +13,7 @@ export function StarterPrompts() {
 
   return (
     <div className="flex flex-col gap-2 px-4 py-3">
-      <p className="font-body text-xs uppercase tracking-widest text-ivory/50">Try asking</p>
+      <p className="font-inter text-xs uppercase tracking-widest text-ash">Try asking</p>
       <div className="flex flex-wrap gap-2">
         {CHATBOT_STARTER_PROMPTS.map((prompt) => (
           <button
@@ -21,7 +21,7 @@ export function StarterPrompts() {
             type="button"
             disabled={status === "loading"}
             onClick={() => sendMessage(prompt)}
-            className="rounded-full border border-champagne/40 bg-transparent px-3 py-1.5 text-left font-body text-xs text-ivory/80 transition-colors hover:border-champagne hover:text-ivory disabled:pointer-events-none disabled:opacity-40 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-coral"
+            className="rounded-full border border-transparent bg-electric-iris/12 px-3 py-1.5 text-left font-inter text-xs text-electric-iris transition-colors hover:bg-electric-iris/20 disabled:pointer-events-none disabled:opacity-40 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-electric-iris"
           >
             {prompt}
           </button>

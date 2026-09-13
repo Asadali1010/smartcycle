@@ -58,7 +58,7 @@ export function PlatformFeatureRail({ features }: PlatformFeatureRailProps) {
               {feature.name}
             </MaskedReveal>
           </p>
-          <p className="font-body text-sm text-current/70">{feature.description}</p>
+          <p className="font-inter text-body text-current/70">{feature.description}</p>
         </motion.li>
       ))}
     </ul>

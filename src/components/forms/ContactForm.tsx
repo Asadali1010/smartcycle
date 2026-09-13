@@ -60,8 +60,8 @@ const DEFAULT_VALUES: ContactFormValues = {
 };
 
 const FIELD_CLASSES =
-  "w-full rounded-md border bg-transparent px-4 py-3 font-body text-sm text-current placeholder:text-current/40 " +
-  "focus:outline-none focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-coral";
+  "w-full rounded border bg-transparent px-4 py-3 font-inter text-sm text-current placeholder:text-current/40 " +
+  "focus:outline-none focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-electric-iris";
 
 /**
  * Shared form used by both /contact and /request-demo so they never drift.
@@ -91,10 +91,10 @@ export function ContactForm() {
     return (
       <div
         role="status"
-        className="flex flex-col items-center gap-3 rounded-lg border border-champagne/40 bg-champagne/5 px-6 py-10 text-center"
+        className="flex flex-col items-center gap-3 rounded-lg border border-ash/40 bg-ash/5 px-6 py-10 text-center"
       >
-        <p className="font-display text-2xl">Validated locally</p>
-        <p className="max-w-md font-body text-sm text-current/70">
+        <p className="font-inter text-heading font-semibold">Validated locally</p>
+        <p className="max-w-md font-inter text-sm text-current/70">
           In production this would submit to a CRM/endpoint. No data has actually been transmitted or stored — this
           is a local prototype.
         </p>
@@ -104,7 +104,7 @@ export function ContactForm() {
             reset();
             setValidated(false);
           }}
-          className="mt-2 font-body text-sm uppercase tracking-widest text-coral underline underline-offset-4 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-coral"
+          className="mt-2 font-inter text-sm uppercase tracking-widest text-ember-pulse underline underline-offset-4 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-electric-iris"
         >
           Fill out another response
         </button>
@@ -121,11 +121,11 @@ export function ContactForm() {
           const key = config.key as FieldKey;
           const error = errors[key];
           const wide = config.kind === "textarea";
-          const borderClass = error ? "border-coral" : "border-current/25";
+          const borderClass = error ? "border-ember-pulse" : "border-current/25";
 
           return (
             <div key={key} className={clsx("flex flex-col gap-2", wide && "sm:col-span-2")}>
-              <label htmlFor={key} className="font-body text-xs uppercase tracking-widest text-current/70">
+              <label htmlFor={key} className="font-inter text-xs uppercase tracking-widest text-current/70">
                 {field.name.value}
               </label>
 
@@ -169,7 +169,7 @@ export function ContactForm() {
               )}
 
               {error ? (
-                <p id={`${key}-error`} role="alert" className="font-body text-xs text-coral">
+                <p id={`${key}-error`} role="alert" className="font-inter text-xs text-ember-pulse">
                   {error.message}
                 </p>
               ) : null}

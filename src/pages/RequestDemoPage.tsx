@@ -16,7 +16,7 @@ import { requestDemo } from "@/content";
 export function RequestDemoPage() {
   return (
     <>
-      <PageSection tone="obsidian" className="pt-40 md:pt-48" containerClassName="max-w-3xl gap-6">
+      <PageSection tone="dark" className="pt-40 md:pt-48" containerClassName="max-w-3xl gap-6">
         <SectionHeading eyebrow="Request a Demo" heading="See SmartCycleAI In Action" level="h1" />
         <p className="font-body text-sm text-current/70">
           On the live SmartCycleAI site, <code className="rounded bg-current/10 px-1.5 py-0.5">/request-demo</code>{" "}
@@ -44,7 +44,7 @@ export function RequestDemoPage() {
         </dl>
       </PageSection>
 
-      <PageSection tone="ivory" containerClassName="max-w-3xl gap-8">
+      <PageSection tone="light" containerClassName="max-w-3xl gap-8">
         <SectionHeading heading="Request a Demo" level="h2" />
         <FormDisclosure />
         <ContactForm />

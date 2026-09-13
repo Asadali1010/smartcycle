@@ -12,9 +12,9 @@ import { getStoryPanels } from "./storyContent";
 import type { StoryPanel } from "./storyContent";
 
 const ACCENT_TEXT: Record<StoryPanel["accent"], string> = {
-  coral: "text-coral",
-  violet: "text-violet",
-  champagne: "text-champagne",
+  ember: "text-ember-pulse",
+  iris: "text-electric-iris",
+  neutral: "text-ash",
 };
 
 export function ScrollStoryFallback() {
@@ -22,7 +22,7 @@ export function ScrollStoryFallback() {
   const panels = getStoryPanels();
 
   return (
-    <section className="w-full bg-surface-vivid-dark py-section-md text-ivory">
+    <section className="w-full bg-obsidian-canvas bg-radial-sunburst py-section-md text-snow">
       <div className="mx-auto flex w-full max-w-6xl flex-col gap-section-sm px-gutter">
         {panels.map((panel) => (
           <motion.div
@@ -35,9 +35,9 @@ export function ScrollStoryFallback() {
           >
             <CanvasFallback className="mx-auto h-56 w-56 opacity-80" />
             <div className="flex flex-col gap-3">
-              <p className={`font-body text-xs uppercase tracking-widest ${ACCENT_TEXT[panel.accent]}`}>{panel.eyebrow}</p>
-              <h3 className="font-display text-display-sm">{panel.heading}</h3>
-              <p className="max-w-md font-body text-sm text-current/70">{panel.body}</p>
+              <p className={`font-inter text-caption font-medium uppercase tracking-widest ${ACCENT_TEXT[panel.accent]}`}>{panel.eyebrow}</p>
+              <h3 className="font-esbuild text-display-sm">{panel.heading}</h3>
+              <p className="max-w-md font-inter text-body text-current/70">{panel.body}</p>
               <div className="flex flex-wrap gap-2">
                 {panel.chips.map((chip) => (
                   <Badge key={chip} label={chip} tone="subtle" />

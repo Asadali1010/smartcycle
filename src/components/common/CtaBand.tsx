@@ -26,17 +26,17 @@ export function CtaBand({
   primaryCta,
   secondaryCta,
   statChips,
-  tone = "obsidian",
+  tone = "dark",
   intensity = "vivid",
   children,
 }: CtaBandProps) {
   return (
     <PageSection tone={tone} intensity={intensity} containerClassName="items-center gap-8 text-center">
       {eyebrow ? (
-        <p className="font-body text-sm font-medium uppercase tracking-[0.3em] text-champagne">{eyebrow}</p>
+        <p className="font-inter text-sm font-medium uppercase tracking-[0.3em] text-ash">{eyebrow}</p>
       ) : null}
-      <h2 className="max-w-3xl font-display text-display-md">{heading}</h2>
-      {supporting ? <p className="max-w-2xl font-body text-lg text-current/70">{supporting}</p> : null}
+      <h2 className="max-w-3xl font-esbuild text-display-sm">{heading}</h2>
+      {supporting ? <p className="max-w-2xl font-inter text-lg text-current/70">{supporting}</p> : null}
       {statChips?.length ? (
         <div className="flex flex-wrap items-center justify-center gap-3">
           {statChips.map((chip) => (

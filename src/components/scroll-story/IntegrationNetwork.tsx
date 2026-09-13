@@ -1,6 +1,6 @@
 /**
  * Integration Ecosystem grid: cards enter staggered, and hovering a card
- * draws thin coral connection lines to the other cards sharing its real
+ * draws thin iris connection lines to the other cards sharing its real
  * content `category` (not a fabricated relationship) — reinforcing the
  * "ecosystem" framing already in the copy.
  */
@@ -93,7 +93,7 @@ export function IntegrationNetwork({ items }: IntegrationNetworkProps) {
 
   return (
     <div ref={containerRef} className="relative grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-      <svg className="pointer-events-none absolute inset-0 h-full w-full overflow-visible text-coral" aria-hidden="true">
+      <svg className="pointer-events-none absolute inset-0 h-full w-full overflow-visible text-electric-iris" aria-hidden="true">
         {lines.map((line, i) => (
           <line key={i} x1={line.x1} y1={line.y1} x2={line.x2} y2={line.y2} stroke="currentColor" strokeWidth="1" strokeOpacity="0.5" />
         ))}
@@ -109,11 +109,11 @@ export function IntegrationNetwork({ items }: IntegrationNetworkProps) {
           transition={{ duration: 0.5, ease: SIGNATURE_EASE_ARRAY, delay: staggerDelay(i) }}
           onMouseEnter={() => setHovered(i)}
           onMouseLeave={() => setHovered((current) => (current === i ? null : current))}
-          className="flex flex-col gap-2 rounded-lg border border-current/15 p-6 transition-colors hover:border-coral/40"
+          className="flex flex-col gap-2 rounded-lg border border-current/15 p-6 transition-colors hover:border-electric-iris/40"
         >
-          <p className="font-body text-xs uppercase tracking-widest text-champagne">{item.category}</p>
-          <h3 className="font-display text-xl">{item.name}</h3>
-          <p className="font-body text-sm text-current/70">{item.description}</p>
+          <p className="font-inter text-caption font-medium uppercase tracking-widest text-ash">{item.category}</p>
+          <h3 className="font-inter text-xl font-semibold">{item.name}</h3>
+          <p className="font-inter text-body text-current/70">{item.description}</p>
           <div className="mt-2 flex flex-wrap gap-2">
             {item.tags.map((tag) => (
               <Badge key={tag} label={tag} tone="subtle" />

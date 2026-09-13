@@ -3,19 +3,23 @@
  * later the scroll-choreography scene that reuses the same module). Built as
  * factory functions rather than inlined JSX/material literals so every scene
  * that renders the sculpture draws from the same look. Colors mirror the
- * redesign's palette tokens in src/index.css (kept in sync manually since
- * three.js materials can't read CSS custom properties directly).
+ * redesign's v3 (Huly system) palette tokens in src/index.css (kept in sync
+ * manually since three.js materials can't read CSS custom properties
+ * directly).
  */
 import * as THREE from "three";
 import type { MeshTransmissionMaterialProps } from "@react-three/drei";
 
 export const PALETTE = {
-  obsidian: "#141215",
-  ivory: "#f7f2ea",
-  coral: "#ff654f",
-  champagne: "#d8be97",
-  violet: "#6d3fa6",
-  violetSoft: "#9b6fc9",
+  obsidianCanvas: "#303236",
+  voidColor: "#090a0c",
+  charcoalCard: "#111111",
+  slateEdge: "#4a4b50",
+  ironVeil: "#6b6c6d",
+  smoke: "#95979e",
+  electricIris: "#5683da",
+  emberPulse: "#ff8964",
+  molasses: "#5a250a",
 } as const;
 
 /**
@@ -29,19 +33,30 @@ export function createGlassModulePreset(
 ): MeshTransmissionMaterialProps {
   return {
     thickness: 0.55,
-    roughness: 0.1,
-    transmission: 1,
-    ior: 1.15,
-    chromaticAberration: 0.015,
+    roughness: 0.06,
+    transmission: 0.92,
+    ior: 1.2,
+    // A touch of reflectivity/clearcoat gives the glass a real specular
+    // "edge" independent of transmission — without an environment map behind
+    // it, a purely transmissive material at low roughness reads as a nearly
+    // invisible dark smudge against the void background, since it has
+    // nothing bright to refract or reflect. These let the light rig's
+    // key/rim highlights actually catch on the surface.
+    reflectivity: 0.35,
+    clearcoat: 0.25,
+    clearcoatRoughness: 0.15,
+    chromaticAberration: 0.02,
     anisotropy: 0.1,
     // The scene's own background is deliberately transparent (Hero/ScrollStory
     // canvases use alpha:true with no <color attach="background">, so the
     // page's colorful gradient shows through around the sculpture) — but
     // MeshTransmissionMaterial refracts whatever's behind it, and an actually-
     // transparent backdrop reads as flat black glass. `background` gives it a
-    // private, obsidian-toned backdrop to refract against instead, independent
-    // of what the real scene/DOM behind the canvas looks like.
-    background: new THREE.Color(PALETTE.obsidian),
+    // private backdrop to refract against instead, independent of what the
+    // real scene/DOM behind the canvas looks like — slate-edge rather than
+    // the darker obsidian-canvas so the refracted core doesn't read as
+    // near-black-on-black against the void.
+    background: new THREE.Color(PALETTE.slateEdge),
     // Perf: MeshTransmissionMaterial captures a full-scene render-to-texture
     // per instance every frame — with several modules on screen at once this
     // gets expensive fast (observed: 5 instances at defaults dropped frame
@@ -53,7 +68,11 @@ export function createGlassModulePreset(
     backside: false,
     resolution: 192,
     samples: 4,
-    color: PALETTE.champagne,
+    // Neutral slate/iron metal tint for the module glass — the old champagne
+    // metallic chassis has no equivalent in Huly's canvas+iris+ember
+    // vocabulary, so this reads as a quiet metal/glass surface rather than
+    // inventing an unlisted third accent color.
+    color: PALETTE.ironVeil,
     distortion: 0.08,
     distortionScale: 0.3,
     temporalDistortion: 0.03,
@@ -61,35 +80,39 @@ export function createGlassModulePreset(
   };
 }
 
-/** Champagne metallic edge/outline treatment wrapped around each module. */
-export function createChampagneEdgeMaterial(overrides: Partial<THREE.MeshStandardMaterialParameters> = {}) {
+/**
+ * Chassis edge/outline treatment wrapped around each module — neutral slate
+ * metal with a subtle Electric Iris emissive tint (replaces the old solid
+ * champagne-metallic look without introducing a new accent color).
+ */
+export function createChassisEdgeMaterial(overrides: Partial<THREE.MeshStandardMaterialParameters> = {}) {
   return new THREE.MeshStandardMaterial({
-    color: PALETTE.champagne,
+    color: PALETTE.slateEdge,
     metalness: 0.9,
     roughness: 0.22,
-    emissive: new THREE.Color(PALETTE.champagne),
+    emissive: new THREE.Color(PALETTE.electricIris),
     emissiveIntensity: 0.08,
     ...overrides,
   });
 }
 
-/** Plain line-basic variant of the champagne edge treatment (for <Edges>/<Line>). */
-export function createChampagneLineMaterial(overrides: Partial<THREE.LineBasicMaterialParameters> = {}) {
+/** Plain line-basic variant of the chassis edge treatment (for <Edges>/<Line>). */
+export function createChassisLineMaterial(overrides: Partial<THREE.LineBasicMaterialParameters> = {}) {
   return new THREE.LineBasicMaterial({
-    color: PALETTE.champagne,
+    color: PALETTE.slateEdge,
     transparent: true,
     opacity: 0.85,
     ...overrides,
   });
 }
 
-/** Coral accent material for the connection/illumination elements, emissive-driven by stage. */
-export function createCoralAccentMaterial(emissiveIntensity = 0.4, overrides: Partial<THREE.MeshStandardMaterialParameters> = {}) {
+/** Ember Pulse accent material for the connection/illumination elements, emissive-driven by stage. */
+export function createEmberAccentMaterial(emissiveIntensity = 0.4, overrides: Partial<THREE.MeshStandardMaterialParameters> = {}) {
   return new THREE.MeshStandardMaterial({
-    color: PALETTE.coral,
+    color: PALETTE.emberPulse,
     metalness: 0.3,
     roughness: 0.4,
-    emissive: new THREE.Color(PALETTE.coral),
+    emissive: new THREE.Color(PALETTE.emberPulse),
     emissiveIntensity,
     ...overrides,
   });
@@ -98,7 +121,7 @@ export function createCoralAccentMaterial(emissiveIntensity = 0.4, overrides: Pa
 /** Obsidian core/hub material — the central "platform" mass the modules orbit. */
 export function createObsidianCoreMaterial(overrides: Partial<THREE.MeshStandardMaterialParameters> = {}) {
   return new THREE.MeshStandardMaterial({
-    color: PALETTE.obsidian,
+    color: PALETTE.obsidianCanvas,
     metalness: 0.55,
     roughness: 0.45,
     ...overrides,
@@ -106,19 +129,20 @@ export function createObsidianCoreMaterial(overrides: Partial<THREE.MeshStandard
 }
 
 /**
- * Violet governance-ring material (torus frames that fade in mid-stage).
- * Violet is the palette's "governance/trust" anchor — champagne stays
- * reserved for the module chassis edges so each color carries one meaning.
+ * Electric Iris governance-ring material (torus frames that fade in mid-stage).
+ * Iris is the v3 palette's sole cool anchor and carries the "governance/trust"
+ * role the old palette assigned to violet — chassis trim now stays neutral
+ * slate/iron metal so each color still carries exactly one meaning.
  */
 export function createGovernanceRingMaterial(opacity = 0.5, overrides: Partial<THREE.MeshStandardMaterialParameters> = {}) {
   return new THREE.MeshStandardMaterial({
-    color: PALETTE.violet,
+    color: PALETTE.electricIris,
     metalness: 0.5,
     roughness: 0.25,
     transparent: true,
     opacity,
-    emissive: new THREE.Color(PALETTE.violetSoft),
-    emissiveIntensity: 0.5,
+    emissive: new THREE.Color(PALETTE.electricIris),
+    emissiveIntensity: 0.7,
     ...overrides,
   });
 }

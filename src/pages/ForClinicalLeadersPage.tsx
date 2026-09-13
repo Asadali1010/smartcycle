@@ -23,7 +23,7 @@ export function ForClinicalLeadersPage() {
         secondaryCta={{ label: h.ctaSecondary.value, to: "/use-cases" }}
       />
 
-      <PageSection tone="ivory">
+      <PageSection tone="light">
         <SectionHeading eyebrow={delivers.eyebrow.value} heading="Built for Clinical Teams" description={delivers.intro.value} />
         <FeatureGrid
           columns={2}
@@ -31,7 +31,7 @@ export function ForClinicalLeadersPage() {
         />
       </PageSection>
 
-      <PageSection tone="obsidian">
+      <PageSection tone="dark">
         <SectionHeading eyebrow={pains.eyebrow.value} heading="The Challenges Clinical Leaders Face" description={pains.intro.value} />
         <FeatureGrid
           columns={2}
@@ -44,7 +44,7 @@ export function ForClinicalLeadersPage() {
         />
       </PageSection>
 
-      <PageSection tone="ivory" containerClassName="items-center text-center gap-6">
+      <PageSection tone="light" containerClassName="items-center text-center gap-6">
         <SectionHeading heading={excellence.heading.value} align="center" />
         <div className="flex flex-wrap justify-center gap-3">
           {excellence.items.map((item) => (
@@ -54,7 +54,7 @@ export function ForClinicalLeadersPage() {
       </PageSection>
 
       <CtaBand
-        tone="obsidian"
+        tone="dark"
         heading={cta.heading.value}
         supporting={cta.supporting.value}
         primaryCta={{ label: cta.ctaPrimary.value, to: "/request-demo" }}

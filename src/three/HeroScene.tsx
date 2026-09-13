@@ -34,7 +34,12 @@ const PARALLAX_MAX = 0.06;
 const PARALLAX_DAMPING = 3.2;
 
 const CAMERA_CLOSE = { x: 0, y: 0.05, z: 2.3 };
-const CAMERA_REST = { x: 0, y: 0.3, z: 10.5 };
+// Brought in from the previous 10.5: at that distance the modules (already
+// small architectural boxes) occupied too little of the frame to read as the
+// site's signature visual, especially once glass-on-void's low natural
+// contrast is factored in — a closer rest framing keeps the sculpture the
+// dominant on-screen presence it's meant to be.
+const CAMERA_REST = { x: 0, y: 0.3, z: 8.6 };
 
 /** Boot timeline timing (seconds/position-offsets) — kept as named constants
  * so the "trace-lines finish drawing, then modules assemble, then camera

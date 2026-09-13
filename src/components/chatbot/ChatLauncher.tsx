@@ -25,11 +25,11 @@ export function ChatLauncher() {
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.96 }}
         transition={{ duration: 0.18, ease: [0.22, 1, 0.36, 1] }}
-        className="fixed bottom-4 right-4 z-50 flex h-14 w-14 items-center justify-center rounded-full border border-champagne/40 bg-obsidian text-ivory shadow-[0_10px_30px_-8px_rgba(255,101,79,0.45)] transition-colors hover:border-champagne focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-coral sm:bottom-6 sm:right-6"
+        className="fixed bottom-4 right-4 z-50 flex h-14 w-14 items-center justify-center rounded-full border border-slate-edge bg-charcoal-card text-snow shadow-[0_10px_30px_-8px_rgba(86,131,218,0.45)] transition-colors hover:border-iron-veil focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-electric-iris sm:bottom-6 sm:right-6"
       >
         <span
           aria-hidden="true"
-          className="pointer-events-none absolute inset-0 rounded-full bg-gradient-to-br from-coral/25 via-transparent to-transparent"
+          className="pointer-events-none absolute inset-0 rounded-full bg-gradient-to-br from-electric-iris/25 via-transparent to-transparent"
         />
         {isOpen ? <CloseGlyph /> : <ChatGlyph />}
       </motion.button>
