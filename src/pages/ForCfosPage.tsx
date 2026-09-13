@@ -43,11 +43,11 @@ export function ForCfosPage() {
             tag: item.solutionPhrase.value,
           }))}
         />
-        <p className="font-body text-sm text-current/50">
+        <div className="font-body text-sm text-current/50">
           "Delayed ROI" cites 12–18 month timelines and this redesign's execution-gap content cites a 73% (up to) or
           57% (calculator-default) cost reduction depending on section.
           <GapNote gapId="cost-reduction-73-vs-57" label="Which cost-reduction figure" />
-        </p>
+        </div>
       </PageSection>
 
       <PageSection tone="ivory" containerClassName="items-center text-center gap-6">

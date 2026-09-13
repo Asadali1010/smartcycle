@@ -16,14 +16,14 @@ export function ContactPage() {
             <Badge key={badge.value} label={badge.value} tone="outline" />
           ))}
         </div>
-        <p className="font-body text-sm text-current/60">
+        <div className="font-body text-sm text-current/60">
           Email us directly at{" "}
           <a href={`mailto:${contact.contactEmail.value}`} className="text-coral underline underline-offset-4">
             {contact.contactEmail.value}
           </a>
           .{" "}
           <GapNote gapId="contact-email-obfuscated" label="Why this needed manual verification" />
-        </p>
+        </div>
       </PageSection>
 
       <PageSection tone="ivory">

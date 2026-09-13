@@ -18,14 +18,14 @@ export function RequestDemoPage() {
     <>
       <PageSection tone="obsidian" className="pt-40 md:pt-48" containerClassName="max-w-3xl gap-6">
         <SectionHeading eyebrow="Request a Demo" heading="See SmartCycleAI In Action" level="h1" />
-        <p className="font-body text-sm text-current/70">
+        <div className="font-body text-sm text-current/70">
           On the live SmartCycleAI site, <code className="rounded bg-current/10 px-1.5 py-0.5">/request-demo</code>{" "}
           has no page of its own — it issues an HTTP 307 redirect to{" "}
           <code className="rounded bg-current/10 px-1.5 py-0.5">/contact</code>. This redesign keeps{" "}
           <code className="rounded bg-current/10 px-1.5 py-0.5">/request-demo</code> as a real route rendering the
           same shared demo-request form as /contact, rather than inventing unique copy for a page that doesn't exist.
           <GapNote gapId="request-demo-redirects-to-contact" label="Why this page mirrors /contact" className="ml-2" />
-        </p>
+        </div>
         <dl className="grid grid-cols-1 gap-4 border-t border-current/15 pt-6 font-body text-sm sm:grid-cols-3">
           <div>
             <dt className="text-current/50 uppercase tracking-widest text-xs">Live site source</dt>

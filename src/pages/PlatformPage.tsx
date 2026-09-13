@@ -36,10 +36,10 @@ export function PlatformPage() {
         <StepList
           steps={howItWorks.steps.map((s) => ({ key: s.name.value, name: s.name.value, description: s.description.value }))}
           footnote={
-            <p className="font-body text-sm text-current/60">
+            <div className="font-body text-sm text-current/60">
               This is /platform's own 5-step process.
               <GapNote gapId="how-it-works-4-vs-5-step" label="Different from the homepage's 4-step process" className="ml-2" />
-            </p>
+            </div>
           }
         />
       </PageSection>
@@ -101,11 +101,11 @@ export function PlatformPage() {
           items={security.details.map((d) => ({ key: d.name.value, name: d.name.value, description: d.description.value }))}
         />
         <p className="font-body text-lg text-current/70">{security.closing.value}</p>
-        <p className="font-body text-xs text-current/50">
+        <div className="font-body text-xs text-current/50">
           Certification language on this page ("HIPAA", "ISO 27001", "SOC 2 Type II") is unhedged, unlike softer
           "Aware"/"Ready"/"Aligned" wording used on other pages.
           <GapNote gapId="certification-language-varies-by-page" label="Why this varies by page" className="ml-2" />
-        </p>
+        </div>
       </PageSection>
 
       <CtaBand

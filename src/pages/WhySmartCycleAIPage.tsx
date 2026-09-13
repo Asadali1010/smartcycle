@@ -66,10 +66,10 @@ export function WhySmartCycleAIPage() {
           columns={3}
           items={differentiators.items.map((d) => ({ key: d.name.value, name: d.name.value, description: d.description.value }))}
         />
-        <p className="font-display text-xl">
+        <div className="font-display text-xl">
           {differentiators.tagline.value.join(" ")}
           <GapNote gapId="differentiator-count-5-vs-6" label="Why six, not five" className="ml-3" />
-        </p>
+        </div>
       </PageSection>
 
       <PageSection tone="obsidian" containerClassName="gap-10">

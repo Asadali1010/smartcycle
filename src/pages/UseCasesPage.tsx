@@ -27,11 +27,11 @@ export function UseCasesPage() {
       <PageSection tone="obsidian" containerClassName="gap-14">
         <div className="flex flex-col gap-4">
           <SectionHeading eyebrow={intro.eyebrow.value} heading={intro.headingLines.value.join(" ")} description={intro.intro.value} />
-          <p className="font-body text-sm text-current/60">
+          <div className="font-body text-sm text-current/60">
             This 4-category / 16-item taxonomy is a different breakdown from the homepage's 10 named Solution
             Domains — both are real and current; they aren't meant to map 1:1.
             <GapNote gapId={useCases.useCaseCategoriesGapRef} label="Why two taxonomies" className="ml-2" />
-          </p>
+          </div>
         </div>
 
         {useCases.useCaseCategories.map((category) => (

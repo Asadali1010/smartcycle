@@ -58,11 +58,11 @@ export function HomePage() {
             />
           ))}
         </div>
-        <p className="font-body text-sm text-current/50">
+        <div className="font-body text-sm text-current/50">
           The "73% Cost Reduction" figure above and the "57% Cost Reduction" figure in the ROI section further down
           this page are not the same measurement.
           <GapNote gapId={gap.gapRef} label="73% vs 57% — why they differ" className="ml-2" />
-        </p>
+        </div>
       </PageSection>
 
       {/* --- Platform overview: Studio + EEF --- */}
@@ -104,11 +104,11 @@ export function HomePage() {
           />
         </div>
 
-        <p className="font-body text-sm text-current/50">
+        <div className="font-body text-sm text-current/50">
           These are two independently sourced, equally current descriptions of the same overall engagement at
           different levels of granularity — neither supersedes the other.
           <GapNote gapId={howItWorksHome.gapRef} label="Why there are two processes" className="ml-2" />
-        </p>
+        </div>
       </PageSection>
 
       {/* --- Integration Ecosystem --- */}
@@ -132,10 +132,10 @@ export function HomePage() {
             <Badge key={f.value} label={f.value} tone="outline" />
           ))}
         </div>
-        <p className="font-body text-sm text-current/60">
+        <div className="font-body text-sm text-current/60">
           This is a different taxonomy from /use-cases' 4-category breakdown — the showcase below includes both.
           <GapNote gapId={solutionDomains.solutionDomainsGapRef} label="Why two taxonomies" className="ml-2" />
-        </p>
+        </div>
       </PageSection>
       <UseCaseShowcase />
 

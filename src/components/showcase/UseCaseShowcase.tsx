@@ -31,11 +31,11 @@ export function UseCaseShowcase() {
         Confirmed by measuring the actual pin-spacer height with/without a
         flex parent — verify this stays true before reintroducing flex here.
       */}
-      <p className="mb-6 max-w-2xl px-gutter font-body text-sm text-current/60">
+      <div className="mb-6 max-w-2xl px-gutter font-body text-sm text-current/60">
         SmartCycleAI's site describes what you can build through two separate, non-overlapping taxonomies — this
         showcase includes both rather than picking one.
         <GapNote gapId={useCasesContent.useCaseCategoriesGapRef} label="Why two taxonomies" className="ml-2" />
-      </p>
+      </div>
       {isCompact ? <MobileShowcase slides={slides} /> : <DesktopShowcase slides={slides} />}
     </section>
   );
