@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
+import { ShowcaseCard } from "@/design-system";
 import type { ShowcaseItem, ShowcaseSlide } from "./data";
 import { DetailModal } from "./DetailModal";
 
@@ -16,6 +17,19 @@ export interface MobileShowcaseProps {
 export function MobileShowcase({ slides }: MobileShowcaseProps) {
   const [active, setActive] = useState<ShowcaseItem | null>(null);
 
+  // Resets to 01 at each taxonomy divider — mirrors DesktopShowcase's ordinal.
+  const itemOrdinals = useMemo(
+    () =>
+      slides.reduce<{ counter: number; ordinals: number[] }>(
+        (acc, slide) => {
+          const counter = slide.kind === "divider" ? 0 : acc.counter + 1;
+          return { counter, ordinals: [...acc.ordinals, counter] };
+        },
+        { counter: 0, ordinals: [] },
+      ).ordinals,
+    [slides],
+  );
+
   return (
     <div className="flex flex-col gap-4 px-gutter">
       {slides.map((slide, i) =>
@@ -27,22 +41,18 @@ export function MobileShowcase({ slides }: MobileShowcaseProps) {
             <p className="font-body text-sm text-current/60">{slide.dividerBody}</p>
           </div>
         ) : (
-          <button
+          <ShowcaseCard
             key={slide.item.id}
-            type="button"
-            onClick={() => setActive(slide.item)}
-            className="flex flex-col gap-1.5 rounded-lg border border-current/15 p-5 text-left transition-colors hover:border-coral/50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-coral"
-          >
-            <p className="font-body text-xs uppercase tracking-widest text-current/50">{slide.item.eyebrow}</p>
-            <h3 className="font-display text-lg">{slide.item.title}</h3>
-            <p className="line-clamp-2 font-body text-sm text-current/70">{slide.item.description}</p>
-            {slide.item.meta?.length ? (
-              <p className="mt-1 font-body text-xs text-current/50">{slide.item.meta.join(" → ")}</p>
-            ) : null}
-            <span className="mt-1 font-body text-xs font-medium uppercase tracking-widest text-coral">
-              View details →
-            </span>
-          </button>
+            index={itemOrdinals[i]}
+            label={slide.taxonomy === "use-cases" ? "Use Case" : "Solution Domain"}
+            eyebrow={slide.item.eyebrow}
+            title={slide.item.title}
+            description={slide.item.description}
+            descriptionClassName="line-clamp-2"
+            meta={slide.item.meta}
+            onSelect={() => setActive(slide.item)}
+            className="h-auto"
+          />
         ),
       )}
       <DetailModal item={active} onClose={() => setActive(null)} />

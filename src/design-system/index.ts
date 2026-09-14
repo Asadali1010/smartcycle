@@ -21,3 +21,8 @@ export type { LetterRollProps } from "./LetterRoll";
 
 export { Marquee } from "./Marquee";
 export type { MarqueeProps, MarqueeSpeed } from "./Marquee";
+
+export { ShowcaseCard } from "./ShowcaseCard";
+export type { ShowcaseCardProps } from "./ShowcaseCard";
+
+export type { CardParticleArtHandle, CardParticleArtProps } from "./CardParticleArt";

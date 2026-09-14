@@ -2,6 +2,7 @@ import { useLayoutEffect, useMemo, useRef, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import clsx from "clsx";
+import { ShowcaseCard, type CardParticleArtHandle } from "@/design-system";
 import type { ShowcaseItem, ShowcaseSlide } from "./data";
 import { DetailModal } from "./DetailModal";
 
@@ -16,16 +17,26 @@ export interface DesktopShowcaseProps {
 // How many neighboring slides on either side of the active one feel the
 // arc — smaller values make the orbit tighter/faster, larger values spread
 // it across more cards.
-const ORBIT_RANGE = 1.6;
-const ORBIT_LIFT = 64; // px risen at the peak of the arc
-const ORBIT_ROTATE = 9; // deg tilt applied on the way in/out
-const ORBIT_SCALE = 0.07; // extra scale at the peak of the arc
+const ORBIT_RANGE = 1.15;
+const ORBIT_LIFT = 32; // px risen at the peak of the arc
+const ORBIT_ROTATE = 7; // deg tilt applied on the way in/out
+const ORBIT_SCALE = 0.1; // extra scale at the peak of the arc
+// Index-distance beyond which a card fades to fully transparent and goes
+// inert — keeps exactly the active card plus one neighbor on each side
+// (three cards total) legible at once instead of the whole track bleeding
+// into view, and stops keyboard focus from landing on invisible cards.
+const VISIBLE_RANGE = 1.2;
+// How much vertical scroll (px) advances the sequence by one slide. Fixed
+// rather than derived from track width, since every card now sits stacked
+// at the same centered anchor point instead of flowing in a wide row.
+const SLIDE_SCROLL_PX = 460;
 
 /**
- * Pinned section that maps vertical scroll progress onto horizontal
- * translation through the combined use-case / solution-domain slide list,
- * with each slide additionally riding a circular arc (lift + tilt + scale)
- * as it passes through the center of the viewport.
+ * Pinned section that maps vertical scroll progress onto a centered card
+ * carousel through the combined use-case / solution-domain slide list: every
+ * card is anchored at the same center point and offset horizontally by its
+ * distance from the active index, so the active slide always sits centered
+ * while neighbors recede to either side (lift + tilt + scale + fade).
  * Registers and kills its own ScrollTrigger instance on mount/unmount
  * (self-contained, no dependency on src/components/scroll-story/**).
  */
@@ -33,6 +44,7 @@ export function DesktopShowcase({ slides }: DesktopShowcaseProps) {
   const sectionRef = useRef<HTMLDivElement | null>(null);
   const trackRef = useRef<HTMLDivElement | null>(null);
   const cardRefs = useRef<Array<HTMLDivElement | null>>([]);
+  const artRefs = useRef<Array<CardParticleArtHandle | null>>([]);
   const [progress, setProgress] = useState(0);
   const [active, setActive] = useState<ShowcaseItem | null>(null);
   const idRef = useRef<string>(`showcase-scroll-${instanceCounter++}`);
@@ -42,44 +54,64 @@ export function DesktopShowcase({ slides }: DesktopShowcaseProps) {
     [slides],
   );
 
+  // Resets to 01 at each taxonomy divider so the art-zone numeral reads as
+  // a per-taxonomy ordinal rather than a raw slide index.
+  const itemOrdinals = useMemo(
+    () =>
+      slides.reduce<{ counter: number; ordinals: number[] }>(
+        (acc, slide) => {
+          const counter = slide.kind === "divider" ? 0 : acc.counter + 1;
+          return { counter, ordinals: [...acc.ordinals, counter] };
+        },
+        { counter: 0, ordinals: [] },
+      ).ordinals,
+    [slides],
+  );
+
   useLayoutEffect(() => {
     const section = sectionRef.current;
-    const track = trackRef.current;
-    if (!section || !track) return;
+    if (!section) return;
 
     const lastIndex = Math.max(slides.length - 1, 1);
+    const totalDistance = Math.max((slides.length - 1) * SLIDE_SCROLL_PX, 1);
+
+    gsap.set(cardRefs.current, { xPercent: -50, yPercent: -50 });
 
     const applyOrbitMotion = (positionInSlides: number) => {
+      const spacing = Math.min(520, window.innerWidth * 0.5);
       cardRefs.current.forEach((card, i) => {
         if (!card) return;
-        const localT = gsap.utils.clamp(-1, 1, (positionInSlides - i) / ORBIT_RANGE);
+        const rawDistance = i - positionInSlides;
+        const away = Math.abs(rawDistance);
+        const localT = gsap.utils.clamp(-1, 1, -rawDistance / ORBIT_RANGE);
         const influence = Math.cos((localT * Math.PI) / 2);
+        const opacity = gsap.utils.clamp(0, 1, 1 - away / VISIBLE_RANGE);
         gsap.set(card, {
+          x: rawDistance * spacing,
           y: -ORBIT_LIFT * influence,
           rotate: localT * ORBIT_ROTATE,
           scale: 1 + ORBIT_SCALE * influence,
+          opacity,
         });
+        card.style.pointerEvents = opacity < 0.05 ? "none" : "";
+        card.inert = opacity < 0.05;
+        artRefs.current[i]?.setProgress(localT);
       });
     };
 
     const ctx = gsap.context(() => {
-      const getDistance = () => Math.max(track.scrollWidth - section.clientWidth, 0);
-      gsap.to(track, {
-        x: () => -getDistance(),
-        ease: "none",
-        scrollTrigger: {
-          id: idRef.current,
-          trigger: section,
-          start: "top top",
-          end: () => `+=${getDistance()}`,
-          scrub: 0.6,
-          pin: true,
-          anticipatePin: 1,
-          invalidateOnRefresh: true,
-          onUpdate: (self) => {
-            setProgress(self.progress);
-            applyOrbitMotion(self.progress * lastIndex);
-          },
+      ScrollTrigger.create({
+        id: idRef.current,
+        trigger: section,
+        start: "top top",
+        end: `+=${totalDistance}`,
+        scrub: 0.6,
+        pin: true,
+        anticipatePin: 1,
+        invalidateOnRefresh: true,
+        onUpdate: (self) => {
+          setProgress(self.progress);
+          applyOrbitMotion(self.progress * lastIndex);
         },
       });
       applyOrbitMotion(0);
@@ -155,17 +187,17 @@ export function DesktopShowcase({ slides }: DesktopShowcaseProps) {
         </div>
       </div>
 
-      <div ref={trackRef} className="flex h-full w-max items-center gap-6 px-gutter pt-24">
+      <div ref={trackRef} className="relative h-full w-full">
         {slides.map((slide, i) => (
           <div
             key={slide.kind === "divider" ? `divider-${i}` : slide.item.id}
             ref={(el) => {
               cardRefs.current[i] = el;
             }}
-            className="flex h-full w-[min(90vw,26rem)] shrink-0 items-center [transform-origin:center_bottom] will-change-transform"
+            className="absolute left-1/2 top-1/2 h-[min(70svh,34rem)] w-[min(88vw,28rem)] will-change-transform"
           >
             {slide.kind === "divider" ? (
-              <div className="flex flex-col gap-3">
+              <div className="flex h-full flex-col justify-center gap-3">
                 <p
                   className={clsx(
                     "font-body text-xs font-medium uppercase tracking-[0.3em]",
@@ -178,21 +210,21 @@ export function DesktopShowcase({ slides }: DesktopShowcaseProps) {
                 <p className="font-body text-sm text-current/60">{slide.dividerBody}</p>
               </div>
             ) : (
-              <button
-                type="button"
-                onClick={() => setActive(slide.item)}
-                className="flex h-[70%] w-full flex-col gap-3 rounded-xl border border-current/15 p-6 text-left transition-colors hover:border-coral/50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-coral"
-              >
-                <p className="font-body text-xs uppercase tracking-widest text-current/50">{slide.item.eyebrow}</p>
-                <h3 className="font-display text-xl">{slide.item.title}</h3>
-                <p className="line-clamp-4 font-body text-sm text-current/70">{slide.item.description}</p>
-                {slide.item.meta?.length ? (
-                  <p className="mt-auto font-body text-xs text-current/50">{slide.item.meta.join(" → ")}</p>
-                ) : null}
-                <span className="font-body text-xs font-medium uppercase tracking-widest text-coral">
-                  View details →
-                </span>
-              </button>
+              <ShowcaseCard
+                index={itemOrdinals[i]}
+                label={slide.taxonomy === "use-cases" ? "Use Case" : "Solution Domain"}
+                eyebrow={slide.item.eyebrow}
+                title={slide.item.title}
+                description={slide.item.description}
+                descriptionClassName="line-clamp-4"
+                meta={slide.item.meta}
+                onSelect={() => setActive(slide.item)}
+                scrollLinked={false}
+                artRef={(el) => {
+                  artRefs.current[i] = el;
+                }}
+                className="h-full w-full"
+              />
             )}
           </div>
         ))}

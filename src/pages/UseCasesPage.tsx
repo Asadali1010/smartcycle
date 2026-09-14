@@ -42,7 +42,13 @@ export function UseCasesPage() {
             </div>
             <FeatureGrid
               columns={2}
-              items={category.items.map((item) => ({ key: item.name.value, name: item.name.value, description: item.description.value }))}
+              variant="showcase"
+              items={category.items.map((item) => ({
+                key: item.name.value,
+                name: item.name.value,
+                description: item.description.value,
+                tag: category.name.value,
+              }))}
             />
           </div>
         ))}
