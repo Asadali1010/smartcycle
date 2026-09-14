@@ -1,15 +1,12 @@
 /**
- * The homepage's immersive 3D hero: an R3F sculpture (Build → Govern →
- * Deploy) behind a headline/subheadline/trust-badges/CTA block that enters
- * concurrently with the 3D opening choreography, plus a keyboard-accessible
- * explode/reassemble interaction. Not yet wired into HomePage — that swap
- * happens in a later integration pass (forms-and-pages owns src/pages/**).
+ * The homepage's immersive 3D hero: a particle-brain (BrainField, via
+ * HeroScene) that continuously assembles/holds/disassembles on a seamless
+ * loop, behind a headline/subheadline/trust-badges/CTA block. Not yet wired
+ * into HomePage — that swap happens in a later integration pass
+ * (forms-and-pages owns src/pages/**).
  */
-import { useCallback, useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { Canvas } from "@react-three/fiber";
-import { useReducedMotion } from "motion/react";
-import gsap from "gsap";
 import { Badge, Button, SectionHeading } from "@/design-system";
 import { home } from "@/content";
 import { HeroScene } from "@/three/HeroScene";
@@ -17,58 +14,13 @@ import { CanvasFallback } from "@/three/CanvasFallback";
 import { useWebGLSupport } from "@/three/useWebGLSupport";
 import { useCanvasFrameloop } from "@/three/useCanvasFrameloop";
 
-/** Total explode-out → hold → reassemble duration target ("a couple seconds"). */
-const EXPLODE_OUT = 0.9;
-const EXPLODE_HOLD = 0.9;
-const EXPLODE_BACK = 0.9;
-
 export function Hero() {
   const hero = home.homeHero;
-  const prefersReducedMotion = Boolean(useReducedMotion());
   const webglSupport = useWebGLSupport();
 
   // Perf: fully stop the R3F render loop while the hero is scrolled far
   // offscreen; resume it once it's back in (or near) view.
   const { containerRef, frameloop } = useCanvasFrameloop();
-
-  const [explode, setExplode] = useState(0);
-  const [isExploding, setIsExploding] = useState(false);
-  const explodeTimelineRef = useRef<gsap.core.Timeline | null>(null);
-
-  useEffect(() => {
-    return () => {
-      explodeTimelineRef.current?.kill();
-    };
-  }, []);
-
-  const handleExplode = useCallback(() => {
-    explodeTimelineRef.current?.kill();
-    const proxy = { value: 0 };
-    setIsExploding(true);
-    const outDuration = prefersReducedMotion ? 0.01 : EXPLODE_OUT;
-    const holdDuration = prefersReducedMotion ? 0.5 : EXPLODE_HOLD;
-    const backDuration = prefersReducedMotion ? 0.01 : EXPLODE_BACK;
-
-    const timeline = gsap.timeline({
-      onComplete: () => setIsExploding(false),
-    });
-    timeline
-      .to(proxy, {
-        value: 1,
-        duration: outDuration,
-        ease: "power2.out",
-        onUpdate: () => setExplode(proxy.value),
-      })
-      .to(proxy, { value: 1, duration: holdDuration })
-      .to(proxy, {
-        value: 0,
-        duration: backDuration,
-        ease: "power2.inOut",
-        onUpdate: () => setExplode(proxy.value),
-      });
-
-    explodeTimelineRef.current = timeline;
-  }, [prefersReducedMotion]);
 
   return (
     <section className="relative min-h-screen w-full overflow-hidden bg-surface-vivid-dark text-ivory">
@@ -78,13 +30,14 @@ export function Hero() {
             frameloop={frameloop}
             dpr={[1, 2]}
             gl={{ antialias: true, alpha: true }}
-            camera={{ position: [0, 0.6, 8.2], fov: 45 }}
+            camera={{ position: [0, 0.15, 3.4], fov: 45 }}
           >
             {/* No opaque scene background: alpha:true + the page's own
                 bg-surface-vivid-dark gradient show through around the
-                sculpture instead of a flat obsidian rectangle. */}
-            <fog attach="fog" args={["#141215", 11, 24]} />
-            <HeroScene explode={explode} />
+                brain instead of a flat obsidian rectangle. No <fog> here —
+                BrainField's custom shader material doesn't sample scene
+                fog, so it would be inert. */}
+            <HeroScene />
           </Canvas>
         ) : (
           <CanvasFallback className="mx-auto h-full max-h-[640px] w-full max-w-2xl opacity-70" />
@@ -116,18 +69,9 @@ export function Hero() {
           <Button as={Link} to="/request-demo" variant="primary" size="lg">
             {hero.ctaPrimary.value}
           </Button>
-          <Button
-            variant="secondary"
-            size="lg"
-            onClick={handleExplode}
-            aria-pressed={isExploding}
-            disabled={webglSupport !== "supported"}
-          >
-            See it come apart
-          </Button>
         </div>
         {webglSupport === "supported" ? (
-          <p className="font-body text-xs uppercase tracking-widest text-current/40">Hover a module to inspect it</p>
+          <p className="font-body text-xs uppercase tracking-widest text-current/40">Drag to rotate, scroll to zoom</p>
         ) : null}
       </div>
     </section>
