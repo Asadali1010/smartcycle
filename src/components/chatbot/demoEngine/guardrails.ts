@@ -12,6 +12,7 @@
 export interface GuardrailResult {
   blocked: boolean;
   message?: string;
+  
 }
 
 export const PATIENT_INFO_REFUSAL_MESSAGE =
