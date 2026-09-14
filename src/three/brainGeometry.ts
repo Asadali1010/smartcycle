@@ -34,11 +34,20 @@ const RADII = { x: 0.5, y: 0.72, z: 1.0 };
  * above, this leaves a real ~0.16-unit medial gap (the central fissure). */
 const HEMISPHERE_CENTER_X = 0.58;
 const CEREBELLUM_CENTER_X = 0.14;
-const FOLD_STRENGTH = 0.22;
-const FOLD_FREQ = 2.6;
+const FOLD_STRENGTH = 0.16;
+const FOLD_FREQ = 7.5;
 const SHELL_THICKNESS = 0.08;
 const ORIGIN_SPHERE_RADIUS = 4.5;
 const BRAINSTEM_RATIO = 0.1;
+/** Large-scale (not noise-driven) silhouette bias: the fold noise alone only
+ * roughens the surface, it doesn't stop each hemisphere reading as a plain
+ * round blob. These pull the lower half in (temporal-pole taper) and the
+ * +z half in (frontal-lobe taper) while leaving the crown and occipital
+ * curve (-z) full, so the outline itself reads as brain-shaped rather than
+ * a symmetric ellipsoid/kidney bean. */
+const BOTTOM_TAPER = 0.34;
+const FRONT_TAPER = 0.24;
+const BACK_FULLNESS = 0.08;
 
 function mulberry32(seed: number): () => number {
   let a = seed;
@@ -126,8 +135,15 @@ export function generateBrainGeometry(count: number, seed = 1337): BrainGeometry
       // abs(x), which would crease/pile points onto a flat medial wall
       // instead of leaving a true gap between two curved surfaces.
       const [dx, dy, dz] = randomUnitVector(rng);
-      const fold = fbm3D(dx * FOLD_FREQ, dy * FOLD_FREQ, dz * FOLD_FREQ, 4);
-      const radiusMul = 1 + fold * FOLD_STRENGTH;
+      const fold = fbm3D(dx * FOLD_FREQ, dy * FOLD_FREQ, dz * FOLD_FREQ, 5);
+      // Radial pull toward center for the temporal-pole (bottom) and
+      // frontal-lobe (+z) regions, with a slight bulge at the occipital
+      // (-z) crown — this is what actually reads as "brain" from a
+      // distance; the fold noise alone is too fine to shape the silhouette.
+      const bottomTaper = dy < 0 ? 1 + dy * BOTTOM_TAPER : 1;
+      const frontBackTaper = dz > 0 ? 1 - dz * FRONT_TAPER : 1 - dz * BACK_FULLNESS;
+      const shapeMul = bottomTaper * frontBackTaper;
+      const radiusMul = shapeMul * (1 + fold * FOLD_STRENGTH);
       const shellPull = 1 - rng() * SHELL_THICKNESS;
       surface = shellPull;
 
@@ -138,23 +154,26 @@ export function generateBrainGeometry(count: number, seed = 1337): BrainGeometry
     } else {
       const j = i - hemisphereCount;
       const clusterT = j / Math.max(1, brainstemCount - 1);
-      if (clusterT < 0.45) {
-        // Cerebellum: small mirrored ellipsoid pair, lower-back of the brain.
+      if (clusterT < 0.62) {
+        // Cerebellum: small mirrored ellipsoid pair, tucked directly under
+        // the hemispheres' (now tapered) lower-back edge — not floating
+        // below it — so it reads as part of the mass, not a separate blob.
         const [dx, dy, dz] = randomUnitVector(rng);
         const side = rng() < 0.5 ? -1 : 1;
-        px = side * (CEREBELLUM_CENTER_X + dx * 0.24);
-        py = dy * 0.2 - RADII.y * 0.62;
-        pz = dz * 0.28 - RADII.z * 0.78;
+        px = side * (CEREBELLUM_CENTER_X + dx * 0.26);
+        py = dy * 0.16 - RADII.y * 0.48;
+        pz = dz * 0.3 - RADII.z * 0.74;
         surface = 1 - rng() * SHELL_THICKNESS;
       } else {
-        // Brainstem: a thin, gently tapering column beneath the cerebellum.
+        // Brainstem: a short, stout stub right beneath the cerebellum — long
+        // and thin reads as a disconnected tail rather than anatomy.
         const t = rng();
         const taper = 1 - t * 0.4;
         const [dx, , dz] = randomUnitVector(rng);
-        const radius = 0.09 * taper;
+        const radius = 0.13 * taper;
         px = dx * radius;
-        py = -RADII.y * 0.62 - t * 0.42;
-        pz = dz * radius - RADII.z * 0.55;
+        py = -RADII.y * 0.48 - 0.14 - t * 0.16;
+        pz = dz * radius - RADII.z * 0.6;
         surface = 1 - rng() * SHELL_THICKNESS * 0.5;
       }
     }

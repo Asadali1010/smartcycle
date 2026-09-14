@@ -1,5 +1,5 @@
 /**
- * Hero's signature visual: ~8,000 particles forming a human brain that
+ * Hero's signature visual: ~16,000 particles forming a human brain that
  * continuously assembles, holds (rotating, jittering, pulsing, with
  * flickering synapse lines), and disassembles into dust on a seamless 12s
  * loop. One BufferGeometry + one Points object (plus one small LineSegments
@@ -19,8 +19,8 @@ import { generateBrainGeometry, generateSynapseLines } from "./brainGeometry";
 import { BRAIN_FRAGMENT_SHADER, BRAIN_VERTEX_SHADER, SYNAPSE_FRAGMENT_SHADER, SYNAPSE_VERTEX_SHADER } from "./brainShaders";
 import { PALETTE } from "./materials";
 
-const PARTICLE_COUNT = 8000;
-const LINE_COUNT = 150;
+const PARTICLE_COUNT = 16000;
+const LINE_COUNT = 260;
 const LOOP_DURATION = 12;
 const HOLD_START = 4;
 const HOLD_END = 8;
